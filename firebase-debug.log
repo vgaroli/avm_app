@@ -1,0 +1,306 @@
+[debug] [2026-05-13T19:26:52.884Z] ----------------------------------------------------------------------
+[debug] [2026-05-13T19:26:52.885Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\vgaro\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2026-05-13T19:26:52.885Z] CLI Version:   15.17.0
+[debug] [2026-05-13T19:26:52.885Z] Platform:      win32
+[debug] [2026-05-13T19:26:52.885Z] Node Version:  v20.19.3
+[debug] [2026-05-13T19:26:52.885Z] Time:          Wed May 13 2026 16:26:52 GMT-0300 (Brasilia Standard Time)
+[debug] [2026-05-13T19:26:52.886Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-05-13T19:26:53.717Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-13T19:26:53.717Z] > authorizing via signed-in user (valter@prontosolucoes.com.br)
+[debug] [2026-05-13T19:26:53.717Z] [iam] checking project avm-app-f8853 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebase.projects.update","firebaseauth.configs.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2026-05-13T19:26:53.718Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:53.718Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:53.718Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions [none]
+[debug] [2026-05-13T19:26:53.718Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions  x-goog-user-project=avm-app-f8853
+[debug] [2026-05-13T19:26:53.719Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebase.projects.update","firebaseauth.configs.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2026-05-13T19:26:54.624Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions 200
+[debug] [2026-05-13T19:26:54.625Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebase.projects.update","firebaseauth.configs.update","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2026-05-13T19:26:54.625Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:54.625Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:54.625Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/avm-app-f8853/serviceAccounts/avm-app-f8853@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2026-05-13T19:26:54.625Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/avm-app-f8853/serviceAccounts/avm-app-f8853@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-05-13T19:26:55.460Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/avm-app-f8853/serviceAccounts/avm-app-f8853@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2026-05-13T19:26:55.460Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/avm-app-f8853/serviceAccounts/avm-app-f8853@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-05-13T19:26:55.461Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:55.461Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:55.461Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853 [none]
+[debug] [2026-05-13T19:26:55.862Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853 200
+[debug] [2026-05-13T19:26:55.862Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853 {"projectId":"avm-app-f8853","projectNumber":"78211745730","displayName":"AVM APP","name":"projects/avm-app-f8853","resources":{"hostingSite":"avm-app-f8853"},"state":"ACTIVE","etag":"1_8efb10f1-52ee-4e73-b7ef-e503fde45925"}
+[info] 
+[info] === Deploying to 'avm-app-f8853'...
+[info] 
+[info] i  deploying storage, firestore, functions, hosting, auth 
+[info] Running command: npm --prefix functions run lint
+[info] Running command: npm --prefix functions run build
+[info] +  functions: Finished running predeploy script. 
+[info] i  storage: ensuring required API firebasestorage.googleapis.com is enabled... 
+[debug] [2026-05-13T19:26:59.780Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:59.780Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:26:59.781Z] >>> [apiv2][query] GET https://firebasestorage.googleapis.com/v1alpha/projects/avm-app-f8853/defaultBucket [none]
+[debug] [2026-05-13T19:27:00.976Z] <<< [apiv2][status] GET https://firebasestorage.googleapis.com/v1alpha/projects/avm-app-f8853/defaultBucket 200
+[debug] [2026-05-13T19:27:00.976Z] <<< [apiv2][body] GET https://firebasestorage.googleapis.com/v1alpha/projects/avm-app-f8853/defaultBucket {"name":"projects/avm-app-f8853/defaultBucket","location":"US-EAST1","bucket":{"name":"projects/avm-app-f8853/buckets/avm-app-f8853.firebasestorage.app"},"storageClass":"REGIONAL"}
+[info] i  firebase.storage: checking storage.rules for compilation errors... 
+[debug] [2026-05-13T19:27:00.977Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:00.977Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:00.977Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test [none]
+[debug] [2026-05-13T19:27:00.977Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test [omitted]
+[debug] [2026-05-13T19:27:02.046Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test 200
+[debug] [2026-05-13T19:27:02.046Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test {}
+[info] +  firebase.storage: rules file storage.rules compiled successfully 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-05-13T19:27:02.048Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:02.048Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:02.048Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default) [none]
+[debug] [2026-05-13T19:27:03.089Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default) 200
+[debug] [2026-05-13T19:27:03.089Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default) {"name":"projects/avm-app-f8853/databases/(default)","uid":"68260aa7-6aa9-471c-bec7-be91c332e414","createTime":"2026-05-13T17:54:01.957420Z","updateTime":"2026-05-13T17:54:01.957420Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-05-13T18:25:57.317761Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IPrh1pf/tpQDMJai+enqtpQD"}
+[info] i  firestore: reading indexes from firestore.indexes.json... 
+[info] i  cloud.firestore: checking firestore.rules for compilation errors... 
+[debug] [2026-05-13T19:27:03.089Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:03.089Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:03.089Z] >>> [apiv2][query] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test [none]
+[debug] [2026-05-13T19:27:03.089Z] >>> [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test [omitted]
+[debug] [2026-05-13T19:27:04.189Z] <<< [apiv2][status] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test 200
+[debug] [2026-05-13T19:27:04.189Z] <<< [apiv2][body] POST https://firebaserules.googleapis.com/v1/projects/avm-app-f8853:test {}
+[info] +  cloud.firestore: rules file firestore.rules compiled successfully 
+[debug] [2026-05-13T19:27:04.190Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:04.190Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:04.190Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853 [none]
+[debug] [2026-05-13T19:27:05.056Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853 200
+[debug] [2026-05-13T19:27:05.056Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853 {"projectNumber":"78211745730","projectId":"avm-app-f8853","lifecycleState":"ACTIVE","name":"AVM APP","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-04-17T18:23:49.104Z","parent":{"type":"organization","id":"1044005575218"}}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2026-05-13T19:27:05.057Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:05.057Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:05.057Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853/adminSdkConfig [none]
+[debug] [2026-05-13T19:27:05.486Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853/adminSdkConfig 200
+[debug] [2026-05-13T19:27:05.486Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853/adminSdkConfig {"projectId":"avm-app-f8853","storageBucket":"avm-app-f8853.firebasestorage.app"}
+[debug] [2026-05-13T19:27:05.487Z] Validating nodejs source
+[debug] [2026-05-13T19:27:05.909Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.4.1",
+    "typescript": "^6.0.0"
+  },
+  "private": true
+}
+[debug] [2026-05-13T19:27:05.910Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2026-05-13T19:27:05.910Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-05-13T19:27:05.915Z] Found firebase-functions binary at 'D:\Desenvolvimento\projetos_angular\avm_app\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8217
+
+[debug] [2026-05-13T19:27:06.202Z] Got response from /__/functions.yaml {"endpoints":{},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] i  extensions: ensuring required API firebaseextensions.googleapis.com is enabled... 
+[debug] [2026-05-13T19:27:10.233Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-13T19:27:10.233Z] > authorizing via signed-in user (valter@prontosolucoes.com.br)
+[debug] [2026-05-13T19:27:10.233Z] [iam] checking project avm-app-f8853 for permissions ["firebase.projects.get","firebaseextensions.instances.list"]
+[debug] [2026-05-13T19:27:10.233Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:10.233Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:10.233Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions [none]
+[debug] [2026-05-13T19:27:10.233Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions  x-goog-user-project=avm-app-f8853
+[debug] [2026-05-13T19:27:10.233Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2026-05-13T19:27:11.085Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions 200
+[debug] [2026-05-13T19:27:11.085Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/avm-app-f8853:testIamPermissions {"permissions":["firebase.projects.get","firebaseextensions.instances.list"]}
+[debug] [2026-05-13T19:27:11.085Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:11.085Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:11.085Z] >>> [apiv2][query] GET https://firebaseextensions.googleapis.com/v1beta/projects/avm-app-f8853/instances pageSize=100&pageToken=
+[debug] [2026-05-13T19:27:12.088Z] <<< [apiv2][status] GET https://firebaseextensions.googleapis.com/v1beta/projects/avm-app-f8853/instances 200
+[debug] [2026-05-13T19:27:12.088Z] <<< [apiv2][body] GET https://firebaseextensions.googleapis.com/v1beta/projects/avm-app-f8853/instances {}
+[debug] [2026-05-13T19:27:12.089Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:12.090Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:12.090Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/avm-app-f8853/locations/-/functions [none]
+[debug] [2026-05-13T19:27:13.103Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/avm-app-f8853/locations/-/functions 200
+[debug] [2026-05-13T19:27:13.103Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/avm-app-f8853/locations/-/functions {}
+[debug] [2026-05-13T19:27:13.104Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:13.104Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:13.104Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/avm-app-f8853/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2026-05-13T19:27:14.517Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/avm-app-f8853/locations/-/functions 200
+[debug] [2026-05-13T19:27:14.517Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/avm-app-f8853/locations/-/functions {}
+[debug] [2026-05-13T19:27:14.519Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:14.519Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:14.519Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/avm-app-f8853/sites/avm-app-f8853 [none]
+[debug] [2026-05-13T19:27:15.957Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/avm-app-f8853/sites/avm-app-f8853 200
+[debug] [2026-05-13T19:27:15.957Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/avm-app-f8853/sites/avm-app-f8853 {"name":"projects/avm-app-f8853/sites/avm-app-f8853","defaultUrl":"https://avm-app-f8853.web.app","type":"DEFAULT_SITE"}
+[debug] [2026-05-13T19:27:15.958Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:15.958Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:15.958Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/avm-app-f8853/versions [none]
+[debug] [2026-05-13T19:27:15.958Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/avm-app-f8853/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-05-13T19:27:17.171Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/avm-app-f8853/versions 200
+[debug] [2026-05-13T19:27:17.171Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/avm-app-f8853/versions {"name":"projects/78211745730/sites/avm-app-f8853/versions/00a2874bc8f8207c","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-05-13T19:27:17.172Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:17.172Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:17.172Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853/webApps pageSize=100
+[debug] [2026-05-13T19:27:17.669Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853/webApps 200
+[debug] [2026-05-13T19:27:17.669Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/avm-app-f8853/webApps {"apps":[{"name":"projects/avm-app-f8853/webApps/1:78211745730:web:0c6c6dfab689c64991385b","appId":"1:78211745730:web:0c6c6dfab689c64991385b","displayName":"Default Web App","projectId":"avm-app-f8853","webId":"NjBkMmM5MjctOTVmNi00YTk4LWJkZTYtMWE4MTMwMDZhNzU4","apiKeyId":"969e43dd-3449-4f53-b8e9-a2fc1a653225","state":"ACTIVE","expireTime":"1970-01-01T00:00:00Z","etag":"1_78945fbc-8675-448f-b3cf-76b4a286b3e8"}]}
+[debug] [2026-05-13T19:27:17.669Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:17.669Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:17.670Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/releases pageSize=10&pageToken=
+[debug] [2026-05-13T19:27:18.733Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/releases 200
+[debug] [2026-05-13T19:27:18.733Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/releases {"releases":[{"name":"projects/avm-app-f8853/releases/cloud.firestore","rulesetName":"projects/avm-app-f8853/rulesets/11dd317e-8a12-44b9-a283-57841b509426","createTime":"2026-05-13T17:55:16.946021Z","updateTime":"2026-05-13T19:22:01.585321Z"},{"name":"projects/avm-app-f8853/releases/firebase.storage/avm-app-f8853.firebasestorage.app","rulesetName":"projects/avm-app-f8853/rulesets/1b6edcb8-fc85-4b42-9781-31cbc16609ac","createTime":"2026-05-13T17:48:40.427318Z","updateTime":"2026-05-13T19:22:01.073772Z"}]}
+[debug] [2026-05-13T19:27:18.740Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:18.740Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:18.741Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/rulesets/1b6edcb8-fc85-4b42-9781-31cbc16609ac [none]
+[debug] [2026-05-13T19:27:19.712Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/rulesets/1b6edcb8-fc85-4b42-9781-31cbc16609ac 200
+[debug] [2026-05-13T19:27:19.712Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/rulesets/1b6edcb8-fc85-4b42-9781-31cbc16609ac [omitted]
+[info] i  storage: latest version of storage.rules already up to date, skipping upload... 
+[debug] [2026-05-13T19:27:19.712Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:19.712Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:19.712Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/releases pageSize=10&pageToken=
+[debug] [2026-05-13T19:27:20.682Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/releases 200
+[debug] [2026-05-13T19:27:20.682Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/releases {"releases":[{"name":"projects/avm-app-f8853/releases/cloud.firestore","rulesetName":"projects/avm-app-f8853/rulesets/11dd317e-8a12-44b9-a283-57841b509426","createTime":"2026-05-13T17:55:16.946021Z","updateTime":"2026-05-13T19:22:01.585321Z"},{"name":"projects/avm-app-f8853/releases/firebase.storage/avm-app-f8853.firebasestorage.app","rulesetName":"projects/avm-app-f8853/rulesets/1b6edcb8-fc85-4b42-9781-31cbc16609ac","createTime":"2026-05-13T17:48:40.427318Z","updateTime":"2026-05-13T19:22:01.073772Z"}]}
+[debug] [2026-05-13T19:27:20.682Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:20.682Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:20.682Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/rulesets/11dd317e-8a12-44b9-a283-57841b509426 [none]
+[debug] [2026-05-13T19:27:21.778Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/rulesets/11dd317e-8a12-44b9-a283-57841b509426 200
+[debug] [2026-05-13T19:27:21.778Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/avm-app-f8853/rulesets/11dd317e-8a12-44b9-a283-57841b509426 [omitted]
+[info] i  firestore: latest version of firestore.rules already up to date, skipping upload... 
+[info] i  firestore: deploying indexes... 
+[debug] [2026-05-13T19:27:21.778Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:21.778Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:21.779Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default)/collectionGroups/-/indexes [none]
+[debug] [2026-05-13T19:27:22.782Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default)/collectionGroups/-/indexes 200
+[debug] [2026-05-13T19:27:22.782Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default)/collectionGroups/-/indexes {}
+[debug] [2026-05-13T19:27:22.782Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:22.782Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:22.782Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* [none]
+[debug] [2026-05-13T19:27:22.982Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* 200
+[debug] [2026-05-13T19:27:22.982Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* {"fields":[{"name":"projects/avm-app-f8853/databases/(default)/collectionGroups/__default__/fields/*","indexConfig":{"indexes":[{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"ASCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"DESCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","arrayConfig":"CONTAINS"}],"state":"READY"}]}}]}
+[debug] [2026-05-13T19:27:22.982Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:22.982Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:22.982Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default) [none]
+[debug] [2026-05-13T19:27:23.175Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default) 200
+[debug] [2026-05-13T19:27:23.175Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/avm-app-f8853/databases/(default) {"name":"projects/avm-app-f8853/databases/(default)","uid":"68260aa7-6aa9-471c-bec7-be91c332e414","createTime":"2026-05-13T17:54:01.957420Z","updateTime":"2026-05-13T17:54:01.957420Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-05-13T18:26:17.410464Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"ILiSoaH/tpQDMJai+enqtpQD"}
+[info] +  firestore: deployed indexes in firestore.indexes.json successfully for (default) database 
+[debug] [2026-05-13T19:27:23.175Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:23.175Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:23.175Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/avm-app-f8853/billingInfo [none]
+[debug] [2026-05-13T19:27:24.251Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/avm-app-f8853/billingInfo 200
+[debug] [2026-05-13T19:27:24.251Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/avm-app-f8853/billingInfo {"name":"projects/avm-app-f8853/billingInfo","projectId":"avm-app-f8853","billingAccountName":"billingAccounts/01DDE9-C61A7E-831C7A","billingEnabled":true}
+[info] i  hosting[avm-app-f8853]: beginning deploy... 
+[info] i  hosting[avm-app-f8853]: found 17 files in dist\avm_app\browser 
+[debug] [2026-05-13T19:27:24.259Z] [hosting] uploading with 200 concurrency
+[debug] [2026-05-13T19:27:24.271Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:24.271Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:24.272Z] [hosting] hash cache [ZGlzdFxhdm1fYXBwXGJyb3dzZXI] stored for 17 files
+[debug] [2026-05-13T19:27:24.272Z] [hosting][hash queue][FINAL] {"max":11,"min":1,"avg":4.882352941176471,"active":0,"complete":17,"success":17,"errored":0,"retried":0,"total":17,"elapsed":12}
+[debug] [2026-05-13T19:27:24.272Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/78211745730/sites/avm-app-f8853/versions/00a2874bc8f8207c:populateFiles [none]
+[debug] [2026-05-13T19:27:24.272Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/78211745730/sites/avm-app-f8853/versions/00a2874bc8f8207c:populateFiles {"files":{"/worker-basic.min.js":"d298b86f5ff5230bc748a704dd0e6b3e6997ac43d68906f18881e0b2ec8a143f","/safety-worker.js":"d298b86f5ff5230bc748a704dd0e6b3e6997ac43d68906f18881e0b2ec8a143f","/ngsw-worker.js":"e1693f0a1e88561233c38a232d885ed8df7a712260924af7c7caabae8874c911","/manifest.webmanifest":"7a9376246bf129f8f13c16eec93d795de7d7efffadae343f1e3daa8c7da4b83a","/ngsw.json":"03f033183d41e8131c8867ab79fe5e7f23fcc94135c3e15950309509e0e6621d","/styles-4KNJEDFK.css":"ddc7f597dc394995be3e32d5eb721364803dbe962f959298fb559e66b7f4fddb","/index.html":"570b1e716030f2eebcc974e1057f89b6fb413a6a588e949ebc6f0554a797b89a","/icons/icon-96x96.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/icons/icon-72x72.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/icons/icon-512x512.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/icons/icon-384x384.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/icons/icon-192x192.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/icons/icon-144x144.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/favicon.ico":"4150efa8d650cdb961e3fbe06428d7ad9f7c8a8b2f79fcb4c8deb4db4ba06b9c","/icons/icon-128x128.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/icons/icon-152x152.png":"a905b13e228420df3dbe746dfb656d37a49736494c0737d00e007c8dc7319912","/main-VN4ZAXOW.js":"2770e50b6a8e7bc3490dfda5197236a5738e83da32f0bfe701f99bec344fbe96"}}
+[debug] [2026-05-13T19:27:25.798Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/78211745730/sites/avm-app-f8853/versions/00a2874bc8f8207c:populateFiles 200
+[debug] [2026-05-13T19:27:25.798Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/78211745730/sites/avm-app-f8853/versions/00a2874bc8f8207c:populateFiles {"uploadRequiredHashes":["03f033183d41e8131c8867ab79fe5e7f23fcc94135c3e15950309509e0e6621d","4150efa8d650cdb961e3fbe06428d7ad9f7c8a8b2f79fcb4c8deb4db4ba06b9c","570b1e716030f2eebcc974e1057f89b6fb413a6a588e949ebc6f0554a797b89a","2770e50b6a8e7bc3490dfda5197236a5738e83da32f0bfe701f99bec344fbe96"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files"}
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:25.799Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/03f033183d41e8131c8867ab79fe5e7f23fcc94135c3e15950309509e0e6621d [none]
+[debug] [2026-05-13T19:27:25.799Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/03f033183d41e8131c8867ab79fe5e7f23fcc94135c3e15950309509e0e6621d [stream]
+[debug] [2026-05-13T19:27:25.799Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/4150efa8d650cdb961e3fbe06428d7ad9f7c8a8b2f79fcb4c8deb4db4ba06b9c [none]
+[debug] [2026-05-13T19:27:25.799Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/4150efa8d650cdb961e3fbe06428d7ad9f7c8a8b2f79fcb4c8deb4db4ba06b9c [stream]
+[debug] [2026-05-13T19:27:25.800Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/570b1e716030f2eebcc974e1057f89b6fb413a6a588e949ebc6f0554a797b89a [none]
+[debug] [2026-05-13T19:27:25.800Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/570b1e716030f2eebcc974e1057f89b6fb413a6a588e949ebc6f0554a797b89a [stream]
+[debug] [2026-05-13T19:27:25.800Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/2770e50b6a8e7bc3490dfda5197236a5738e83da32f0bfe701f99bec344fbe96 [none]
+[debug] [2026-05-13T19:27:25.800Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/2770e50b6a8e7bc3490dfda5197236a5738e83da32f0bfe701f99bec344fbe96 [stream]
+[debug] [2026-05-13T19:27:25.801Z] [hosting][populate queue][FINAL] {"max":1528,"min":1528,"avg":1528,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1530}
+[debug] [2026-05-13T19:27:25.801Z] [hosting] uploads queued: 4
+[info] i  hosting: uploading new files [0/4] (0%) 
+[debug] [2026-05-13T19:27:27.136Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/570b1e716030f2eebcc974e1057f89b6fb413a6a588e949ebc6f0554a797b89a 200
+[debug] [2026-05-13T19:27:27.136Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/570b1e716030f2eebcc974e1057f89b6fb413a6a588e949ebc6f0554a797b89a [stream]
+[debug] [2026-05-13T19:27:27.150Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/4150efa8d650cdb961e3fbe06428d7ad9f7c8a8b2f79fcb4c8deb4db4ba06b9c 200
+[debug] [2026-05-13T19:27:27.150Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/4150efa8d650cdb961e3fbe06428d7ad9f7c8a8b2f79fcb4c8deb4db4ba06b9c [stream]
+[debug] [2026-05-13T19:27:27.196Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/03f033183d41e8131c8867ab79fe5e7f23fcc94135c3e15950309509e0e6621d 200
+[debug] [2026-05-13T19:27:27.196Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/03f033183d41e8131c8867ab79fe5e7f23fcc94135c3e15950309509e0e6621d [stream]
+[debug] [2026-05-13T19:27:27.350Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/2770e50b6a8e7bc3490dfda5197236a5738e83da32f0bfe701f99bec344fbe96 200
+[debug] [2026-05-13T19:27:27.350Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/avm-app-f8853/versions/00a2874bc8f8207c/files/2770e50b6a8e7bc3490dfda5197236a5738e83da32f0bfe701f99bec344fbe96 [stream]
+[debug] [2026-05-13T19:27:27.350Z] [hosting][upload queue][FINAL] {"max":1551,"min":1337,"avg":1409.25,"active":0,"complete":4,"success":4,"errored":0,"retried":0,"total":4,"elapsed":1552}
+[info] i  hosting: upload complete 
+[info] +  hosting[avm-app-f8853]: file upload complete 
+[debug] [2026-05-13T19:27:27.350Z] [hosting] deploy completed after 3097ms
+[info] Enabling auth providers: anonymous, email/password, Google sign-in...
+[debug] [2026-05-13T19:27:27.351Z] [provision] Starting Firebase app provisioning...
+[debug] [2026-05-13T19:27:27.351Z] [provision] Request: {
+  "appNamespace": "1:78211745730:web:0c6c6dfab689c64991385b",
+  "parent": "projects/avm-app-f8853",
+  "firebaseAuthInput": {
+    "anonymousAuthProviderMode": "PROVIDER_ENABLED",
+    "emailAuthProviderMode": "PROVIDER_ENABLED",
+    "googleSigninProviderMode": "PROVIDER_ENABLED",
+    "googleSigninProviderConfig": {
+      "publicDisplayName": "AVM APP",
+      "customerSupportEmail": "valter@prontosolucoes.com.br"
+    }
+  },
+  "webInput": {}
+}
+[debug] [2026-05-13T19:27:27.351Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:27.351Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:27.351Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1alpha/firebase:provisionFirebaseApp [none]
+[debug] [2026-05-13T19:27:27.351Z] >>> [apiv2][body] POST https://firebase.googleapis.com/v1alpha/firebase:provisionFirebaseApp {"appNamespace":"1:78211745730:web:0c6c6dfab689c64991385b","parent":"projects/avm-app-f8853","firebaseAuthInput":{"anonymousAuthProviderMode":"PROVIDER_ENABLED","emailAuthProviderMode":"PROVIDER_ENABLED","googleSigninProviderMode":"PROVIDER_ENABLED","googleSigninProviderConfig":{"publicDisplayName":"AVM APP","customerSupportEmail":"valter@prontosolucoes.com.br"}},"webInput":{}}
+[debug] [2026-05-13T19:27:28.845Z] <<< [apiv2][status] POST https://firebase.googleapis.com/v1alpha/firebase:provisionFirebaseApp 200
+[debug] [2026-05-13T19:27:28.845Z] <<< [apiv2][body] POST https://firebase.googleapis.com/v1alpha/firebase:provisionFirebaseApp {"name":"operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi"}
+[debug] [2026-05-13T19:27:28.845Z] [provision] Operation started: operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi
+[debug] [2026-05-13T19:27:28.845Z] [provision] Polling for operation completion...
+[debug] [2026-05-13T19:27:28.845Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:28.845Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:28.845Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi [none]
+[debug] [2026-05-13T19:27:29.483Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi 200
+[debug] [2026-05-13T19:27:29.483Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi {"name":"operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi"}
+[debug] [2026-05-13T19:27:29.690Z] [Provision Firebase App Poller] Retrying task index 0
+[debug] [2026-05-13T19:27:29.691Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:29.691Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:29.691Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi [none]
+[debug] [2026-05-13T19:27:30.380Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi 200
+[debug] [2026-05-13T19:27:30.381Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi {"name":"operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi"}
+[debug] [2026-05-13T19:27:30.785Z] [Provision Firebase App Poller] Retrying task index 0
+[debug] [2026-05-13T19:27:30.785Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:30.785Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:30.785Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi [none]
+[debug] [2026-05-13T19:27:31.356Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi 200
+[debug] [2026-05-13T19:27:31.356Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi {"name":"operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi"}
+[debug] [2026-05-13T19:27:32.162Z] [Provision Firebase App Poller] Retrying task index 0
+[debug] [2026-05-13T19:27:32.162Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:32.162Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:32.162Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi [none]
+[debug] [2026-05-13T19:27:32.713Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi 200
+[debug] [2026-05-13T19:27:32.713Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi {"name":"operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi"}
+[debug] [2026-05-13T19:27:34.327Z] [Provision Firebase App Poller] Retrying task index 0
+[debug] [2026-05-13T19:27:34.327Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:34.327Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:34.327Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi [none]
+[debug] [2026-05-13T19:27:34.943Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi 200
+[debug] [2026-05-13T19:27:34.943Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi {"name":"operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi"}
+[debug] [2026-05-13T19:27:38.152Z] [Provision Firebase App Poller] Retrying task index 0
+[debug] [2026-05-13T19:27:38.152Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:38.152Z] Checked if tokens are valid: true, expires at: 1778703740261
+[debug] [2026-05-13T19:27:38.153Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi [none]
+[debug] [2026-05-13T19:27:38.770Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi 200
+[debug] [2026-05-13T19:27:38.770Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi {"name":"operations/workflows/ZjE2M2Y3ZDgtZWM4Yi00N2UwLWEyYjktYjcyYjRmZjkwNTZi"}
