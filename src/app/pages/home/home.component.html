@@ -1,0 +1,78 @@
+<div class="app-container">
+  <!-- Cabeçalho -->
+  <header class="app-header">
+    <div class="header-logo">
+      <div class="logo-placeholder">AVM</div>
+      <h1>Portal AVM</h1>
+    </div>
+    <div class="header-profile">
+      <div class="profile-avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="app-content">
+    
+    <!-- Bloco Superior -->
+    <section class="top-block">
+      <div class="greeting">
+        <h2>Olá, {{ userName }}!</h2>
+        <p>Bem-vindo ao aplicativo da Associação de Moradores.</p>
+      </div>
+      
+      <div class="alert-box">
+        <mat-icon class="alert-icon">warning</mat-icon>
+        <div class="alert-text">
+          <strong>Aviso Importante:</strong> Atualização de cadastro pendente.
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-header">
+          <mat-icon>event_upcoming</mat-icon>
+          <h3>Próximo Evento</h3>
+        </div>
+        <div class="event-details">
+          <strong>{{ nextEvent.title }}</strong>
+          <p>{{ nextEvent.date }} • {{ nextEvent.location }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grade de Cards -->
+    <section class="cards-grid">
+      <div class="dashboard-card" *ngFor="let card of cards" [ngClass]="card.colorClass">
+        <div class="card-icon-wrapper">
+          <mat-icon>{{ card.icon }}</mat-icon>
+        </div>
+        <div class="card-content">
+          <h4>{{ card.title }}</h4>
+          <p>{{ card.info }}</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Rodapé (Menu Inferior) -->
+  <nav class="bottom-nav">
+    <button class="nav-item active">
+      <mat-icon>home</mat-icon>
+      <span>Início</span>
+    </button>
+    <button class="nav-item">
+      <mat-icon>calendar_month</mat-icon>
+      <span>Agenda</span>
+    </button>
+    <button class="nav-item">
+      <mat-icon>notifications</mat-icon>
+      <span>Avisos</span>
+    </button>
+    <button class="nav-item">
+      <mat-icon>person</mat-icon>
+      <span>Perfil</span>
+    </button>
+  </nav>
+</div>
