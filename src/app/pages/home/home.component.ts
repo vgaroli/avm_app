@@ -19,12 +19,12 @@ interface CardInfo {
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  userName = 'João Silva';
+  userName = 'Valter Garoli';
   userProfilePic = 'assets/mock-profile.jpg';
-  
+
   nextEvent = {
-    title: 'Assembleia Geral Ordinária',
-    date: '15 de Out, 19:30',
+    title: 'Reunião mensal',
+    date: '13 de maio, 19:00',
     location: 'Sede da AVM'
   };
 
