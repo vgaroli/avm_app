@@ -14,20 +14,28 @@
 
   <!-- Conteúdo Principal -->
   <main class="app-content">
-    
+
     <!-- Bloco Superior -->
     <section class="top-block">
-      <div class="greeting">
-        <h2>Olá, {{ userName }}!</h2>
-        <p>Bem-vindo ao aplicativo da Associação de Moradores.</p>
-      </div>
-      
-      <div class="alert-box">
-        <mat-icon class="alert-icon">warning</mat-icon>
-        <div class="alert-text">
-          <strong>Aviso Importante:</strong> Atualização de cadastro pendente.
+      @if (pessoa(); as p) {
+        <div class="greeting">
+          <h2>Olá, {{ p.nomeCompleto }}!</h2>
+          <p>Bem-vindo ao aplicativo da Associação de Moradores.</p>
         </div>
-      </div>
+      } @else if (usuarioLogado()) {
+        <div class="greeting">
+          <h2>Olá!</h2>
+          <p>Carregando seus dados...</p>
+        </div>
+      } @else {
+        <div class="greeting greeting-anonimo">
+          <div>
+            <h2>Bem-vindo(a)!</h2>
+            <p>Entre para acessar os serviços da Associação de Moradores.</p>
+          </div>
+          <button mat-flat-button color="primary" routerLink="/login" class="entrar-btn">Entrar</button>
+        </div>
+      }
 
       <div class="event-card">
         <div class="event-header">
@@ -43,15 +51,17 @@
 
     <!-- Grade de Cards -->
     <section class="cards-grid">
-      <div class="dashboard-card" *ngFor="let card of cards" [ngClass]="card.colorClass">
-        <div class="card-icon-wrapper">
-          <mat-icon>{{ card.icon }}</mat-icon>
+      @for (card of cards(); track card.id) {
+        <div class="dashboard-card" [ngClass]="card.colorClass" (click)="abrirCard(card.rota)">
+          <div class="card-icon-wrapper">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <div class="card-content">
+            <h4>{{ card.title }}</h4>
+            <p>{{ card.info }}</p>
+          </div>
         </div>
-        <div class="card-content">
-          <h4>{{ card.title }}</h4>
-          <p>{{ card.info }}</p>
-        </div>
-      </div>
+      }
     </section>
 
   </main>

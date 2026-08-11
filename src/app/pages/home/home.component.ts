@@ -1,40 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-
-interface CardInfo {
-  icon: string;
-  title: string;
-  info: string;
-  colorClass: string;
-}
+import { AuthService } from '../../core/services/auth.service';
+import { CardsService } from '../../core/services/cards.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatCardModule],
+  imports: [CommonModule, RouterLink, MatIconModule, MatButtonModule, MatCardModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  userName = 'Valter Garoli';
-  userProfilePic = 'assets/mock-profile.jpg';
+  private readonly authService = inject(AuthService);
+  private readonly cardsService = inject(CardsService);
+  private readonly router = inject(Router);
+
+  readonly pessoa = toSignal(this.authService.currentPessoa$, { initialValue: null });
+  readonly usuarioLogado = toSignal(this.authService.currentUser$, { initialValue: null });
+  readonly cards = toSignal(this.cardsService.cardsVisiveis$, { initialValue: [] });
 
   nextEvent = {
     title: 'Reunião mensal',
     date: '13 de maio, 19:00',
-    location: 'Sede da AVM'
+    location: 'Sede da AVM',
   };
 
-  cards: CardInfo[] = [
-    { icon: 'people', title: 'Associados', info: '24 associados ativos', colorClass: 'card-primary' },
-    { icon: 'gavel', title: 'Processos', info: '7 processos em acompanhamento', colorClass: 'card-accent' },
-    { icon: 'account_tree', title: 'Projetos', info: '2 projetos em andamento', colorClass: 'card-info' },
-    { icon: 'event', title: 'Agenda', info: '3 eventos nesta semana', colorClass: 'card-warning' },
-    { icon: 'store', title: 'Estabelecimentos', info: '5 estabelecimentos em análise', colorClass: 'card-success' },
-    { icon: 'campaign', title: 'Comunicados', info: '2 novos avisos', colorClass: 'card-danger' },
-    { icon: 'description', title: 'Documentos', info: '12 documentos recentes', colorClass: 'card-secondary' },
-  ];
+  abrirCard(rota: string): void {
+    this.router.navigateByUrl(rota);
+  }
 }

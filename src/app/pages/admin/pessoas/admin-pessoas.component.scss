@@ -1,0 +1,83 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.admin-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.pessoa-card {
+  border-radius: $border-radius;
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+
+  .pessoa-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong {
+      color: $text-dark;
+      font-size: 1.05rem;
+    }
+
+    span {
+      color: $text-light;
+      font-size: 0.85rem;
+    }
+  }
+
+  .pessoa-acoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .papel-select {
+      width: 160px;
+    }
+  }
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .edit-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

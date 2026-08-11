@@ -1,0 +1,73 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.inscricao-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f3f4f6;
+}
+
+.inscricao-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 32px 24px;
+  border-radius: $border-radius;
+}
+
+.inscricao-header {
+  text-align: center;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0 0 4px 0;
+    color: $primary-color;
+    font-size: 1.3rem;
+  }
+
+  p {
+    margin: 0;
+    color: $text-light;
+    font-size: 0.85rem;
+  }
+}
+
+.inscricao-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.erro-msg {
+  color: #b91c1c;
+  font-size: 0.85rem;
+  margin: 0 0 12px 0;
+}
+
+.enviar-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: $border-radius;
+}
+
+.inscricao-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: $text-light;
+
+  a {
+    color: $primary-color;
+    font-weight: 600;
+    margin-left: 4px;
+    text-decoration: none;
+  }
+}

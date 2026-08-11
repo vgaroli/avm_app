@@ -1,0 +1,86 @@
+<div class="inscricao-container">
+  <mat-card class="inscricao-card">
+    <div class="inscricao-header">
+      <h1>Inscrição de Associado</h1>
+      <p>Preencha seus dados. Sua inscrição ficará pendente até aprovação da diretoria.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="inscrever()" class="inscricao-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome completo</mat-label>
+        <input matInput formControlName="nomeCompleto" />
+        @if (form.controls.nomeCompleto.touched && form.controls.nomeCompleto.invalid) {
+          <mat-error>Informe seu nome completo.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CPF</mat-label>
+        <input matInput formControlName="cpf" appCpfMask inputmode="numeric" placeholder="000.000.000-00" maxlength="14" />
+        @if (form.controls.cpf.touched && form.controls.cpf.invalid) {
+          <mat-error>Informe um CPF válido.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>E-mail pessoal</mat-label>
+        <input matInput type="email" formControlName="emailPessoal" />
+        @if (form.controls.emailPessoal.touched && form.controls.emailPessoal.invalid) {
+          <mat-error>Informe um e-mail válido.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input matInput formControlName="telefone" placeholder="(11) 90000-0000" />
+        @if (form.controls.telefone.touched && form.controls.telefone.invalid) {
+          <mat-error>Informe um telefone.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Endereço</mat-label>
+        <input matInput formControlName="endereco" />
+        @if (form.controls.endereco.touched && form.controls.endereco.invalid) {
+          <mat-error>Informe seu endereço.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data de nascimento</mat-label>
+        <input matInput type="date" formControlName="dataNascimento" />
+        @if (form.controls.dataNascimento.touched && form.controls.dataNascimento.invalid) {
+          <mat-error>Informe sua data de nascimento.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="senha" [type]="ocultarSenha() ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarSenha.set(!ocultarSenha())">
+          <mat-icon>{{ ocultarSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.senha.touched && form.controls.senha.invalid) {
+          <mat-error>A senha deve ter ao menos 6 caracteres.</mat-error>
+        }
+      </mat-form-field>
+
+      @if (erro()) {
+        <p class="erro-msg">{{ erro() }}</p>
+      }
+
+      <button mat-flat-button color="primary" type="submit" class="enviar-btn" [disabled]="carregando()">
+        @if (carregando()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Enviar inscrição
+        }
+      </button>
+    </form>
+
+    <div class="inscricao-footer">
+      <span>Já é associado?</span>
+      <a routerLink="/login">Entrar</a>
+    </div>
+  </mat-card>
+</div>

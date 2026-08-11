@@ -1,0 +1,47 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <div class="login-header">
+      <img src="/favicon.ico" alt="Logo AVM" class="avm-logo" />
+      <h1>Portal AVM</h1>
+      <p>Entre com seu CPF e senha para continuar.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="entrar()" class="login-form">
+      <mat-form-field appearance="outline">
+        <mat-label>CPF</mat-label>
+        <input matInput formControlName="cpf" appCpfMask inputmode="numeric" placeholder="000.000.000-00" maxlength="14" />
+        @if (form.controls.cpf.touched && form.controls.cpf.invalid) {
+          <mat-error>Informe um CPF válido.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="senha" [type]="ocultarSenha() ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarSenha.set(!ocultarSenha())">
+          <mat-icon>{{ ocultarSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.senha.touched && form.controls.senha.invalid) {
+          <mat-error>Informe sua senha.</mat-error>
+        }
+      </mat-form-field>
+
+      @if (erro()) {
+        <p class="erro-msg">{{ erro() }}</p>
+      }
+
+      <button mat-flat-button color="primary" type="submit" class="entrar-btn" [disabled]="carregando()">
+        @if (carregando()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Entrar
+        }
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <span>Ainda não é associado?</span>
+      <a routerLink="/inscricao">Fazer inscrição</a>
+    </div>
+  </mat-card>
+</div>

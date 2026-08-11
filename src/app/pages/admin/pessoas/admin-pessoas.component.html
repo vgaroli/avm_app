@@ -1,0 +1,95 @@
+<div class="admin-container">
+  <h1>Administração de Pessoas</h1>
+
+  <mat-tab-group>
+    <mat-tab [label]="'Pendentes (' + pendentes().length + ')'">
+      <div class="lista">
+        @for (pessoa of pendentes(); track pessoa.uid) {
+          <mat-card class="pessoa-card">
+            <div class="pessoa-info">
+              <strong>{{ pessoa.nomeCompleto }}</strong>
+              <span>CPF: {{ formatarCpf(pessoa.cpf) }}</span>
+              <span>{{ pessoa.email }} • {{ pessoa.telefone }}</span>
+              <span>Inscrito em {{ pessoa.dataInscricao | date: 'dd/MM/yyyy' }}</span>
+            </div>
+
+            <div class="pessoa-acoes">
+              <mat-form-field appearance="outline" class="papel-select">
+                <mat-label>Papel</mat-label>
+                <mat-select [value]="papelDe(pessoa.uid)" (selectionChange)="selecaoPapel[pessoa.uid] = $event.value">
+                  <mat-option value="associado">Associado</mat-option>
+                  <mat-option value="diretoria">Diretoria</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-flat-button color="primary" [disabled]="processando() === pessoa.uid" (click)="aprovar(pessoa)">
+                Aprovar
+              </button>
+            </div>
+          </mat-card>
+        } @empty {
+          <p class="vazio">Nenhuma inscrição pendente.</p>
+        }
+      </div>
+    </mat-tab>
+
+    <mat-tab [label]="'Ativos (' + ativos().length + ')'">
+      <div class="lista">
+        @for (pessoa of ativos(); track pessoa.uid) {
+          <mat-card class="pessoa-card">
+            @if (editandoUid() === pessoa.uid) {
+              <form [formGroup]="editForm" (ngSubmit)="salvarEdicao(pessoa)" class="edit-form">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nome completo</mat-label>
+                  <input matInput formControlName="nomeCompleto" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Telefone</mat-label>
+                  <input matInput formControlName="telefone" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Endereço</mat-label>
+                  <input matInput formControlName="endereco" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Observações da diretoria</mat-label>
+                  <textarea matInput formControlName="observacoesDiretoria" rows="2"></textarea>
+                </mat-form-field>
+                <div class="edit-acoes">
+                  <button mat-button type="button" (click)="cancelarEdicao()">Cancelar</button>
+                  <button mat-flat-button color="primary" type="submit" [disabled]="processando() === pessoa.uid">Salvar</button>
+                </div>
+              </form>
+            } @else {
+              <div class="pessoa-info">
+                <strong>{{ pessoa.nomeCompleto }}</strong>
+                <span>CPF: {{ formatarCpf(pessoa.cpf) }}</span>
+                <span>{{ pessoa.email }} • {{ pessoa.telefone }}</span>
+                <span>Papel: {{ pessoa.papel }}</span>
+              </div>
+
+              <div class="pessoa-acoes">
+                <mat-form-field appearance="outline" class="papel-select">
+                  <mat-label>Papel</mat-label>
+                  <mat-select [value]="pessoa.papel" (selectionChange)="alterarPapel(pessoa, $event.value)">
+                    <mat-option value="associado">Associado</mat-option>
+                    <mat-option value="diretoria">Diretoria</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button mat-button (click)="iniciarEdicao(pessoa)">
+                  <mat-icon>edit</mat-icon>
+                  Editar
+                </button>
+                <button mat-button color="warn" [disabled]="processando() === pessoa.uid" (click)="inativar(pessoa)">
+                  <mat-icon>block</mat-icon>
+                  Inativar
+                </button>
+              </div>
+            }
+          </mat-card>
+        } @empty {
+          <p class="vazio">Nenhum associado ativo.</p>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -78,6 +78,18 @@ $border-radius: 16px;
       font-size: 0.9rem;
       margin: 0;
     }
+
+    &.greeting-anonimo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+
+      .entrar-btn {
+        border-radius: $border-radius;
+        flex-shrink: 0;
+      }
+    }
   }
   
   .alert-box {
@@ -239,19 +251,21 @@ $border-radius: 16px;
 }
 
 // Adaptação para telas maiores (Desktop/Tablet)
+// Mantém o cabeçalho no topo e o menu embaixo; apenas centraliza o conteúdo.
 @media (min-width: 768px) {
-  .app-container {
-    flex-direction: row;
-  }
-  
+  .app-header,
+  .app-content,
   .bottom-nav {
-    position: static;
-    flex-direction: column;
-    width: 80px;
-    height: 100vh;
-    justify-content: flex-start;
-    padding-top: 20px;
-    gap: 24px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    padding-left: max(20px, calc((100% - 900px) / 2));
+    padding-right: max(20px, calc((100% - 900px) / 2));
+  }
+
+  .bottom-nav {
+    justify-content: center;
+    gap: 48px;
+
+    .nav-item {
+      flex: none;
+    }
   }
 }
