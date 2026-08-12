@@ -1,17 +1,18 @@
 <div class="login-container">
   <mat-card class="login-card">
+    <app-back-button class="back-button-fixed" />
     <div class="login-header">
       <img src="/favicon.ico" alt="Logo AVM" class="avm-logo" />
       <h1>Portal AVM</h1>
-      <p>Entre com seu CPF e senha para continuar.</p>
+      <p>Entre com seu CPF/CNPJ e senha para continuar.</p>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="entrar()" class="login-form">
       <mat-form-field appearance="outline">
-        <mat-label>CPF</mat-label>
-        <input matInput formControlName="cpf" appCpfMask inputmode="numeric" placeholder="000.000.000-00" maxlength="14" />
+        <mat-label>CPF ou CNPJ</mat-label>
+        <input matInput formControlName="cpf" [appCpfMask]="'auto'" inputmode="numeric" placeholder="000.000.000-00" maxlength="18" />
         @if (form.controls.cpf.touched && form.controls.cpf.invalid) {
-          <mat-error>Informe um CPF válido.</mat-error>
+          <mat-error>Informe um CPF ou CNPJ válido.</mat-error>
         }
       </mat-form-field>
 

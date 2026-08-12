@@ -1,32 +1,74 @@
 <div class="inscricao-container">
   <mat-card class="inscricao-card">
+    <app-back-button class="back-button-fixed" />
     <div class="inscricao-header">
       <h1>Inscrição de Associado</h1>
       <p>Preencha seus dados. Sua inscrição ficará pendente até aprovação da diretoria.</p>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="inscrever()" class="inscricao-form">
+      <div class="tipo-pessoa-bloco">
+        <label class="bloco-label">Tipo de inscrição</label>
+        <mat-radio-group formControlName="tipoPessoa" class="pagamento-opcoes">
+          <mat-radio-button value="fisica">Pessoa Física (CPF)</mat-radio-button>
+          <mat-radio-button value="juridica">Pessoa Jurídica (CNPJ)</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
       <mat-form-field appearance="outline">
-        <mat-label>Nome completo</mat-label>
+        <mat-label>{{ form.controls.tipoPessoa.value === 'juridica' ? 'Razão social' : 'Nome completo' }}</mat-label>
         <input matInput formControlName="nomeCompleto" />
         @if (form.controls.nomeCompleto.touched && form.controls.nomeCompleto.invalid) {
-          <mat-error>Informe seu nome completo.</mat-error>
+          <mat-error>Campo obrigatório.</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>CPF</mat-label>
-        <input matInput formControlName="cpf" appCpfMask inputmode="numeric" placeholder="000.000.000-00" maxlength="14" />
+        <mat-label>{{ form.controls.tipoPessoa.value === 'juridica' ? 'Data de fundação' : 'Data de nascimento' }}</mat-label>
+        <input matInput type="date" formControlName="dataNascimento" />
+        @if (form.controls.dataNascimento.touched && form.controls.dataNascimento.invalid) {
+          <mat-error>Campo obrigatório.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ form.controls.tipoPessoa.value === 'juridica' ? 'CNPJ' : 'CPF' }}</mat-label>
+        <input
+          matInput
+          formControlName="cpf"
+          [appCpfMask]="form.controls.tipoPessoa.value"
+          inputmode="numeric"
+          [placeholder]="form.controls.tipoPessoa.value === 'juridica' ? '00.000.000/0000-00' : '000.000.000-00'"
+          [maxlength]="form.controls.tipoPessoa.value === 'juridica' ? 18 : 14"
+        />
         @if (form.controls.cpf.touched && form.controls.cpf.invalid) {
-          <mat-error>Informe um CPF válido.</mat-error>
+          <mat-error>Informe um {{ form.controls.tipoPessoa.value === 'juridica' ? 'CNPJ' : 'CPF' }} válido.</mat-error>
+        }
+      </mat-form-field>
+
+      @if (form.controls.tipoPessoa.value !== 'juridica') {
+        <mat-form-field appearance="outline">
+          <mat-label>RG</mat-label>
+          <input matInput formControlName="rg" />
+          @if (form.controls.rg.touched && form.controls.rg.invalid) {
+            <mat-error>Informe seu RG.</mat-error>
+          }
+        </mat-form-field>
+      }
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ form.controls.tipoPessoa.value === 'juridica' ? 'Ramo de atividade' : 'Ocupação/Profissão' }}</mat-label>
+        <input matInput formControlName="ocupacao" />
+        @if (form.controls.ocupacao.touched && form.controls.ocupacao.invalid) {
+          <mat-error>Campo obrigatório.</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>E-mail pessoal</mat-label>
-        <input matInput type="email" formControlName="emailPessoal" />
-        @if (form.controls.emailPessoal.touched && form.controls.emailPessoal.invalid) {
-          <mat-error>Informe um e-mail válido.</mat-error>
+        <mat-label>Endereço completo (rua, número, CEP)</mat-label>
+        <input matInput formControlName="endereco" />
+        @if (form.controls.endereco.touched && form.controls.endereco.invalid) {
+          <mat-error>Informe seu endereço completo.</mat-error>
         }
       </mat-form-field>
 
@@ -39,20 +81,51 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Endereço</mat-label>
-        <input matInput formControlName="endereco" />
-        @if (form.controls.endereco.touched && form.controls.endereco.invalid) {
-          <mat-error>Informe seu endereço.</mat-error>
+        <mat-label>E-mail</mat-label>
+        <input matInput type="email" formControlName="emailPessoal" />
+        @if (form.controls.emailPessoal.touched && form.controls.emailPessoal.invalid) {
+          <mat-error>Informe um e-mail válido.</mat-error>
         }
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Data de nascimento</mat-label>
-        <input matInput type="date" formControlName="dataNascimento" />
-        @if (form.controls.dataNascimento.touched && form.controls.dataNascimento.invalid) {
-          <mat-error>Informe sua data de nascimento.</mat-error>
+      <div class="pagamento-bloco">
+        <label class="bloco-label">Como será realizado o pagamento da anuidade?</label>
+        <mat-radio-group formControlName="formaPagamento" class="pagamento-opcoes">
+          <mat-radio-button value="avista">Pagamento à vista - R$ 330</mat-radio-button>
+          <mat-radio-button value="parcelado">Pagamento parcelado - 12 x R$ 33 - totalizando R$ 396</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="consentimentos-bloco">
+        <mat-checkbox formControlName="aceitaWhatsapp">
+          Gostaria de entrar para o grupo de WhatsApp para obter informações da AVM e autorizo a inclusão no grupo e uso de dados para
+          essa finalidade.
+        </mat-checkbox>
+
+        <mat-checkbox formControlName="aceitaLgpd">
+          Autorizo o armazenamento privado dos dados informados, bem como o envio de e-mails ou contato por telefone para uso
+          exclusivo das finalidades da AVM, nos termos da LGPD.
+        </mat-checkbox>
+        @if (form.controls.aceitaLgpd.touched && form.controls.aceitaLgpd.invalid) {
+          <p class="checkbox-erro">É necessário autorizar o uso dos dados para concluir a inscrição.</p>
         }
-      </mat-form-field>
+
+        <mat-checkbox formControlName="aceitaEstatuto">
+          Como associado, declaro conhecer e estar de acordo com o
+          <a [href]="estatutoUrl" target="_blank" rel="noopener">estatuto da associação</a>.
+        </mat-checkbox>
+        @if (form.controls.aceitaEstatuto.touched && form.controls.aceitaEstatuto.invalid) {
+          <p class="checkbox-erro">É necessário concordar com o estatuto para concluir a inscrição.</p>
+        }
+
+        <mat-checkbox formControlName="aceitaResponsabilidades">
+          Como associado, comprometo-me a cumprir as responsabilidades previstas no estatuto desta associação, inclusive pagamento de
+          taxa definida em assembleia geral.
+        </mat-checkbox>
+        @if (form.controls.aceitaResponsabilidades.touched && form.controls.aceitaResponsabilidades.invalid) {
+          <p class="checkbox-erro">É necessário concordar com as responsabilidades para concluir a inscrição.</p>
+        }
+      </div>
 
       <mat-form-field appearance="outline">
         <mat-label>Senha</mat-label>
@@ -62,6 +135,17 @@
         </button>
         @if (form.controls.senha.touched && form.controls.senha.invalid) {
           <mat-error>A senha deve ter ao menos 6 caracteres.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Confirmar senha</mat-label>
+        <input matInput formControlName="confirmarSenha" [type]="ocultarConfirmarSenha() ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarConfirmarSenha.set(!ocultarConfirmarSenha())">
+          <mat-icon>{{ ocultarConfirmarSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.confirmarSenha.touched && form.errors?.['senhasDiferentes']) {
+          <mat-error>As senhas não coincidem.</mat-error>
         }
       </mat-form-field>
 

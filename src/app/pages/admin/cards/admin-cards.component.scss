@@ -1,0 +1,145 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.admin-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  .titulo-bloco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    app-back-button {
+      color: $primary-color;
+    }
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.card-form {
+  border-radius: $border-radius;
+  padding: 16px;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0 0 12px 0;
+    color: $text-dark;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 16px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  mat-checkbox {
+    grid-column: 1 / -1;
+  }
+}
+
+.form-acoes {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-item {
+  border-radius: $border-radius;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &.inativo {
+    opacity: 0.55;
+  }
+
+  .card-icon-preview {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      color: #fff;
+    }
+
+    &.card-primary { background-color: #3b82f6; }
+    &.card-accent { background-color: #8b5cf6; }
+    &.card-info { background-color: #0ea5e9; }
+    &.card-warning { background-color: #f59e0b; }
+    &.card-success { background-color: #10b981; }
+    &.card-danger { background-color: #ef4444; }
+    &.card-secondary { background-color: #64748b; }
+  }
+
+  .card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+
+    strong {
+      color: $text-dark;
+
+      .ordem {
+        color: $text-light;
+        font-weight: 400;
+        font-size: 0.8rem;
+      }
+    }
+
+    span {
+      color: $text-light;
+      font-size: 0.85rem;
+    }
+
+    .meta {
+      font-size: 0.75rem;
+    }
+  }
+
+  .card-acoes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

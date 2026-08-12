@@ -1,5 +1,8 @@
 <div class="admin-container">
-  <h1>Administração de Pessoas</h1>
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Administração de Pessoas</h1>
+  </div>
 
   <mat-tab-group>
     <mat-tab [label]="'Pendentes (' + pendentes().length + ')'">
@@ -8,8 +11,17 @@
           <mat-card class="pessoa-card">
             <div class="pessoa-info">
               <strong>{{ pessoa.nomeCompleto }}</strong>
-              <span>CPF: {{ formatarCpf(pessoa.cpf) }}</span>
+              <span>
+                {{ rotuloDocumento(pessoa) }}: {{ documentoFormatado(pessoa) }}
+                @if (pessoa.tipoPessoa !== 'juridica') {
+                  • RG: {{ pessoa.rg }}
+                }
+              </span>
               <span>{{ pessoa.email }} • {{ pessoa.telefone }}</span>
+              <span>{{ pessoa.endereco }}</span>
+              <span>{{ pessoa.tipoPessoa === 'juridica' ? 'Ramo de atividade' : 'Ocupação' }}: {{ pessoa.ocupacao }}</span>
+              <span>Pagamento: {{ pessoa.formaPagamento === 'avista' ? 'À vista - R$ 330' : 'Parcelado - 12x R$ 33' }}</span>
+              <span>WhatsApp: {{ pessoa.aceitaWhatsapp ? 'Sim' : 'Não' }}</span>
               <span>Inscrito em {{ pessoa.dataInscricao | date: 'dd/MM/yyyy' }}</span>
             </div>
 
@@ -43,13 +55,43 @@
                   <input matInput formControlName="nomeCompleto" />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
+                  <mat-label>E-mail</mat-label>
+                  <input matInput type="email" formControlName="email" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Telefone</mat-label>
                   <input matInput formControlName="telefone" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Data de nascimento</mat-label>
+                  <input matInput type="date" formControlName="dataNascimento" />
+                </mat-form-field>
+                @if (pessoa.tipoPessoa !== 'juridica') {
+                  <mat-form-field appearance="outline">
+                    <mat-label>RG</mat-label>
+                    <input matInput formControlName="rg" />
+                  </mat-form-field>
+                }
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ pessoa.tipoPessoa === 'juridica' ? 'Ramo de atividade' : 'Ocupação/Profissão' }}</mat-label>
+                  <input matInput formControlName="ocupacao" />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Endereço</mat-label>
                   <input matInput formControlName="endereco" />
                 </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Forma de pagamento</mat-label>
+                  <mat-select formControlName="formaPagamento">
+                    <mat-option value="avista">À vista - R$ 330</mat-option>
+                    <mat-option value="parcelado">Parcelado - 12x R$ 33</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Foto (URL)</mat-label>
+                  <input matInput formControlName="fotoUrl" />
+                </mat-form-field>
+                <mat-checkbox formControlName="aceitaWhatsapp">Aceita entrar no grupo de WhatsApp</mat-checkbox>
                 <mat-form-field appearance="outline">
                   <mat-label>Observações da diretoria</mat-label>
                   <textarea matInput formControlName="observacoesDiretoria" rows="2"></textarea>
@@ -62,9 +104,21 @@
             } @else {
               <div class="pessoa-info">
                 <strong>{{ pessoa.nomeCompleto }}</strong>
-                <span>CPF: {{ formatarCpf(pessoa.cpf) }}</span>
+                <span>
+                  {{ rotuloDocumento(pessoa) }}: {{ documentoFormatado(pessoa) }}
+                  @if (pessoa.tipoPessoa !== 'juridica') {
+                    • RG: {{ pessoa.rg }}
+                  }
+                </span>
                 <span>{{ pessoa.email }} • {{ pessoa.telefone }}</span>
+                <span>{{ pessoa.endereco }}</span>
+                <span>{{ pessoa.tipoPessoa === 'juridica' ? 'Ramo de atividade' : 'Ocupação' }}: {{ pessoa.ocupacao }}</span>
+                <span>Pagamento: {{ pessoa.formaPagamento === 'avista' ? 'À vista - R$ 330' : 'Parcelado - 12x R$ 33' }}</span>
+                <span>WhatsApp: {{ pessoa.aceitaWhatsapp ? 'Sim' : 'Não' }}</span>
                 <span>Papel: {{ pessoa.papel }}</span>
+                @if (pessoa.observacoesDiretoria) {
+                  <span>Obs.: {{ pessoa.observacoesDiretoria }}</span>
+                }
               </div>
 
               <div class="pessoa-acoes">

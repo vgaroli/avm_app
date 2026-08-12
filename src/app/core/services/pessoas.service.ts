@@ -33,7 +33,25 @@ export class PessoasService {
     await updateDoc(pessoaRef, { status: 'inativo' });
   }
 
-  async atualizarDados(uid: string, dados: Partial<Pick<Pessoa, 'nomeCompleto' | 'email' | 'telefone' | 'endereco' | 'dataNascimento' | 'fotoUrl' | 'observacoesDiretoria'>>): Promise<void> {
+  async atualizarDados(
+    uid: string,
+    dados: Partial<
+      Pick<
+        Pessoa,
+        | 'nomeCompleto'
+        | 'email'
+        | 'telefone'
+        | 'endereco'
+        | 'dataNascimento'
+        | 'rg'
+        | 'ocupacao'
+        | 'formaPagamento'
+        | 'aceitaWhatsapp'
+        | 'fotoUrl'
+        | 'observacoesDiretoria'
+      >
+    >,
+  ): Promise<void> {
     const pessoaRef = doc(this.firestore, 'pessoas', uid);
     await updateDoc(pessoaRef, dados);
   }

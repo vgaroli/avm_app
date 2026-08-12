@@ -1,14 +1,26 @@
 export type StatusPessoa = 'pendente' | 'ativo' | 'inativo';
 export type PapelPessoa = 'associado' | 'diretoria' | null;
+export type FormaPagamento = 'avista' | 'parcelado';
+export type TipoPessoa = 'fisica' | 'juridica';
 
 export interface Pessoa {
   uid: string;
+  tipoPessoa: TipoPessoa;
+  /** CPF (pessoa física) ou CNPJ (pessoa jurídica), somente dígitos. */
   cpf: string;
+  /** RG — vazio para pessoa jurídica. */
+  rg: string;
   nomeCompleto: string;
   email: string;
   telefone: string;
   endereco: string;
   dataNascimento: string;
+  ocupacao: string;
+  formaPagamento: FormaPagamento;
+  aceitaWhatsapp: boolean;
+  aceitaLgpd: boolean;
+  aceitaEstatuto: boolean;
+  aceitaResponsabilidades: boolean;
   dataInscricao: string;
   status: StatusPessoa;
   papel: PapelPessoa;
@@ -17,11 +29,19 @@ export interface Pessoa {
 }
 
 export interface InscricaoForm {
+  tipoPessoa: TipoPessoa;
   nomeCompleto: string;
   cpf: string;
+  rg: string;
   emailPessoal: string;
   telefone: string;
   endereco: string;
   dataNascimento: string;
+  ocupacao: string;
+  formaPagamento: FormaPagamento;
+  aceitaWhatsapp: boolean;
+  aceitaLgpd: boolean;
+  aceitaEstatuto: boolean;
+  aceitaResponsabilidades: boolean;
   senha: string;
 }

@@ -33,9 +33,9 @@ service cloud.firestore {
         && request.resource.data.status == 'pendente'
         && request.resource.data.papel == null;
 
-      // O próprio usuário só edita dados de contato; status/papel/cpf/dataInscricao são intocáveis por ele.
+      // O próprio usuário só edita dados de contato; status/papel/cpf/tipoPessoa/dataInscricao são intocáveis por ele.
       allow update: if isDiretoria()
-        || (dono(uid) && camposNaoAlterados(['status', 'papel', 'cpf', 'dataInscricao', 'uid']));
+        || (dono(uid) && camposNaoAlterados(['status', 'papel', 'cpf', 'tipoPessoa', 'dataInscricao', 'uid']));
 
       allow delete: if isDiretoria();
     }

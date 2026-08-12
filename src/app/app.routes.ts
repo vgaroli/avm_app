@@ -18,4 +18,9 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/admin/pessoas/admin-pessoas.component').then((m) => m.AdminPessoasComponent),
     canActivate: [authGuard, roleGuard('diretoria')],
   },
+  {
+    path: 'admin/cards',
+    loadComponent: () => import('./pages/admin/cards/admin-cards.component').then((m) => m.AdminCardsComponent),
+    canActivate: [authGuard, roleGuard('diretoria')],
+  },
 ];

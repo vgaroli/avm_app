@@ -8,10 +8,21 @@ $border-radius: 16px;
   max-width: 900px;
   margin: 0 auto;
 
+  .cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    app-back-button {
+      color: $primary-color;
+    }
+  }
+
   h1 {
     color: $primary-color;
     font-size: 1.4rem;
-    margin-bottom: 16px;
+    margin: 0;
   }
 }
 
@@ -60,19 +71,31 @@ $border-radius: 16px;
 }
 
 .edit-form {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 16px;
   width: 100%;
 
   mat-form-field {
     width: 100%;
   }
 
+  mat-checkbox {
+    grid-column: 1 / -1;
+    margin: 4px 0 8px 0;
+  }
+
   .edit-acoes {
+    grid-column: 1 / -1;
     display: flex;
     justify-content: flex-end;
     gap: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .edit-form {
+    grid-template-columns: 1fr;
   }
 }
 

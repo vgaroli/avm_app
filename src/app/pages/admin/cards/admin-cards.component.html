@@ -1,0 +1,153 @@
+<div class="admin-container">
+  <div class="cabecalho">
+    <div class="titulo-bloco">
+      <app-back-button />
+      <h1>Gestão de Cards</h1>
+    </div>
+    @if (!mostrarFormNovo()) {
+      <button mat-flat-button color="primary" (click)="abrirNovo()">
+        <mat-icon>add</mat-icon>
+        Novo card
+      </button>
+    }
+  </div>
+
+  @if (mostrarFormNovo()) {
+    <mat-card class="card-form">
+      <h3>Novo card</h3>
+      <form [formGroup]="novoForm" (ngSubmit)="salvarNovo()" class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Ordem</mat-label>
+          <input matInput type="number" formControlName="ordem" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ícone (Material Icons)</mat-label>
+          <input matInput formControlName="icon" placeholder="ex: people" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Informação</mat-label>
+          <input matInput formControlName="info" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Cor</mat-label>
+          <mat-select formControlName="colorClass">
+            @for (cor of cores; track cor) {
+              <mat-option [value]="cor">{{ cor }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Rota</mat-label>
+          <input matInput formControlName="rota" placeholder="/admin/pessoas" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Visibilidade</mat-label>
+          <mat-select formControlName="visibilidade" multiple>
+            @for (vis of visibilidades; track vis) {
+              <mat-option [value]="vis">{{ vis }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-checkbox formControlName="ativo">Ativo</mat-checkbox>
+
+        <div class="form-acoes">
+          <button mat-button type="button" (click)="cancelarNovo()">Cancelar</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="processando() === 'novo'">Salvar</button>
+        </div>
+      </form>
+    </mat-card>
+  }
+
+  <div class="lista">
+    @for (card of cards(); track card.id) {
+      <mat-card class="card-item" [class.inativo]="!card.ativo">
+        @if (editandoId() === card.id) {
+          <form [formGroup]="editForm" (ngSubmit)="salvarEdicao(card)" class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Ordem</mat-label>
+              <input matInput type="number" formControlName="ordem" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Ícone (Material Icons)</mat-label>
+              <input matInput formControlName="icon" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Título</mat-label>
+              <input matInput formControlName="title" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Informação</mat-label>
+              <input matInput formControlName="info" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Cor</mat-label>
+              <mat-select formControlName="colorClass">
+                @for (cor of cores; track cor) {
+                  <mat-option [value]="cor">{{ cor }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Rota</mat-label>
+              <input matInput formControlName="rota" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Visibilidade</mat-label>
+              <mat-select formControlName="visibilidade" multiple>
+                @for (vis of visibilidades; track vis) {
+                  <mat-option [value]="vis">{{ vis }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <mat-checkbox formControlName="ativo">Ativo</mat-checkbox>
+
+            <div class="form-acoes">
+              <button mat-button type="button" (click)="cancelarEdicao()">Cancelar</button>
+              <button mat-flat-button color="primary" type="submit" [disabled]="processando() === card.id">Salvar</button>
+            </div>
+          </form>
+        } @else {
+          <div class="card-icon-preview" [ngClass]="card.colorClass">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <div class="card-info">
+            <strong>{{ card.title }} <span class="ordem">#{{ card.ordem }}</span></strong>
+            <span>{{ card.info }}</span>
+            <span class="meta">{{ card.rota }} • {{ card.visibilidade.join(', ') }}</span>
+          </div>
+          <div class="card-acoes">
+            <mat-slide-toggle [checked]="card.ativo" (change)="alternarAtivo(card)" [disabled]="processando() === card.id">
+              Ativo
+            </mat-slide-toggle>
+            <button mat-icon-button (click)="iniciarEdicao(card)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" [disabled]="processando() === card.id" (click)="remover(card)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        }
+      </mat-card>
+    } @empty {
+      <p class="vazio">Nenhum card cadastrado ainda.</p>
+    }
+  </div>
+</div>

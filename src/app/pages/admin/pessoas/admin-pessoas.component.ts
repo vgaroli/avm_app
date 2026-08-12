@@ -4,14 +4,16 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PapelPessoa, Pessoa } from '../../../core/models/pessoa.model';
+import { FormaPagamento, PapelPessoa, Pessoa } from '../../../core/models/pessoa.model';
 import { PessoasService } from '../../../core/services/pessoas.service';
-import { formatarCpf } from '../../../core/utils/cpf.util';
+import { formatarDocumento } from '../../../core/utils/cpf.util';
+import { BackButtonComponent } from '../../../shared/components/back-button.component';
 
 @Component({
   selector: 'app-admin-pessoas',
@@ -21,11 +23,13 @@ import { formatarCpf } from '../../../core/utils/cpf.util';
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatSelectModule,
     MatTabsModule,
+    BackButtonComponent,
   ],
   templateUrl: './admin-pessoas.component.html',
   styleUrl: './admin-pessoas.component.scss',
@@ -33,8 +37,6 @@ import { formatarCpf } from '../../../core/utils/cpf.util';
 export class AdminPessoasComponent {
   private readonly pessoasService = inject(PessoasService);
   private readonly fb = inject(FormBuilder);
-
-  readonly formatarCpf = formatarCpf;
 
   readonly pendentes = toSignal(this.pessoasService.listarPendentes(), { initialValue: [] as Pessoa[] });
   readonly ativos = toSignal(this.pessoasService.listarAtivos(), { initialValue: [] as Pessoa[] });
@@ -45,13 +47,28 @@ export class AdminPessoasComponent {
   readonly editandoUid = signal<string | null>(null);
   readonly editForm = this.fb.nonNullable.group({
     nomeCompleto: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
     telefone: ['', Validators.required],
     endereco: ['', Validators.required],
+    dataNascimento: ['', Validators.required],
+    rg: ['', Validators.required],
+    ocupacao: ['', Validators.required],
+    formaPagamento: this.fb.nonNullable.control<FormaPagamento>('avista', Validators.required),
+    aceitaWhatsapp: [false],
+    fotoUrl: [''],
     observacoesDiretoria: [''],
   });
 
   papelDe(uid: string): Exclude<PapelPessoa, null> {
     return this.selecaoPapel[uid] ?? 'associado';
+  }
+
+  rotuloDocumento(pessoa: Pessoa): string {
+    return pessoa.tipoPessoa === 'juridica' ? 'CNPJ' : 'CPF';
+  }
+
+  documentoFormatado(pessoa: Pessoa): string {
+    return formatarDocumento(pessoa.cpf, pessoa.tipoPessoa ?? 'fisica');
   }
 
   async aprovar(pessoa: Pessoa): Promise<void> {
@@ -83,10 +100,20 @@ export class AdminPessoasComponent {
 
   iniciarEdicao(pessoa: Pessoa): void {
     this.editandoUid.set(pessoa.uid);
-    this.editForm.setValue({
-      nomeCompleto: pessoa.nomeCompleto,
-      telefone: pessoa.telefone,
-      endereco: pessoa.endereco,
+    const rg = this.editForm.controls.rg;
+    rg.setValidators(pessoa.tipoPessoa === 'juridica' ? [] : [Validators.required]);
+    rg.updateValueAndValidity();
+    this.editForm.patchValue({
+      nomeCompleto: pessoa.nomeCompleto ?? '',
+      email: pessoa.email ?? '',
+      telefone: pessoa.telefone ?? '',
+      endereco: pessoa.endereco ?? '',
+      dataNascimento: pessoa.dataNascimento ?? '',
+      rg: pessoa.rg ?? '',
+      ocupacao: pessoa.ocupacao ?? '',
+      formaPagamento: pessoa.formaPagamento ?? 'avista',
+      aceitaWhatsapp: pessoa.aceitaWhatsapp ?? false,
+      fotoUrl: pessoa.fotoUrl ?? '',
       observacoesDiretoria: pessoa.observacoesDiretoria ?? '',
     });
   }

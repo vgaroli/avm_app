@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../core/services/auth.service';
 import { CpfMaskDirective } from '../../shared/directives/cpf-mask.directive';
+import { BackButtonComponent } from '../../shared/components/back-button.component';
 import { apenasDigitos } from '../../core/utils/cpf.util';
 
 @Component({
@@ -26,6 +27,7 @@ import { apenasDigitos } from '../../core/utils/cpf.util';
     MatInputModule,
     MatProgressSpinnerModule,
     CpfMaskDirective,
+    BackButtonComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -51,8 +53,9 @@ export class LoginComponent {
     }
 
     const { cpf, senha } = this.form.getRawValue();
-    if (apenasDigitos(cpf).length !== 11) {
-      this.erro.set('CPF inválido.');
+    const totalDigitos = apenasDigitos(cpf).length;
+    if (totalDigitos !== 11 && totalDigitos !== 14) {
+      this.erro.set('CPF ou CNPJ inválido.');
       return;
     }
 
@@ -63,7 +66,7 @@ export class LoginComponent {
       await this.authService.login(cpf, senha);
       await this.router.navigateByUrl('/');
     } catch {
-      this.erro.set('CPF ou senha inválidos.');
+      this.erro.set('CPF/CNPJ ou senha inválidos.');
     } finally {
       this.carregando.set(false);
     }
