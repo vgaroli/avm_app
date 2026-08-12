@@ -44,5 +44,12 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isDiretoria();
     }
+
+    // Sincronizados pela Cloud Function a partir do Google Calendar; o Admin SDK
+    // ignora as regras, então nenhum client (nem a diretoria) escreve aqui.
+    match /eventos/{eventoId} {
+      allow read: if resource.data.visibilidade == 'publico' || isDiretoria();
+      allow write: if false;
+    }
   }
 }

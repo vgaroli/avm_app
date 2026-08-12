@@ -42,10 +42,21 @@
           <mat-icon>event_upcoming</mat-icon>
           <h3>Próximo Evento</h3>
         </div>
-        <div class="event-details">
-          <strong>{{ nextEvent.title }}</strong>
-          <p>{{ nextEvent.date }} • {{ nextEvent.location }}</p>
-        </div>
+        @if (proximoEvento(); as evento) {
+          <div class="event-details">
+            <strong>{{ evento.titulo }}</strong>
+            <p>
+              {{ formatarDataEvento(evento) }}
+              @if (evento.local) {
+                • {{ evento.local }}
+              }
+            </p>
+          </div>
+        } @else {
+          <div class="event-details">
+            <p>Nenhum evento agendado no momento.</p>
+          </div>
+        }
       </div>
     </section>
 
