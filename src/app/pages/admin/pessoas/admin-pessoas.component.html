@@ -18,7 +18,7 @@
                 }
               </span>
               <span>{{ pessoa.email }} • {{ pessoa.telefone }}</span>
-              <span>{{ pessoa.endereco }}</span>
+              <span>{{ pessoa.endereco }} • CEP: {{ cepFormatado(pessoa) }}</span>
               <span>{{ pessoa.tipoPessoa === 'juridica' ? 'Ramo de atividade' : 'Ocupação' }}: {{ pessoa.ocupacao }}</span>
               <span>Pagamento: {{ pessoa.formaPagamento === 'avista' ? 'À vista - R$ 330' : 'Parcelado - 12x R$ 33' }}</span>
               <span>WhatsApp: {{ pessoa.aceitaWhatsapp ? 'Sim' : 'Não' }}</span>
@@ -81,6 +81,10 @@
                   <input matInput formControlName="endereco" />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
+                  <mat-label>CEP</mat-label>
+                  <input matInput formControlName="cep" appCepMask inputmode="numeric" maxlength="9" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
                   <mat-label>Forma de pagamento</mat-label>
                   <mat-select formControlName="formaPagamento">
                     <mat-option value="avista">À vista - R$ 330</mat-option>
@@ -111,7 +115,7 @@
                   }
                 </span>
                 <span>{{ pessoa.email }} • {{ pessoa.telefone }}</span>
-                <span>{{ pessoa.endereco }}</span>
+                <span>{{ pessoa.endereco }} • CEP: {{ cepFormatado(pessoa) }}</span>
                 <span>{{ pessoa.tipoPessoa === 'juridica' ? 'Ramo de atividade' : 'Ocupação' }}: {{ pessoa.ocupacao }}</span>
                 <span>Pagamento: {{ pessoa.formaPagamento === 'avista' ? 'À vista - R$ 330' : 'Parcelado - 12x R$ 33' }}</span>
                 <span>WhatsApp: {{ pessoa.aceitaWhatsapp ? 'Sim' : 'Não' }}</span>

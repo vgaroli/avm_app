@@ -42,6 +42,7 @@ export class PessoasService {
         | 'email'
         | 'telefone'
         | 'endereco'
+        | 'cep'
         | 'dataNascimento'
         | 'rg'
         | 'ocupacao'

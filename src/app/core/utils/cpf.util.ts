@@ -12,6 +12,11 @@ export function formatarCpf(valor: string): string {
     .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 }
 
+export function formatarCep(valor: string): string {
+  const digitos = apenasDigitos(valor).slice(0, 8);
+  return digitos.replace(/(\d{5})(\d{1,3})$/, '$1-$2');
+}
+
 export function formatarCnpj(valor: string): string {
   const digitos = apenasDigitos(valor).slice(0, 14);
   return digitos

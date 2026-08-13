@@ -65,10 +65,18 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Endereço completo (rua, número, CEP)</mat-label>
+        <mat-label>Endereço (rua, número, bairro)</mat-label>
         <input matInput formControlName="endereco" />
         @if (form.controls.endereco.touched && form.controls.endereco.invalid) {
-          <mat-error>Informe seu endereço completo.</mat-error>
+          <mat-error>Informe seu endereço.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CEP</mat-label>
+        <input matInput formControlName="cep" appCepMask inputmode="numeric" placeholder="00000-000" maxlength="9" />
+        @if (form.controls.cep.touched && form.controls.cep.invalid) {
+          <mat-error>Informe um CEP válido.</mat-error>
         }
       </mat-form-field>
 

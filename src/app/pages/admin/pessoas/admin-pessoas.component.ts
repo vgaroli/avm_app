@@ -12,8 +12,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FormaPagamento, PapelPessoa, Pessoa } from '../../../core/models/pessoa.model';
 import { PessoasService } from '../../../core/services/pessoas.service';
-import { formatarDocumento } from '../../../core/utils/cpf.util';
+import { formatarCep, formatarDocumento } from '../../../core/utils/cpf.util';
 import { BackButtonComponent } from '../../../shared/components/back-button.component';
+import { CepMaskDirective } from '../../../shared/directives/cep-mask.directive';
 
 @Component({
   selector: 'app-admin-pessoas',
@@ -30,6 +31,7 @@ import { BackButtonComponent } from '../../../shared/components/back-button.comp
     MatSelectModule,
     MatTabsModule,
     BackButtonComponent,
+    CepMaskDirective,
   ],
   templateUrl: './admin-pessoas.component.html',
   styleUrl: './admin-pessoas.component.scss',
@@ -50,6 +52,7 @@ export class AdminPessoasComponent {
     email: ['', [Validators.required, Validators.email]],
     telefone: ['', Validators.required],
     endereco: ['', Validators.required],
+    cep: ['', [Validators.required, Validators.minLength(9)]],
     dataNascimento: ['', Validators.required],
     rg: ['', Validators.required],
     ocupacao: ['', Validators.required],
@@ -69,6 +72,10 @@ export class AdminPessoasComponent {
 
   documentoFormatado(pessoa: Pessoa): string {
     return formatarDocumento(pessoa.cpf, pessoa.tipoPessoa ?? 'fisica');
+  }
+
+  cepFormatado(pessoa: Pessoa): string {
+    return formatarCep(pessoa.cep);
   }
 
   async aprovar(pessoa: Pessoa): Promise<void> {
@@ -108,6 +115,7 @@ export class AdminPessoasComponent {
       email: pessoa.email ?? '',
       telefone: pessoa.telefone ?? '',
       endereco: pessoa.endereco ?? '',
+      cep: pessoa.cep ?? '',
       dataNascimento: pessoa.dataNascimento ?? '',
       rg: pessoa.rg ?? '',
       ocupacao: pessoa.ocupacao ?? '',

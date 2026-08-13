@@ -45,6 +45,7 @@ export class AuthService {
       email: dados.emailPessoal,
       telefone: dados.telefone,
       endereco: dados.endereco,
+      cep: apenasDigitos(dados.cep),
       dataNascimento: dados.dataNascimento,
       ocupacao: dados.ocupacao,
       formaPagamento: dados.formaPagamento,

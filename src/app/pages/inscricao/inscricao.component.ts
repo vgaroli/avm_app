@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { AuthService } from '../../core/services/auth.service';
 import { CpfMaskDirective } from '../../shared/directives/cpf-mask.directive';
+import { CepMaskDirective } from '../../shared/directives/cep-mask.directive';
 import { BackButtonComponent } from '../../shared/components/back-button.component';
 import { documentoValido } from '../../core/utils/cpf.util';
 import { TipoPessoa } from '../../core/models/pessoa.model';
@@ -38,6 +39,7 @@ function senhasIguaisValidator(control: AbstractControl): ValidationErrors | nul
     MatProgressSpinnerModule,
     MatRadioModule,
     CpfMaskDirective,
+    CepMaskDirective,
     BackButtonComponent,
   ],
   templateUrl: './inscricao.component.html',
@@ -63,6 +65,7 @@ export class InscricaoComponent {
     emailPessoal: ['', [Validators.required, Validators.email]],
     telefone: ['', [Validators.required]],
     endereco: ['', [Validators.required]],
+    cep: ['', [Validators.required, Validators.minLength(9)]],
     dataNascimento: ['', [Validators.required]],
     ocupacao: ['', [Validators.required]],
     formaPagamento: this.fb.nonNullable.control<'avista' | 'parcelado'>('avista', Validators.required),

@@ -14,6 +14,7 @@ export interface Pessoa {
   email: string;
   telefone: string;
   endereco: string;
+  cep: string;
   dataNascimento: string;
   ocupacao: string;
   formaPagamento: FormaPagamento;
@@ -36,6 +37,7 @@ export interface InscricaoForm {
   emailPessoal: string;
   telefone: string;
   endereco: string;
+  cep: string;
   dataNascimento: string;
   ocupacao: string;
   formaPagamento: FormaPagamento;
