@@ -8,13 +8,13 @@
     <mat-card class="credencial-card">
       <div class="credencial-topo">
         @if (p.fotoUrl) {
-          <img [src]="p.fotoUrl" alt="Foto de {{ p.nomeCompleto }}" class="foto" />
+          <img [src]="p.fotoUrl" alt="Foto de {{ nomeExibido() }}" class="foto" />
         } @else {
           <div class="foto foto-placeholder">{{ iniciaisNome() }}</div>
         }
 
         <div class="dados">
-          <strong class="nome">{{ p.nomeCompleto }}</strong>
+          <strong class="nome">{{ nomeExibido() }}</strong>
           <span class="papel-badge">{{ papelLabel() }}</span>
           <span class="numero">Nº {{ numeroAssociado() }}</span>
         </div>

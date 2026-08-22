@@ -1,0 +1,74 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.agenda-container {
+  padding: 20px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.seletor-periodo {
+  width: 100%;
+}
+
+.lista-eventos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.evento-card {
+  border-radius: $border-radius;
+  padding: 16px;
+
+  .evento-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $primary-color;
+    margin-bottom: 8px;
+
+    strong {
+      font-size: 1rem;
+      color: $text-dark;
+    }
+  }
+
+  .evento-data {
+    margin: 0 0 4px 0;
+    font-size: 0.9rem;
+    color: $text-dark;
+    font-weight: 500;
+  }
+
+  .evento-detalhe {
+    margin: 0;
+    font-size: 0.85rem;
+    color: $text-light;
+  }
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

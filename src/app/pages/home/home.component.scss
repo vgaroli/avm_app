@@ -47,14 +47,19 @@ $border-radius: 16px;
   }
 
   .header-profile .profile-avatar {
+    --mdc-icon-button-state-layer-size: 44px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
 
     mat-icon {
-      font-size: 36px;
-      width: 36px;
-      height: 36px;
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
       color: $primary-color;
     }
   }

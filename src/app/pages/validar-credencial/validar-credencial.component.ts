@@ -35,6 +35,10 @@ export class ValidarCredencialComponent {
     return iniciais(nome);
   }
 
+  nomeExibidoDe(credencial: Credencial): string {
+    return credencial.nomeExibicao || credencial.nome;
+  }
+
   aoEscanear(uid: string): void {
     if (this.estado() === 'buscando' || this.estado() === 'resultado' || this.estado() === 'nao-encontrada') {
       return;

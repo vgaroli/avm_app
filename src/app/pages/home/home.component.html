@@ -21,7 +21,7 @@
   </header>
 
   <!-- Conteúdo Principal -->
-  <main class="app-content">
+  <main class="app-content" #conteudo>
 
     <!-- Bloco Superior -->
     <section class="top-block">
@@ -83,19 +83,19 @@
 
   <!-- Rodapé (Menu Inferior) -->
   <nav class="bottom-nav">
-    <button class="nav-item active">
+    <button class="nav-item active" (click)="irParaInicio()">
       <mat-icon>home</mat-icon>
       <span>Início</span>
     </button>
-    <button class="nav-item">
+    <button class="nav-item" routerLink="/agenda">
       <mat-icon>calendar_month</mat-icon>
       <span>Agenda</span>
     </button>
-    <button class="nav-item">
+    <button class="nav-item" (click)="avisosEmBreve()">
       <mat-icon>notifications</mat-icon>
       <span>Avisos</span>
     </button>
-    <button class="nav-item">
+    <button class="nav-item" routerLink="/perfil">
       <mat-icon>person</mat-icon>
       <span>Perfil</span>
     </button>

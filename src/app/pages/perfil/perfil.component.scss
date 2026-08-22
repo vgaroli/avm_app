@@ -1,0 +1,117 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.perfil-container {
+  padding: 20px;
+  padding-bottom: 40px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.foto-card {
+  border-radius: $border-radius;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.foto {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.foto-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $primary-color;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.trocar-foto-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: $primary-color;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.input-foto-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.cropper-card {
+  border-radius: $border-radius;
+  padding: 16px;
+  margin-bottom: 16px;
+
+  image-cropper {
+    display: block;
+    max-height: 320px;
+  }
+}
+
+.cropper-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  mat-checkbox {
+    margin: 8px 0;
+  }
+}
+
+.salvar-btn {
+  border-radius: $border-radius;
+  margin-top: 8px;
+  height: 44px;
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

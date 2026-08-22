@@ -11,6 +11,8 @@ export interface Pessoa {
   /** RG — vazio para pessoa jurídica. */
   rg: string;
   nomeCompleto: string;
+  /** Nome alternativo, mais curto, opcional; usado no lugar de nomeCompleto em UI restrita (credencial, cards). */
+  nomeExibicao?: string;
   email: string;
   telefone: string;
   endereco: string;

@@ -28,5 +28,10 @@ export class CredencialComponent {
 
   readonly numeroAssociado = computed(() => this.pessoa()?.uid.slice(-6).toUpperCase() ?? '');
 
-  readonly iniciaisNome = computed(() => iniciais(this.pessoa()?.nomeCompleto ?? ''));
+  readonly nomeExibido = computed(() => {
+    const p = this.pessoa();
+    return p?.nomeExibicao || p?.nomeCompleto || '';
+  });
+
+  readonly iniciaisNome = computed(() => iniciais(this.nomeExibido()));
 }

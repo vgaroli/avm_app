@@ -31,6 +31,16 @@ export const routes: Routes = [
     canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
   },
   {
+    path: 'agenda',
+    loadComponent: () => import('./pages/agenda/agenda.component').then((m) => m.AgendaComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard],
+  },
+  {
+    path: 'perfil',
+    loadComponent: () => import('./pages/perfil/perfil.component').then((m) => m.PerfilComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard],
+  },
+  {
     path: 'mensagens/nova',
     loadComponent: () => import('./pages/mensagens/nova/nova-mensagem.component').then((m) => m.NovaMensagemComponent),
     canActivate: [authGuard, senhaProvisoriaGuard],

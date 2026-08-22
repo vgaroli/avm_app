@@ -1,11 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, collectionData, doc, getDoc, query, where, writeBatch } from '@angular/fire/firestore';
+import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { PapelPessoa, Pessoa, StatusPessoa } from '../models/pessoa.model';
 
 @Injectable({ providedIn: 'root' })
 export class PessoasService {
   private readonly firestore = inject(Firestore);
+  private readonly storage = inject(Storage);
   private readonly pessoasRef = collection(this.firestore, 'pessoas');
 
   listarPendentes(): Observable<Pessoa[]> {
@@ -64,6 +66,37 @@ export class PessoasService {
     await this.atualizarComSincroniaCredencial(uid, dados);
   }
 
+  // Auto-edição do próprio associado: deliberadamente sem 'observacoesDiretoria'
+  // (nem 'status'/'papel'), que continuam exclusivos da tela da diretoria.
+  async atualizarMeuPerfil(
+    uid: string,
+    dados: Partial<
+      Pick<
+        Pessoa,
+        | 'nomeCompleto'
+        | 'nomeExibicao'
+        | 'email'
+        | 'telefone'
+        | 'endereco'
+        | 'cep'
+        | 'dataNascimento'
+        | 'rg'
+        | 'ocupacao'
+        | 'formaPagamento'
+        | 'aceitaWhatsapp'
+        | 'fotoUrl'
+      >
+    >,
+  ): Promise<void> {
+    await this.atualizarComSincroniaCredencial(uid, dados);
+  }
+
+  async uploadFotoPerfil(uid: string, blob: Blob): Promise<string> {
+    const fotoRef = ref(this.storage, `fotos-perfil/${uid}/foto.jpg`);
+    await uploadBytes(fotoRef, blob, { contentType: 'image/jpeg' });
+    return getDownloadURL(fotoRef);
+  }
+
   // Não há Cloud Functions neste projeto: toda escrita em pessoas/{uid} que afete
   // nome, foto, status ou papel replica os campos públicos em credenciais/{uid}
   // no mesmo writeBatch, mantendo a credencial digital sempre consistente.
@@ -73,13 +106,17 @@ export class PessoasService {
     const pessoaAtual = (await getDoc(pessoaRef)).data() as Pessoa | undefined;
 
     const nome = (dadosPessoa['nomeCompleto'] as string | undefined) ?? pessoaAtual?.nomeCompleto ?? '';
+    const nomeExibicao =
+      'nomeExibicao' in dadosPessoa
+        ? ((dadosPessoa['nomeExibicao'] as string | undefined) ?? '')
+        : (pessoaAtual?.nomeExibicao ?? '');
     const fotoUrl = (dadosPessoa['fotoUrl'] as string | undefined) ?? pessoaAtual?.fotoUrl ?? '';
     const status = (dadosPessoa['status'] as StatusPessoa | undefined) ?? pessoaAtual?.status ?? 'pendente';
     const papel = 'papel' in dadosPessoa ? (dadosPessoa['papel'] as PapelPessoa) : (pessoaAtual?.papel ?? null);
 
     const batch = writeBatch(this.firestore);
     batch.update(pessoaRef, dadosPessoa);
-    batch.set(credencialRef, { nome, fotoUrl, status, papel }, { merge: true });
+    batch.set(credencialRef, { nome, nomeExibicao, fotoUrl, status, papel }, { merge: true });
     await batch.commit();
   }
 }

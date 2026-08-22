@@ -23,12 +23,12 @@
       @if (credencial(); as c) {
         <mat-card class="resultado-card" [ngClass]="{ ok: c.status === 'ativo', alerta: c.status !== 'ativo' }">
           @if (c.fotoUrl) {
-            <img [src]="c.fotoUrl" alt="Foto de {{ c.nome }}" class="foto" />
+            <img [src]="c.fotoUrl" alt="Foto de {{ nomeExibidoDe(c) }}" class="foto" />
           } @else {
-            <div class="foto foto-placeholder">{{ iniciaisDe(c.nome) }}</div>
+            <div class="foto foto-placeholder">{{ iniciaisDe(nomeExibidoDe(c)) }}</div>
           }
 
-          <strong class="nome">{{ c.nome }}</strong>
+          <strong class="nome">{{ nomeExibidoDe(c) }}</strong>
           @if (c.papel) {
             <span class="papel">{{ PAPEL_PESSOA_LABEL[c.papel] }}</span>
           }

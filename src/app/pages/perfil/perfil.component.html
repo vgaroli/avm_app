@@ -1,0 +1,122 @@
+<div class="perfil-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Meu Perfil</h1>
+  </div>
+
+  @if (pessoa(); as p) {
+    <mat-card class="foto-card">
+      @if (fotoAtual()) {
+        <img [src]="fotoAtual()" alt="Foto de {{ p.nomeCompleto }}" class="foto" />
+      } @else {
+        <div class="foto foto-placeholder">{{ iniciaisNome() }}</div>
+      }
+
+      <label class="trocar-foto-btn" for="input-foto">
+        <mat-icon>photo_camera</mat-icon>
+        Trocar foto
+      </label>
+      <input
+        id="input-foto"
+        type="file"
+        accept="image/*"
+        capture="user"
+        class="input-foto-oculto"
+        (change)="aoSelecionarArquivo($event)"
+      />
+    </mat-card>
+
+    @if (mostrarCropper()) {
+      <mat-card class="cropper-card">
+        <image-cropper
+          [imageChangedEvent]="eventoImagem()"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="1 / 1"
+          [roundCropper]="true"
+          output="blob"
+          format="jpeg"
+        />
+        <div class="cropper-acoes">
+          <button mat-button type="button" (click)="cancelarCorte()" [disabled]="enviandoFoto()">Cancelar</button>
+          <button mat-flat-button color="primary" type="button" (click)="confirmarFoto()" [disabled]="enviandoFoto()">
+            @if (enviandoFoto()) {
+              <mat-spinner diameter="20" />
+            } @else {
+              Usar esta foto
+            }
+          </button>
+        </div>
+      </mat-card>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="salvar()" class="perfil-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome completo</mat-label>
+        <input matInput formControlName="nomeCompleto" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nome de exibição (opcional)</mat-label>
+        <input matInput formControlName="nomeExibicao" placeholder="Usado na credencial se preenchido" />
+        <mat-hint>Alternativa curta ao nome completo, exibida na credencial digital.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input matInput type="email" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input matInput formControlName="telefone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Endereço</mat-label>
+        <input matInput formControlName="endereco" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CEP</mat-label>
+        <input matInput formControlName="cep" appCepMask inputmode="numeric" maxlength="9" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data de nascimento</mat-label>
+        <input matInput type="date" formControlName="dataNascimento" />
+      </mat-form-field>
+
+      @if (p.tipoPessoa !== 'juridica') {
+        <mat-form-field appearance="outline">
+          <mat-label>RG</mat-label>
+          <input matInput formControlName="rg" />
+        </mat-form-field>
+      }
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ p.tipoPessoa === 'juridica' ? 'Ramo de atividade' : 'Ocupação/Profissão' }}</mat-label>
+        <input matInput formControlName="ocupacao" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Forma de pagamento</mat-label>
+        <mat-select formControlName="formaPagamento">
+          <mat-option value="avista">À vista - R$ 330</mat-option>
+          <mat-option value="parcelado">Parcelado - 12x R$ 33</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="aceitaWhatsapp">Aceita entrar no grupo de WhatsApp</mat-checkbox>
+
+      <button mat-flat-button color="primary" type="submit" class="salvar-btn" [disabled]="salvando()">
+        @if (salvando()) {
+          <mat-spinner diameter="20" />
+        } @else {
+          Salvar
+        }
+      </button>
+    </form>
+  } @else {
+    <p class="vazio">Carregando perfil...</p>
+  }
+</div>
