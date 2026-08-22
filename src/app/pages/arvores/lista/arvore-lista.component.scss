@@ -17,6 +17,7 @@ $cor-risco: #dc2626;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 16px;
 
   app-back-button {
@@ -27,7 +28,38 @@ $cor-risco: #dc2626;
     color: $primary-color;
     font-size: 1.4rem;
     margin: 0;
+    flex: 1;
   }
+}
+
+.toggle-visualizacao {
+  display: flex;
+  gap: 4px;
+  background: var(--mat-sys-surface-container, #f3f4f6);
+  border-radius: $border-radius;
+  padding: 2px;
+
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: $border-radius;
+    color: $text-light;
+    min-width: 0;
+    padding: 0 12px;
+
+    &.ativo {
+      background: $primary-color;
+      color: #fff;
+    }
+  }
+}
+
+.mapa-wrapper {
+  height: calc(100vh - 160px);
+  min-height: 320px;
+  border-radius: $border-radius;
+  overflow: hidden;
 }
 
 .grid {

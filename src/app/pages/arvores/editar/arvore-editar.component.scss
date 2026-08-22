@@ -13,6 +13,7 @@ $border-radius: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 16px;
 
   app-back-button {
@@ -23,6 +24,11 @@ $border-radius: 16px;
     color: $primary-color;
     font-size: 1.4rem;
     margin: 0;
+    flex: 1;
+  }
+
+  .ver-mapa-btn {
+    color: $primary-color;
   }
 }
 

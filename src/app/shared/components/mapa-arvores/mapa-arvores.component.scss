@@ -1,0 +1,113 @@
+$text-light: #6b7280;
+$border-radius: 16px;
+
+$cor-saudavel: #16a34a;
+$cor-atencao: #ca8a04;
+$cor-risco: #dc2626;
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.mapa-container {
+  width: 100%;
+  height: 100%;
+  border-radius: $border-radius;
+  overflow: hidden;
+}
+
+.mapa-vazio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  border-radius: $border-radius;
+  background: var(--mat-sys-surface-container, #f3f4f6);
+  color: $text-light;
+  text-align: center;
+  padding: 16px;
+}
+
+.marcador-arvore {
+  background: transparent;
+  border: none;
+
+  .pino {
+    display: block;
+    width: 26px;
+    height: 36px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    border: 2px solid #fff;
+
+    &.pino-saudavel {
+      background: $cor-saudavel;
+    }
+
+    &.pino-atencao {
+      background: $cor-atencao;
+    }
+
+    &.pino-risco {
+      background: $cor-risco;
+    }
+  }
+}
+
+.popup-arvore {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+
+  img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  strong {
+    color: #1f2937;
+    font-size: 0.9rem;
+  }
+
+  .badge {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fff;
+
+    &.badge-saudavel {
+      background: $cor-saudavel;
+    }
+
+    &.badge-atencao {
+      background: $cor-atencao;
+    }
+
+    &.badge-risco {
+      background: $cor-risco;
+    }
+  }
+
+  .link-editar {
+    align-self: flex-start;
+    color: #1e3a8a;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

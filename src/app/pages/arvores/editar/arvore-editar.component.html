@@ -2,6 +2,12 @@
   <div class="cabecalho">
     <app-back-button />
     <h1>Editar Árvore</h1>
+    @if (arvore()) {
+      <button mat-button type="button" class="ver-mapa-btn" (click)="verNoMapa()">
+        <mat-icon>map</mat-icon>
+        Ver no mapa
+      </button>
+    }
   </div>
 
   @if (carregando()) {

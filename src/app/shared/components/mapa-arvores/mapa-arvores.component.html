@@ -1,0 +1,14 @@
+@if (arvoresComLocalizacao().length > 0) {
+  <div
+    class="mapa-container"
+    leaflet
+    [leafletLayers]="camadas()"
+    [leafletCenter]="centroMapa()"
+    [leafletZoom]="zoomMapa()"
+    (leafletMapReady)="aoMapaPronto($event)"
+  ></div>
+} @else {
+  <div class="mapa-vazio">
+    <p>Nenhuma localização disponível.</p>
+  </div>
+}

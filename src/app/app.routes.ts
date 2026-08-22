@@ -72,6 +72,12 @@ export const routes: Routes = [
     canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
   },
   {
+    path: 'arvores/mapa',
+    loadComponent: () => import('./pages/arvores/lista/arvore-lista.component').then((m) => m.ArvoreListaComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+    data: { modoMapa: true },
+  },
+  {
     path: 'arvores',
     loadComponent: () => import('./pages/arvores/lista/arvore-lista.component').then((m) => m.ArvoreListaComponent),
     canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],

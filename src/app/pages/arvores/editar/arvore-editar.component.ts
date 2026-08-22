@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
 import { ArvoresService } from '../../../core/services/arvores.service';
@@ -14,7 +15,7 @@ import { ArvoreCamposFormComponent, ArvoreCamposFormGroup } from '../shared/arvo
 @Component({
   selector: 'app-arvore-editar',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, BackButtonComponent, ArvoreCamposFormComponent],
+  imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, BackButtonComponent, ArvoreCamposFormComponent],
   templateUrl: './arvore-editar.component.html',
   styleUrl: './arvore-editar.component.scss',
 })
@@ -81,6 +82,10 @@ export class ArvoreEditarComponent implements OnInit {
     } finally {
       this.salvando.set(false);
     }
+  }
+
+  verNoMapa(): void {
+    this.router.navigate(['/arvores/mapa'], { queryParams: { destacar: this.id } });
   }
 
   async excluir(): Promise<void> {
