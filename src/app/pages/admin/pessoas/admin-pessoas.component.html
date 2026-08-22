@@ -31,6 +31,7 @@
                 <mat-select [value]="papelDe(pessoa.uid)" (selectionChange)="selecaoPapel[pessoa.uid] = $event.value">
                   <mat-option value="associado">Associado</mat-option>
                   <mat-option value="diretoria">Diretoria</mat-option>
+                  <mat-option value="parceiro">Parceiro</mat-option>
                 </mat-select>
               </mat-form-field>
               <button mat-flat-button color="primary" [disabled]="processando() === pessoa.uid" (click)="aprovar(pessoa)">

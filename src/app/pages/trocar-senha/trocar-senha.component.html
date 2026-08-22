@@ -1,0 +1,45 @@
+<div class="trocar-senha-container">
+  <mat-card class="trocar-senha-card">
+    <div class="trocar-senha-header">
+      <img src="/favicon.ico" alt="Logo AVM" class="avm-logo" />
+      <h1>Defina sua nova senha</h1>
+      <p>Sua senha atual é provisória. Por segurança, defina uma nova senha para continuar.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="confirmar()" class="trocar-senha-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Nova senha</mat-label>
+        <input matInput formControlName="novaSenha" [type]="ocultarSenha() ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarSenha.set(!ocultarSenha())">
+          <mat-icon>{{ ocultarSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.novaSenha.touched && form.controls.novaSenha.invalid) {
+          <mat-error>A senha deve ter pelo menos 6 caracteres.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Confirmar nova senha</mat-label>
+        <input matInput formControlName="confirmarSenha" [type]="ocultarConfirmarSenha() ? 'password' : 'text'" />
+        <button mat-icon-button matSuffix type="button" (click)="ocultarConfirmarSenha.set(!ocultarConfirmarSenha())">
+          <mat-icon>{{ ocultarConfirmarSenha() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.controls.confirmarSenha.touched && form.errors?.['senhasDiferentes']) {
+          <mat-error>As senhas não coincidem.</mat-error>
+        }
+      </mat-form-field>
+
+      @if (erro()) {
+        <p class="erro-msg">{{ erro() }}</p>
+      }
+
+      <button mat-flat-button color="primary" type="submit" class="confirmar-btn" [disabled]="carregando()">
+        @if (carregando()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Confirmar nova senha
+        }
+      </button>
+    </form>
+  </mat-card>
+</div>

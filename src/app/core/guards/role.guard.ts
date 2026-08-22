@@ -4,7 +4,9 @@ import { map, take } from 'rxjs';
 import { PapelPessoa } from '../models/pessoa.model';
 import { AuthService } from '../services/auth.service';
 
-export const roleGuard = (papelPermitido: PapelPessoa): CanActivateFn => {
+export const roleGuard = (papeisPermitidos: Exclude<PapelPessoa, null> | Exclude<PapelPessoa, null>[]): CanActivateFn => {
+  const papeis = Array.isArray(papeisPermitidos) ? papeisPermitidos : [papeisPermitidos];
+
   return () => {
     const authService = inject(AuthService);
     const router = inject(Router);
@@ -12,7 +14,7 @@ export const roleGuard = (papelPermitido: PapelPessoa): CanActivateFn => {
     return authService.currentPessoa$.pipe(
       take(1),
       map((pessoa) => {
-        const autorizado = !!pessoa && pessoa.status === 'ativo' && pessoa.papel === papelPermitido;
+        const autorizado = !!pessoa && pessoa.status === 'ativo' && !!pessoa.papel && papeis.includes(pessoa.papel);
         return autorizado || router.createUrlTree(['/']);
       }),
     );

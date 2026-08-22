@@ -46,11 +46,17 @@ $border-radius: 16px;
     }
   }
 
-  .header-profile .profile-avatar mat-icon {
-    font-size: 36px;
-    width: 36px;
-    height: 36px;
-    color: $primary-color;
+  .header-profile .profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      color: $primary-color;
+    }
   }
 }
 

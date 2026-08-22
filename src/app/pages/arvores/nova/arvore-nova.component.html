@@ -1,0 +1,67 @@
+<div class="arvore-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Registrar Árvore</h1>
+  </div>
+
+  <mat-card class="form-card">
+    <p class="descricao">Fotografe a árvore, confirme a localização e preencha os dados básicos.</p>
+
+    <section class="bloco-foto">
+      <h2>Foto</h2>
+      @if (fotoPreviewUrl()) {
+        <img [src]="fotoPreviewUrl()" alt="Prévia da foto da árvore" class="foto-preview" />
+        <label class="botao-foto" for="input-foto">
+          <mat-icon>photo_camera</mat-icon>
+          Tirar outra foto
+        </label>
+      } @else {
+        <label class="botao-foto botao-foto-vazio" for="input-foto">
+          <mat-icon>photo_camera</mat-icon>
+          Tirar foto da árvore
+        </label>
+      }
+      <input id="input-foto" type="file" accept="image/*" capture="environment" (change)="selecionarFoto($event)" hidden />
+    </section>
+
+    <section class="bloco-gps">
+      <h2>Localização</h2>
+
+      @switch (statusGps()) {
+        @case ('aguardando') {
+          <p class="gps-status">Obtendo sua localização...</p>
+        }
+        @case ('sucesso') {
+          <p class="gps-coords">Lat: {{ lat()?.toFixed(6) }} • Lng: {{ lng()?.toFixed(6) }}</p>
+          @if (statusPerimetro() === 'verificando') {
+            <p class="gps-status">Verificando se o ponto está em Vila Mariana...</p>
+          } @else if (statusPerimetro() === 'fora') {
+            <p class="erro">Este registro parece estar fora de Vila Mariana. Verifique sua localização.</p>
+          }
+        }
+        @case ('negado') {
+          <p class="erro">É necessário permitir o acesso à localização para registrar a árvore.</p>
+          <button mat-button type="button" (click)="capturarLocalizacao()">Tentar novamente</button>
+        }
+        @case ('erro') {
+          <p class="erro">Não foi possível obter sua localização.</p>
+          <button mat-button type="button" (click)="capturarLocalizacao()">Tentar novamente</button>
+        }
+      }
+    </section>
+
+    <form (ngSubmit)="salvar()" class="form-grid">
+      <app-arvore-campos-form [formGroup]="form" />
+
+      @if (erro()) {
+        <p class="erro">{{ erro() }}</p>
+      }
+
+      <div class="form-acoes">
+        <button mat-flat-button color="primary" type="submit" [disabled]="!podeSalvar()">
+          {{ enviando() ? 'Salvando...' : 'Salvar registro' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

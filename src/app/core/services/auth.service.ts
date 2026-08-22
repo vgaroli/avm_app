@@ -1,5 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, authState, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
+import {
+  Auth,
+  authState,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updatePassword,
+  User,
+} from '@angular/fire/auth';
 import { Firestore, doc, docData, setDoc } from '@angular/fire/firestore';
 import { Observable, map, of, shareReplay, switchMap } from 'rxjs';
 import { InscricaoForm, Pessoa } from '../models/pessoa.model';
@@ -30,6 +38,14 @@ export class AuthService {
 
   async logout(): Promise<void> {
     await signOut(this.auth);
+  }
+
+  async alterarSenha(novaSenha: string): Promise<void> {
+    const usuario = this.auth.currentUser;
+    if (!usuario) {
+      throw new Error('Usuário não autenticado.');
+    }
+    await updatePassword(usuario, novaSenha);
   }
 
   async inscrever(dados: InscricaoForm): Promise<void> {

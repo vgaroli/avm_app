@@ -23,11 +23,17 @@ export class EventosService {
   readonly proximosEventos$: Observable<Evento[]> = this.authService.currentPessoa$.pipe(
     switchMap((pessoa) => {
       const ehDiretoria = !!pessoa && pessoa.status === 'ativo' && pessoa.papel === 'diretoria';
-      if (!ehDiretoria) {
-        return this.eventosPublicos$;
-      }
-      return combineLatest([this.eventosPublicos$, this.eventosDiretoria$]).pipe(
-        map(([publicos, diretoria]) => [...publicos, ...diretoria].sort((a, b) => a.inicio.localeCompare(b.inicio))),
+      const fonte$ = !ehDiretoria
+        ? this.eventosPublicos$
+        : combineLatest([this.eventosPublicos$, this.eventosDiretoria$]).pipe(
+            map(([publicos, diretoria]) => [...publicos, ...diretoria].sort((a, b) => a.inicio.localeCompare(b.inicio))),
+          );
+
+      return fonte$.pipe(
+        map((eventos) => {
+          const agora = new Date().toISOString();
+          return eventos.filter((e) => e.inicio >= agora);
+        }),
       );
     }),
   );

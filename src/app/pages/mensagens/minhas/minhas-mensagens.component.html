@@ -1,0 +1,37 @@
+<div class="mensagem-container">
+  <div class="cabecalho">
+    <div class="titulo-bloco">
+      <app-back-button />
+      <h1>Minhas Mensagens</h1>
+    </div>
+    <button mat-flat-button color="primary" routerLink="/mensagens/nova">
+      <mat-icon>add</mat-icon>
+      Nova mensagem
+    </button>
+  </div>
+
+  <div class="lista">
+    @for (mensagem of mensagens(); track mensagem.id) {
+      <mat-card class="mensagem-item">
+        <div class="mensagem-header">
+          <strong>{{ mensagem.assunto }}</strong>
+          <span class="status-chip" [ngClass]="statusCor[mensagem.status]">{{ statusLabel[mensagem.status] }}</span>
+        </div>
+        <p class="mensagem-data">{{ formatarData(mensagem.dataEnvio) }}</p>
+        <p class="mensagem-texto">{{ mensagem.texto }}</p>
+
+        @if (mensagem.retorno) {
+          <div class="retorno">
+            <mat-icon>reply</mat-icon>
+            <div>
+              <strong>Retorno da AVM</strong>
+              <p>{{ mensagem.retorno }}</p>
+            </div>
+          </div>
+        }
+      </mat-card>
+    } @empty {
+      <p class="vazio">Você ainda não enviou nenhuma mensagem.</p>
+    }
+  </div>
+</div>

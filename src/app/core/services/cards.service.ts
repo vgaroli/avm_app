@@ -38,13 +38,17 @@ export class CardsService {
   }
 
   private podeVer(visibilidade: VisibilidadeCard[], pessoa: Pessoa | null): boolean {
-    const associadoAtivo = !!pessoa && pessoa.status === 'ativo' && (pessoa.papel === 'associado' || pessoa.papel === 'diretoria');
-    const diretoriaAtiva = !!pessoa && pessoa.status === 'ativo' && pessoa.papel === 'diretoria';
+    const ativo = !!pessoa && pessoa.status === 'ativo';
+    const associadoAtivo = ativo && (pessoa.papel === 'associado' || pessoa.papel === 'diretoria');
+    const diretoriaAtiva = ativo && pessoa.papel === 'diretoria';
+    const parceiroAtivo = ativo && pessoa.papel === 'parceiro';
 
     return visibilidade.some((nivel) => {
       if (nivel === 'publico') return true;
       if (nivel === 'associado') return associadoAtivo;
       if (nivel === 'diretoria') return diretoriaAtiva;
+      if (nivel === 'parceiro') return parceiroAtivo;
+      if (nivel === 'ativo') return ativo;
       return false;
     });
   }

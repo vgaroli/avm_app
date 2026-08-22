@@ -1,0 +1,81 @@
+<div class="validar-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Validar Credencial</h1>
+  </div>
+
+  @switch (estado()) {
+    @case ('erro-camera') {
+      <mat-card class="aviso aviso-erro">
+        <mat-icon>videocam_off</mat-icon>
+        <p>Não foi possível acessar a câmera. Verifique se a permissão foi concedida ou se o dispositivo possui uma câmera disponível.</p>
+      </mat-card>
+    }
+
+    @case ('buscando') {
+      <div class="carregando">
+        <mat-icon>hourglass_top</mat-icon>
+        <p>Verificando credencial...</p>
+      </div>
+    }
+
+    @case ('resultado') {
+      @if (credencial(); as c) {
+        <mat-card class="resultado-card" [ngClass]="{ ok: c.status === 'ativo', alerta: c.status !== 'ativo' }">
+          @if (c.fotoUrl) {
+            <img [src]="c.fotoUrl" alt="Foto de {{ c.nome }}" class="foto" />
+          } @else {
+            <div class="foto foto-placeholder">{{ iniciaisDe(c.nome) }}</div>
+          }
+
+          <strong class="nome">{{ c.nome }}</strong>
+          @if (c.papel) {
+            <span class="papel">{{ PAPEL_PESSOA_LABEL[c.papel] }}</span>
+          }
+
+          <div class="selo">
+            @if (c.status === 'ativo') {
+              <mat-icon>check_circle</mat-icon>
+              <span>Associado ativo</span>
+            } @else if (c.status === 'inativo') {
+              <mat-icon>cancel</mat-icon>
+              <span>Associado inativo</span>
+            } @else {
+              <mat-icon>hourglass_empty</mat-icon>
+              <span>Cadastro pendente</span>
+            }
+          </div>
+        </mat-card>
+      }
+    }
+
+    @case ('nao-encontrada') {
+      <mat-card class="resultado-card alerta">
+        <mat-icon>error_outline</mat-icon>
+        <div class="selo">
+          <span>Credencial inválida</span>
+        </div>
+      </mat-card>
+    }
+
+    @default {
+      <div class="scanner-bloco">
+        <zxing-scanner
+          [enable]="scannerAtivo()"
+          [formats]="formatosAceitos"
+          (scanSuccess)="aoEscanear($event)"
+          (camerasNotFound)="aoSemCameras()"
+          (permissionResponse)="aoRespostaPermissao($event)"
+        ></zxing-scanner>
+        <p class="instrucao">Aponte a câmera para o QR code da credencial do associado.</p>
+      </div>
+    }
+  }
+
+  @if (estado() === 'resultado' || estado() === 'nao-encontrada' || estado() === 'erro-camera') {
+    <button mat-flat-button color="primary" class="btn-escanear" (click)="escanearNovamente()">
+      <mat-icon>qr_code_scanner</mat-icon>
+      Escanear novamente
+    </button>
+  }
+</div>

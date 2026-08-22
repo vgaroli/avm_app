@@ -1,0 +1,52 @@
+<div class="admin-container">
+  <div class="cabecalho">
+    <div class="titulo-bloco">
+      <app-back-button />
+      <h1>Painel de Mensagens</h1>
+    </div>
+  </div>
+
+  <div class="filtros">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [value]="filtroStatus()" (selectionChange)="filtroStatus.set($event.value)">
+        <mat-option value="todos">Todos</mat-option>
+        @for (status of statusDisponiveis; track status) {
+          <mat-option [value]="status">{{ statusLabel[status] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Responsável</mat-label>
+      <mat-select [value]="filtroResponsavel()" (selectionChange)="filtroResponsavel.set($event.value)">
+        <mat-option value="todos">Todos</mat-option>
+        @for (pessoa of diretoria(); track pessoa.uid) {
+          <mat-option [value]="pessoa.uid">{{ pessoa.nomeCompleto }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="lista">
+    @for (mensagem of mensagensFiltradas(); track mensagem.id) {
+      <mat-card class="mensagem-item" (click)="abrirDetalhe(mensagem)">
+        <div class="mensagem-header">
+          <strong>{{ mensagem.assunto }}</strong>
+          <span class="status-chip" [ngClass]="statusCor[mensagem.status]">{{ statusLabel[mensagem.status] }}</span>
+        </div>
+        <p class="mensagem-meta">
+          {{ mensagem.remetenteNome }} • {{ formatarData(mensagem.dataEnvio) }}
+          @if (mensagem.responsavelNome) {
+            • Responsável: {{ mensagem.responsavelNome }}
+          }
+          @if (mensagem.isTarefa) {
+            • <mat-icon inline>assignment</mat-icon> Tarefa
+          }
+        </p>
+      </mat-card>
+    } @empty {
+      <p class="vazio">Nenhuma mensagem encontrada.</p>
+    }
+  </div>
+</div>

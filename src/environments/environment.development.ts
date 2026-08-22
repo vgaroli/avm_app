@@ -1,5 +1,8 @@
+import { APP_VERSION } from './version';
+
 export const environment = {
     production: false,
+    version: APP_VERSION,
     functionsBaseUrl: 'https://us-central1-maestro4edu.cloudfunctions.net',
     firebase: {
         apiKey: "AIzaSyAPphnPJKHt1CvGSvhzQlFd5X4UYrszpLw",

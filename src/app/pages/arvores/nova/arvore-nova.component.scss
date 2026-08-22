@@ -1,0 +1,107 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.arvore-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.form-card {
+  border-radius: $border-radius;
+  padding: 20px;
+}
+
+.descricao {
+  color: $text-light;
+  font-size: 0.9rem;
+  margin: 0 0 16px 0;
+}
+
+h2 {
+  color: $text-dark;
+  font-size: 1rem;
+  margin: 0 0 8px 0;
+}
+
+.bloco-foto,
+.bloco-gps {
+  margin-bottom: 20px;
+}
+
+.foto-preview {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  border-radius: $border-radius;
+  margin-bottom: 8px;
+}
+
+.botao-foto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: $border-radius;
+  border: 1px dashed $primary-color;
+  color: $primary-color;
+  cursor: pointer;
+  font-weight: 500;
+
+  &.botao-foto-vazio {
+    min-height: 120px;
+  }
+}
+
+.gps-status,
+.gps-coords {
+  color: $text-light;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.erro {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin: 4px 0;
+}
+
+.form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+
+  button {
+    border-radius: $border-radius;
+  }
+}

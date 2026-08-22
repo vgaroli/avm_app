@@ -1,4 +1,4 @@
-export type VisibilidadeCard = 'publico' | 'associado' | 'diretoria';
+export type VisibilidadeCard = 'publico' | 'associado' | 'diretoria' | 'parceiro' | 'ativo';
 
 export interface CardConfig {
   id: string;

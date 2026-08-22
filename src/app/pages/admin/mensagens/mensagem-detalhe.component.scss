@@ -1,0 +1,161 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.detalhe-container {
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+mat-card {
+  border-radius: $border-radius;
+  padding: 20px;
+
+  h3 {
+    margin: 0 0 12px 0;
+    color: $text-dark;
+  }
+}
+
+.mensagem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  strong {
+    color: $text-dark;
+    font-size: 1.05rem;
+  }
+}
+
+.status-chip {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+
+  &.card-primary { background-color: #3b82f6; }
+  &.card-accent { background-color: #8b5cf6; }
+  &.card-info { background-color: #0ea5e9; }
+  &.card-warning { background-color: #f59e0b; }
+  &.card-success { background-color: #10b981; }
+  &.card-danger { background-color: #ef4444; }
+  &.card-secondary { background-color: #64748b; }
+}
+
+.mensagem-meta {
+  color: $text-light;
+  font-size: 0.8rem;
+  margin: 4px 0 8px 0;
+}
+
+.mensagem-texto {
+  color: $text-dark;
+  font-size: 0.9rem;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.tarefa-flag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: $primary-color;
+  font-size: 0.85rem;
+  margin: 0 0 12px 0;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.gestao-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 16px;
+  margin: 12px 0;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.retorno-form {
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.form-acoes {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    border-radius: $border-radius;
+  }
+}
+
+.historico-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.historico-item {
+  border-left: 2px solid #e5e7eb;
+  padding-left: 12px;
+
+  .historico-topo {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+
+    strong {
+      color: $text-dark;
+      font-size: 0.85rem;
+    }
+
+    span {
+      color: $text-light;
+      font-size: 0.75rem;
+    }
+  }
+
+  p {
+    margin: 2px 0 0 0;
+    color: $text-light;
+    font-size: 0.85rem;
+  }
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

@@ -5,15 +5,17 @@ import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
 import { AuthService } from '../../core/services/auth.service';
 import { CardsService } from '../../core/services/cards.service';
 import { EventosService } from '../../core/services/eventos.service';
 import { Evento } from '../../core/models/evento.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatIconModule, MatButtonModule, MatCardModule],
+  imports: [CommonModule, RouterLink, MatIconModule, MatButtonModule, MatCardModule, MatMenuModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -27,9 +29,15 @@ export class HomeComponent {
   readonly usuarioLogado = toSignal(this.authService.currentUser$, { initialValue: null });
   readonly cards = toSignal(this.cardsService.cardsVisiveis$, { initialValue: [] });
   readonly proximoEvento = toSignal(this.eventosService.proximoEvento$, { initialValue: null });
+  protected readonly appVersion = environment.version;
 
   abrirCard(rota: string): void {
     this.router.navigateByUrl(rota);
+  }
+
+  async sair(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigateByUrl('/login');
   }
 
   formatarDataEvento(evento: Evento): string {

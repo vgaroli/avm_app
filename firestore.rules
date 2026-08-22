@@ -22,8 +22,23 @@ service cloud.firestore {
         && pessoaDoRequisitante().papel == 'diretoria';
     }
 
+    function isParceiro() {
+      return autenticado()
+        && exists(/databases/$(database)/documents/pessoas/$(request.auth.uid))
+        && pessoaDoRequisitante().status == 'ativo'
+        && pessoaDoRequisitante().papel == 'parceiro';
+    }
+
     function camposNaoAlterados(campos) {
       return !request.resource.data.diff(resource.data).affectedKeys().hasAny(campos);
+    }
+
+    // Troca de senha provisória: o próprio dono só pode virar senhaProvisoria
+    // de true para false, e nada mais pode mudar nessa mesma operação.
+    function trocaSenhaProvisoria() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['senhaProvisoria'])
+        && resource.data.senhaProvisoria == true
+        && request.resource.data.senhaProvisoria == false;
     }
 
     match /pessoas/{uid} {
@@ -33,11 +48,24 @@ service cloud.firestore {
         && request.resource.data.status == 'pendente'
         && request.resource.data.papel == null;
 
-      // O próprio usuário só edita dados de contato; status/papel/cpf/tipoPessoa/dataInscricao são intocáveis por ele.
+      // O próprio usuário só edita dados de contato; status/papel/cpf/tipoPessoa/dataInscricao/
+      // senhaProvisoria são intocáveis por essa via (senhaProvisoria só muda por trocaSenhaProvisoria()).
       allow update: if isDiretoria()
-        || (dono(uid) && camposNaoAlterados(['status', 'papel', 'cpf', 'tipoPessoa', 'dataInscricao', 'uid']));
+        || (dono(uid) && trocaSenhaProvisoria())
+        || (dono(uid) && camposNaoAlterados(['status', 'papel', 'cpf', 'tipoPessoa', 'dataInscricao', 'uid', 'senhaProvisoria']));
 
       allow delete: if isDiretoria();
+    }
+
+    // Espelho público restrito de pessoas/{uid} (nome, fotoUrl, status, papel),
+    // usado pela credencial digital e sua validação por QR code.
+    match /credenciais/{uid} {
+      allow read: if isParceiro() || isDiretoria();
+
+      // Escrita só acontece via sincronização client-side feita pelo próprio
+      // dono do documento (perfil) ou pela diretoria (aprovação/status/papel);
+      // um parceiro nunca escreve aqui.
+      allow write: if dono(uid) || isDiretoria();
     }
 
     match /cards/{cardId} {
@@ -50,6 +78,34 @@ service cloud.firestore {
     match /eventos/{eventoId} {
       allow read: if resource.data.visibilidade == 'publico' || isDiretoria();
       allow write: if false;
+    }
+
+    match /mensagens/{mensagemId} {
+      allow read: if autenticado() && (resource.data.remetenteUid == request.auth.uid || isDiretoria());
+
+      allow create: if dono(request.resource.data.remetenteUid)
+        && request.resource.data.status == 'nova'
+        && request.resource.data.isTarefa == false
+        && request.resource.data.responsavelUid == null
+        && request.resource.data.retorno == null;
+
+      // Diretoria só altera campos de gestão (isTarefa, status, responsavel*,
+      // retorno, dataRetorno, historico); conteúdo original do associado é intocável.
+      allow update: if isDiretoria()
+        && camposNaoAlterados(['remetenteUid', 'remetenteNome', 'assunto', 'texto', 'dataEnvio']);
+
+      allow delete: if false; // nunca apagar, só mudar status
+    }
+
+    match /arvores/{arvoreId} {
+      allow create: if isDiretoria() && request.resource.data.uid == request.auth.uid;
+      allow read: if autenticado();
+
+      // Diretoria edita só os campos do cadastro (espécie, diâmetro, estado,
+      // observações); uid/geoponto/fotoUrl/criadoEm são imutáveis após a criação.
+      allow update: if isDiretoria() && camposNaoAlterados(['uid', 'geoponto', 'fotoUrl', 'criadoEm']);
+
+      allow delete: if isDiretoria();
     }
   }
 }

@@ -1,0 +1,78 @@
+<div class="detalhe-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Detalhe da Mensagem</h1>
+  </div>
+
+  @if (mensagem(); as mensagem) {
+    <mat-card class="mensagem-card">
+      <div class="mensagem-header">
+        <strong>{{ mensagem.assunto }}</strong>
+        <span class="status-chip" [ngClass]="statusCor[mensagem.status]">{{ statusLabel[mensagem.status] }}</span>
+      </div>
+      <p class="mensagem-meta">{{ mensagem.remetenteNome }} • {{ formatarData(mensagem.dataEnvio) }}</p>
+      <p class="mensagem-texto">{{ mensagem.texto }}</p>
+    </mat-card>
+
+    <mat-card class="gestao-card">
+      <h3>Gestão</h3>
+
+      @if (!mensagem.isTarefa) {
+        <button mat-flat-button color="accent" [disabled]="processando()" (click)="converterEmTarefa()">
+          <mat-icon>assignment</mat-icon>
+          Converter em tarefa
+        </button>
+      } @else {
+        <p class="tarefa-flag"><mat-icon inline>assignment_turned_in</mat-icon> Esta mensagem é uma tarefa</p>
+      }
+
+      <div class="gestao-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select [value]="mensagem.status" [disabled]="processando()" (selectionChange)="alterarStatus($event.value)">
+            @for (status of statusDisponiveis; track status) {
+              <mat-option [value]="status">{{ statusLabel[status] }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Responsável</mat-label>
+          <mat-select [value]="mensagem.responsavelUid" [disabled]="processando()" (selectionChange)="alterarResponsavel($event.value)">
+            <mat-option [value]="null">Sem responsável</mat-option>
+            @for (pessoa of diretoria(); track pessoa.uid) {
+              <mat-option [value]="pessoa.uid">{{ pessoa.nomeCompleto }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <form [formGroup]="retornoForm" (ngSubmit)="salvarRetorno()" class="retorno-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Retorno ao associado</mat-label>
+          <textarea matInput formControlName="retorno" rows="4"></textarea>
+        </mat-form-field>
+        <div class="form-acoes">
+          <button mat-flat-button color="primary" type="submit" [disabled]="processando()">Salvar retorno</button>
+        </div>
+      </form>
+    </mat-card>
+
+    <mat-card class="historico-card">
+      <h3>Histórico</h3>
+      <div class="historico-lista">
+        @for (entrada of mensagem.historico; track $index) {
+          <div class="historico-item">
+            <div class="historico-topo">
+              <strong>{{ entrada.autorNome }}</strong>
+              <span>{{ formatarData(entrada.data) }}</span>
+            </div>
+            <p>{{ entrada.acao }}@if (entrada.comentario) { — {{ entrada.comentario }} }</p>
+          </div>
+        }
+      </div>
+    </mat-card>
+  } @else {
+    <p class="vazio">Carregando...</p>
+  }
+</div>

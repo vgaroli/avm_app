@@ -1,0 +1,32 @@
+<div class="lista-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Árvores Cadastradas</h1>
+  </div>
+
+  @if (arvores$ | async; as arvores) {
+    @if (arvores.length > 0) {
+      <div class="grid">
+        @for (arvore of arvores; track arvore.id) {
+          <a class="arvore-card" [routerLink]="['/arvores', arvore.id, 'editar']">
+            <img [src]="arvore.fotoUrl" [alt]="arvore.especie ?? 'Árvore sem espécie identificada'" class="thumbnail" />
+            <div class="arvore-info">
+              <strong>{{ arvore.especie ?? 'Não identificada' }}</strong>
+              <div class="badges">
+                <span class="badge" [class]="'badge-' + arvore.estado">{{ ESTADO_ARVORE_LABEL[arvore.estado] }}</span>
+                <span class="badge badge-status" [class.badge-validado]="arvore.status === 'validado'">
+                  {{ arvore.status === 'validado' ? 'Validado' : 'Pendente' }}
+                </span>
+              </div>
+              <span class="data">{{ arvore.criadoEm.toDate() | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          </a>
+        }
+      </div>
+    } @else {
+      <p class="vazio">Nenhuma árvore cadastrada ainda.</p>
+    }
+  } @else {
+    <p class="carregando">Carregando árvores...</p>
+  }
+</div>

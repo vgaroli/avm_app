@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, Injector } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
@@ -10,17 +10,25 @@ import { SwUpdate } from '@angular/service-worker';
 })
 export class App implements OnInit {
   protected readonly title = signal('avm_app');
-  private swUpdate = inject(SwUpdate);
+  private readonly swUpdate = inject(SwUpdate);
+  private readonly injector = inject(Injector);
 
   ngOnInit() {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.subscribe((event) => {
         if (event.type === 'VERSION_READY') {
-          if (confirm('Há uma nova versão do app disponível! Deseja atualizar agora?')) {
-            window.location.reload();
-          }
+          this.avisarNovaVersao();
         }
       });
     }
+  }
+
+  // Carregado sob demanda: MatSnackBar traz o overlay do CDK, que só vale a
+  // pena baixar no raro caso em que uma atualização realmente está disponível.
+  private async avisarNovaVersao(): Promise<void> {
+    const { MatSnackBar } = await import('@angular/material/snack-bar');
+    const snackBar = this.injector.get(MatSnackBar);
+    const referencia = snackBar.open('Há uma nova versão do app disponível.', 'Atualizar');
+    referencia.onAction().subscribe(() => window.location.reload());
   }
 }

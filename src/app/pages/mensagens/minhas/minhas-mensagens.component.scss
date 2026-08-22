@@ -1,0 +1,123 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.mensagem-container {
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+
+  .titulo-bloco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    app-back-button {
+      color: $primary-color;
+    }
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+
+  button {
+    border-radius: $border-radius;
+    flex-shrink: 0;
+  }
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mensagem-item {
+  border-radius: $border-radius;
+  padding: 16px;
+}
+
+.mensagem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  strong {
+    color: $text-dark;
+  }
+}
+
+.status-chip {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+
+  &.card-primary { background-color: #3b82f6; }
+  &.card-accent { background-color: #8b5cf6; }
+  &.card-info { background-color: #0ea5e9; }
+  &.card-warning { background-color: #f59e0b; }
+  &.card-success { background-color: #10b981; }
+  &.card-danger { background-color: #ef4444; }
+  &.card-secondary { background-color: #64748b; }
+}
+
+.mensagem-data {
+  color: $text-light;
+  font-size: 0.75rem;
+  margin: 4px 0 8px 0;
+}
+
+.mensagem-texto {
+  color: $text-dark;
+  font-size: 0.9rem;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.retorno {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #eff6ff;
+  border-radius: $border-radius;
+
+  mat-icon {
+    color: $primary-color;
+    flex-shrink: 0;
+  }
+
+  strong {
+    color: $primary-color;
+    font-size: 0.85rem;
+  }
+
+  p {
+    margin: 4px 0 0 0;
+    color: $text-dark;
+    font-size: 0.88rem;
+    white-space: pre-wrap;
+  }
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

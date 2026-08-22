@@ -1,0 +1,111 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.admin-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+
+  .titulo-bloco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    app-back-button {
+      color: $primary-color;
+    }
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.filtros {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+
+  mat-form-field {
+    min-width: 220px;
+  }
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mensagem-item {
+  border-radius: $border-radius;
+  padding: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.mensagem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  strong {
+    color: $text-dark;
+  }
+}
+
+.status-chip {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+
+  &.card-primary { background-color: #3b82f6; }
+  &.card-accent { background-color: #8b5cf6; }
+  &.card-info { background-color: #0ea5e9; }
+  &.card-warning { background-color: #f59e0b; }
+  &.card-success { background-color: #10b981; }
+  &.card-danger { background-color: #ef4444; }
+  &.card-secondary { background-color: #64748b; }
+}
+
+.mensagem-meta {
+  color: $text-light;
+  font-size: 0.8rem;
+  margin: 4px 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

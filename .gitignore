@@ -6,6 +6,9 @@
 /out-tsc
 /bazel-out
 
+# Gerado por scripts/generate-version.js a partir do package.json
+/src/environments/version.ts
+
 # Node
 /node_modules
 npm-debug.log

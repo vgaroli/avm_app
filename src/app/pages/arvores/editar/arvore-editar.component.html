@@ -1,0 +1,33 @@
+<div class="arvore-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Editar Árvore</h1>
+  </div>
+
+  @if (carregando()) {
+    <p class="carregando">Carregando...</p>
+  } @else if (!arvore()) {
+    <p class="erro">{{ erro() }}</p>
+  } @else {
+    <mat-card class="form-card">
+      <img [src]="arvore()!.fotoUrl" alt="Foto da árvore" class="foto-atual" />
+
+      <form (ngSubmit)="salvar()" class="form-grid">
+        <app-arvore-campos-form [formGroup]="form" />
+
+        @if (erro()) {
+          <p class="erro">{{ erro() }}</p>
+        }
+
+        <div class="form-acoes">
+          <button mat-button type="button" color="warn" [disabled]="excluindo() || salvando()" (click)="excluir()">
+            {{ excluindo() ? 'Excluindo...' : 'Excluir registro' }}
+          </button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="salvando() || excluindo()">
+            {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
+          </button>
+        </div>
+      </form>
+    </mat-card>
+  }
+</div>

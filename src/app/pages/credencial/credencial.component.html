@@ -1,0 +1,36 @@
+<div class="credencial-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Minha Credencial</h1>
+  </div>
+
+  @if (pessoa(); as p) {
+    <mat-card class="credencial-card">
+      <div class="credencial-topo">
+        @if (p.fotoUrl) {
+          <img [src]="p.fotoUrl" alt="Foto de {{ p.nomeCompleto }}" class="foto" />
+        } @else {
+          <div class="foto foto-placeholder">{{ iniciaisNome() }}</div>
+        }
+
+        <div class="dados">
+          <strong class="nome">{{ p.nomeCompleto }}</strong>
+          <span class="papel-badge">{{ papelLabel() }}</span>
+          <span class="numero">Nº {{ numeroAssociado() }}</span>
+        </div>
+      </div>
+
+      <div class="divisor"></div>
+
+      <div class="qr-bloco">
+        <qrcode [qrdata]="p.uid" [width]="200" errorCorrectionLevel="M" elementType="svg" />
+        <p class="qr-instrucao">
+          <mat-icon>qr_code_scanner</mat-icon>
+          Apresente este QR code para validação
+        </p>
+      </div>
+    </mat-card>
+  } @else {
+    <p class="vazio">Carregando credencial...</p>
+  }
+</div>

@@ -1,0 +1,32 @@
+<div class="mensagem-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Fale com a AVM</h1>
+  </div>
+
+  <mat-card class="form-card">
+    <p class="descricao">Envie sua dúvida, sugestão ou solicitação para a diretoria. Você pode acompanhar a resposta em "Minhas Mensagens".</p>
+
+    <form [formGroup]="form" (ngSubmit)="enviar()" class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Assunto</mat-label>
+        <input matInput formControlName="assunto" placeholder="Ex: Dúvida sobre boleto" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Mensagem</mat-label>
+        <textarea matInput formControlName="texto" rows="6" placeholder="Descreva sua solicitação"></textarea>
+      </mat-form-field>
+
+      @if (erro()) {
+        <p class="erro">{{ erro() }}</p>
+      }
+
+      <div class="form-acoes">
+        <button mat-flat-button color="primary" type="submit" [disabled]="enviando()">
+          {{ enviando() ? 'Enviando...' : 'Enviar mensagem' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,121 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.credencial-container {
+  padding: 20px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.credencial-card {
+  border-radius: $border-radius;
+  padding: 24px 20px;
+  background: linear-gradient(135deg, $primary-color, #3b82f6);
+  color: #fff;
+}
+
+.credencial-topo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.foto {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.foto-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.15);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.dados {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+
+  .nome {
+    font-size: 1.1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .papel-badge {
+    align-self: flex-start;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .numero {
+    font-size: 0.8rem;
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+  }
+}
+
+.divisor {
+  border-top: 1px dashed rgba(255, 255, 255, 0.4);
+  margin: 20px 0;
+}
+
+.qr-bloco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  qrcode {
+    background-color: #fff;
+    padding: 12px;
+    border-radius: 12px;
+    line-height: 0;
+  }
+
+  .qr-instrucao {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+}
+
+.vazio {
+  color: $text-light;
+  text-align: center;
+  padding: 24px 0;
+}

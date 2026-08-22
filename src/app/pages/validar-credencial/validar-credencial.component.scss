@@ -1,0 +1,150 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$success: #10b981;
+$danger: #ef4444;
+$warning: #f59e0b;
+$border-radius: 16px;
+
+.validar-container {
+  padding: 20px;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.scanner-bloco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  zxing-scanner {
+    display: block;
+    width: 100%;
+    border-radius: $border-radius;
+    overflow: hidden;
+  }
+
+  .instrucao {
+    color: $text-light;
+    font-size: 0.9rem;
+    text-align: center;
+    margin: 0;
+  }
+}
+
+.carregando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 0;
+  color: $text-light;
+
+  mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.aviso {
+  border-radius: $border-radius;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+
+  &.aviso-erro {
+    background-color: #fee2e2;
+    color: #991b1b;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+}
+
+.resultado-card {
+  border-radius: $border-radius;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+
+  &.ok {
+    background: linear-gradient(135deg, $success, #059669);
+  }
+
+  &.alerta {
+    background: linear-gradient(135deg, $danger, #b91c1c);
+  }
+
+  .foto {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .foto-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .nome {
+    font-size: 1.15rem;
+    text-align: center;
+  }
+
+  .papel {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .selo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+}
+
+.btn-escanear {
+  border-radius: $border-radius;
+  align-self: center;
+}
