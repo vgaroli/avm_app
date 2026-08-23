@@ -35,6 +35,9 @@
           <p class="gps-coords">Lat: {{ lat()?.toFixed(6) }} • Lng: {{ lng()?.toFixed(6) }}</p>
           @if (statusPerimetro() === 'verificando') {
             <p class="gps-status">Verificando se o ponto está em Vila Mariana...</p>
+          } @else if (erroPerimetro()) {
+            <p class="erro">{{ erroPerimetro() }}</p>
+            <button mat-button type="button" (click)="tentarNovamentePerimetro()">Tentar novamente</button>
           } @else if (statusPerimetro() === 'fora') {
             <p class="erro">Este registro parece estar fora de Vila Mariana. Verifique sua localização.</p>
           }
@@ -50,7 +53,7 @@
       }
     </section>
 
-    <form (ngSubmit)="salvar()" class="form-grid">
+    <div class="form-grid">
       <app-arvore-campos-form [formGroup]="form" />
 
       @if (erro()) {
@@ -58,10 +61,10 @@
       }
 
       <div class="form-acoes">
-        <button mat-flat-button color="primary" type="submit" [disabled]="!podeSalvar()">
+        <button mat-flat-button color="primary" type="button" [disabled]="!podeSalvar()" (click)="salvar()">
           {{ enviando() ? 'Salvando...' : 'Salvar registro' }}
         </button>
       </div>
-    </form>
+    </div>
   </mat-card>
 </div>

@@ -18,7 +18,7 @@
     <mat-card class="form-card">
       <img [src]="arvore()!.fotoUrl" alt="Foto da árvore" class="foto-atual" />
 
-      <form (ngSubmit)="salvar()" class="form-grid">
+      <div class="form-grid">
         <app-arvore-campos-form [formGroup]="form" />
 
         @if (erro()) {
@@ -29,11 +29,11 @@
           <button mat-button type="button" color="warn" [disabled]="excluindo() || salvando()" (click)="excluir()">
             {{ excluindo() ? 'Excluindo...' : 'Excluir registro' }}
           </button>
-          <button mat-flat-button color="primary" type="submit" [disabled]="salvando() || excluindo()">
+          <button mat-flat-button color="primary" type="button" [disabled]="salvando() || excluindo()" (click)="salvar()">
             {{ salvando() ? 'Salvando...' : 'Salvar alterações' }}
           </button>
         </div>
-      </form>
+      </div>
     </mat-card>
   }
 </div>

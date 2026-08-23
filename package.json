@@ -1,6 +1,6 @@
 {
   "name": "avm-app",
-  "version": "0.8.6",
+  "version": "0.8.15",
   "scripts": {
     "ng": "ng",
     "prestart": "node scripts/generate-version.js",

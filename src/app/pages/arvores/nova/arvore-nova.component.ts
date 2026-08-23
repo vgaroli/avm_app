@@ -34,6 +34,7 @@ export class ArvoreNovaComponent {
   readonly lng = signal<number | null>(null);
 
   readonly statusPerimetro = signal<StatusPerimetro | null>(null);
+  readonly erroPerimetro = signal<string | null>(null);
 
   readonly enviando = signal(false);
   readonly erro = signal<string | null>(null);
@@ -79,12 +80,26 @@ export class ArvoreNovaComponent {
 
   private async verificarPerimetro(lat: number, lng: number): Promise<void> {
     this.statusPerimetro.set('verificando');
+    this.erroPerimetro.set(null);
     try {
       const dentro = await dentroDoPerimetroVilaMariana(lat, lng);
       this.statusPerimetro.set(dentro ? 'dentro' : 'fora');
-    } catch {
+    } catch (erro) {
+      console.error('[ArvoreNova] Falha ao verificar o perímetro', erro);
       this.statusPerimetro.set('fora');
+      this.erroPerimetro.set(
+        'Não foi possível confirmar se você está em Vila Mariana (falha ao carregar o mapa da região). Verifique sua conexão e tente novamente.',
+      );
     }
+  }
+
+  tentarNovamentePerimetro(): void {
+    const lat = this.lat();
+    const lng = this.lng();
+    if (lat === null || lng === null) {
+      return;
+    }
+    void this.verificarPerimetro(lat, lng);
   }
 
   selecionarFoto(evento: Event): void {
@@ -124,10 +139,39 @@ export class ArvoreNovaComponent {
         lng,
       );
       this.router.navigateByUrl('/');
-    } catch {
-      this.erro.set('Não foi possível salvar o registro da árvore. Tente novamente.');
+    } catch (erro) {
+      console.error('[ArvoreNova] Falha ao salvar o registro da árvore', erro);
+      this.erro.set(this.mensagemErroSalvar(erro));
     } finally {
       this.enviando.set(false);
     }
+  }
+
+  private mensagemErroSalvar(erro: unknown): string {
+    const codigo = this.codigoErro(erro);
+
+    if (codigo === 'storage/unauthorized' || codigo === 'permission-denied') {
+      return 'Sem permissão para registrar a árvore. Confirme se seu cadastro está ativo como diretoria e tente novamente.';
+    }
+    if (codigo === 'storage/canceled' || codigo === 'storage/retry-limit-exceeded') {
+      return 'O envio da foto foi interrompido (conexão instável). Verifique sua internet e tente novamente.';
+    }
+    if (codigo === 'storage/quota-exceeded') {
+      return 'Limite de armazenamento de fotos excedido. Avise a diretoria.';
+    }
+    if (codigo === 'unavailable' || !navigator.onLine) {
+      return 'Sem conexão com a internet no momento do envio. Verifique sua conexão e tente novamente.';
+    }
+
+    const mensagem = erro instanceof Error ? erro.message : null;
+    return mensagem
+      ? `Não foi possível salvar o registro da árvore (${mensagem}). Tente novamente.`
+      : 'Não foi possível salvar o registro da árvore. Tente novamente.';
+  }
+
+  private codigoErro(erro: unknown): string | null {
+    return erro && typeof erro === 'object' && 'code' in erro && typeof (erro as { code: unknown }).code === 'string'
+      ? (erro as { code: string }).code
+      : null;
   }
 }
