@@ -97,6 +97,7 @@
                   <input matInput formControlName="fotoUrl" />
                 </mat-form-field>
                 <mat-checkbox formControlName="aceitaWhatsapp">Aceita entrar no grupo de WhatsApp</mat-checkbox>
+                <mat-checkbox formControlName="podeRegistrarArvores">Pode registrar árvores (Arvoredo do Bairro)</mat-checkbox>
                 <mat-form-field appearance="outline">
                   <mat-label>Observações da diretoria</mat-label>
                   <textarea matInput formControlName="observacoesDiretoria" rows="2"></textarea>
@@ -121,6 +122,7 @@
                 <span>Pagamento: {{ pessoa.formaPagamento === 'avista' ? 'À vista - R$ 330' : 'Parcelado - 12x R$ 33' }}</span>
                 <span>WhatsApp: {{ pessoa.aceitaWhatsapp ? 'Sim' : 'Não' }}</span>
                 <span>Papel: {{ pessoa.papel }}</span>
+                <span>Registrar árvores: {{ pessoa.podeRegistrarArvores ? 'Sim' : 'Não' }}</span>
                 @if (pessoa.observacoesDiretoria) {
                   <span>Obs.: {{ pessoa.observacoesDiretoria }}</span>
                 }

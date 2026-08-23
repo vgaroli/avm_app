@@ -33,6 +33,13 @@ service cloud.firestore {
       return !request.resource.data.diff(resource.data).affectedKeys().hasAny(campos);
     }
 
+    function podeRegistrarArvoresDoRequisitante() {
+      return autenticado()
+        && exists(/databases/$(database)/documents/pessoas/$(request.auth.uid))
+        && pessoaDoRequisitante().status == 'ativo'
+        && pessoaDoRequisitante().podeRegistrarArvores == true;
+    }
+
     // Troca de senha provisória: o próprio dono só pode virar senhaProvisoria
     // de true para false, e nada mais pode mudar nessa mesma operação.
     function trocaSenhaProvisoria() {
@@ -98,12 +105,14 @@ service cloud.firestore {
     }
 
     match /arvores/{arvoreId} {
-      allow create: if isDiretoria() && request.resource.data.uid == request.auth.uid;
+      allow create: if (isDiretoria() || podeRegistrarArvoresDoRequisitante())
+        && request.resource.data.uid == request.auth.uid;
       allow read: if autenticado();
 
-      // Diretoria edita só os campos do cadastro (espécie, diâmetro, estado,
-      // observações); uid/geoponto/fotoUrl/criadoEm são imutáveis após a criação.
-      allow update: if isDiretoria() && camposNaoAlterados(['uid', 'geoponto', 'fotoUrl', 'criadoEm']);
+      // uid/geoponto/precisaoGpsMetros/criadoEm são imutáveis após a criação.
+      // 'fotos' e 'moderacao' ficam de fora para permitir reclassificação de
+      // tipo de foto e validação de espécie pela diretoria na moderação.
+      allow update: if isDiretoria() && camposNaoAlterados(['uid', 'geoponto', 'precisaoGpsMetros', 'criadoEm']);
 
       allow delete: if isDiretoria();
     }

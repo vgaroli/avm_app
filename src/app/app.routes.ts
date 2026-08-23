@@ -4,6 +4,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
 import { statusAtivoGuard } from './core/guards/status-ativo.guard';
 import { senhaProvisoriaGuard } from './core/guards/senha-provisoria.guard';
+import { podeRegistrarArvoresGuard } from './core/guards/pode-registrar-arvores.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [senhaProvisoriaGuard] },
@@ -74,11 +75,16 @@ export const routes: Routes = [
   {
     path: 'arvores/nova',
     loadComponent: () => import('./pages/arvores/nova/arvore-nova.component').then((m) => m.ArvoreNovaComponent),
-    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
   },
   {
     path: 'arvores/:id/editar',
     loadComponent: () => import('./pages/arvores/editar/arvore-editar.component').then((m) => m.ArvoreEditarComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+  },
+  {
+    path: 'arvores/:id/moderar',
+    loadComponent: () => import('./pages/arvores/moderar/arvore-moderar.component').then((m) => m.ArvoreModerarComponent),
     canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
   },
   {

@@ -16,7 +16,14 @@
     <p class="erro">{{ erro() }}</p>
   } @else {
     <mat-card class="form-card">
-      <img [src]="arvore()!.fotoUrl" alt="Foto da árvore" class="foto-atual" />
+      <div class="fotos-atuais">
+        @for (foto of fotosArvore(); track foto.url) {
+          <div class="foto-item">
+            <img [src]="foto.url" [alt]="TIPO_FOTO_ARVORE_LABEL[foto.tipo]" />
+            <span class="foto-tipo">{{ TIPO_FOTO_ARVORE_LABEL[foto.tipo] }}</span>
+          </div>
+        }
+      </div>
 
       <div class="form-grid">
         <app-arvore-campos-form [formGroup]="form" />

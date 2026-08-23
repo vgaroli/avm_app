@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ArvoresService } from '../../../core/services/arvores.service';
 import { ESTADO_ARVORE_LABEL } from '../../../core/models/arvore.model';
+import { obterFotoPrincipal } from '../../../core/utils/arvore-foto.util';
 import { BackButtonComponent } from '../../../shared/components/back-button.component';
 import { MapaArvoresComponent } from '../../../shared/components/mapa-arvores/mapa-arvores.component';
 
@@ -22,6 +23,7 @@ export class ArvoreListaComponent {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly ESTADO_ARVORE_LABEL = ESTADO_ARVORE_LABEL;
+  protected readonly obterFotoPrincipal = obterFotoPrincipal;
   readonly arvores$ = this.arvoresService.listarTodas$;
 
   readonly arvoreDestacadaId = this.route.snapshot.queryParamMap.get('destacar') ?? undefined;

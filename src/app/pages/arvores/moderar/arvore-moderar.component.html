@@ -1,0 +1,91 @@
+<div class="arvore-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Moderar Árvore</h1>
+  </div>
+
+  @if (carregando()) {
+    <p class="carregando">Carregando...</p>
+  } @else if (!arvore()) {
+    <p class="erro">{{ erro() }}</p>
+  } @else {
+    <mat-card class="form-card">
+      @if (jaValidada()) {
+        <p class="aviso">Este registro já foi validado. Você pode revisar e salvar novamente se necessário.</p>
+      }
+
+      <h2>Fotos</h2>
+      <div class="fotos-grid">
+        @for (foto of fotosEditaveis(); track foto.url; let i = $index) {
+          <div class="foto-item">
+            <img [src]="foto.url" [alt]="TIPO_FOTO_ARVORE_LABEL[foto.tipo]" />
+            <mat-form-field appearance="outline" class="tipo-select">
+              <mat-label>Tipo</mat-label>
+              <mat-select [value]="foto.tipo" (selectionChange)="alterarTipoFoto(i, $event.value)">
+                @for (tipo of TIPOS_FOTO; track tipo) {
+                  <mat-option [value]="tipo">{{ TIPO_FOTO_ARVORE_LABEL[tipo] }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        }
+      </div>
+
+      <div class="bloco-plantnet">
+        <button
+          mat-flat-button
+          color="primary"
+          type="button"
+          [disabled]="consultandoPlantnet() || !fotosEditaveis().length"
+          (click)="consultarPlantnet()"
+        >
+          @if (consultandoPlantnet()) {
+            <mat-spinner diameter="18" />
+            Consultando...
+          } @else {
+            Consultar Pl@ntNet
+          }
+        </button>
+
+        @if (sugestoes().length) {
+          <h2>Sugestões</h2>
+          <div class="sugestoes-lista">
+            @for (sugestao of sugestoes(); track sugestao.nomeCientifico; let i = $index) {
+              <button
+                type="button"
+                class="sugestao-item"
+                [class.selecionada]="sugestaoSelecionadaIndex() === i"
+                (click)="selecionarSugestao(i)"
+              >
+                <span class="sugestao-nome">{{ sugestao.nomeCientifico }}</span>
+                @if (sugestao.nomesComuns.length) {
+                  <span class="sugestao-comuns">{{ sugestao.nomesComuns.join(', ') }}</span>
+                }
+                <span class="sugestao-confianca">{{ (sugestao.confianca * 100).toFixed(0) }}% confiança</span>
+              </button>
+            }
+          </div>
+        }
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nome científico confirmado</mat-label>
+          <input matInput [formControl]="especieCientificaControl" placeholder="Preenchido pela sugestão ou digite manualmente" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-grid">
+        <app-arvore-campos-form [formGroup]="form" />
+
+        @if (erro()) {
+          <p class="erro">{{ erro() }}</p>
+        }
+
+        <div class="form-acoes">
+          <button mat-flat-button color="primary" type="button" [disabled]="validando()" (click)="validar()">
+            {{ validando() ? 'Validando...' : 'Validar registro' }}
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  }
+</div>

@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import * as L from 'leaflet';
 import { Arvore, ESTADO_ARVORE_LABEL } from '../../../core/models/arvore.model';
+import { obterFotoPrincipal } from '../../../core/utils/arvore-foto.util';
+import { obterPoligonoVilaMariana } from '../../../core/utils/geofence.util';
 
 const ZOOM_PADRAO = 15;
 const ZOOM_DESTAQUE = 17;
@@ -31,8 +33,12 @@ export class MapaArvoresComponent {
   readonly arvoresComLocalizacao = computed(() => this.arvores().filter((arvore) => !!arvore.geoponto));
 
   readonly camadasMarcadores = signal<L.Layer[]>([]);
+  private readonly camadaPerimetro = signal<L.Layer | null>(null);
 
-  readonly camadas = computed<L.Layer[]>(() => [this.camadaBase, ...this.camadasMarcadores()]);
+  readonly camadas = computed<L.Layer[]>(() => {
+    const perimetro = this.camadaPerimetro();
+    return [this.camadaBase, ...(perimetro ? [perimetro] : []), ...this.camadasMarcadores()];
+  });
 
   readonly centroMapa = computed<L.LatLng>(() => {
     const destacada = this.arvoresComLocalizacao().find((arvore) => arvore.id === this.arvoreDestacadaId());
@@ -46,6 +52,8 @@ export class MapaArvoresComponent {
   readonly zoomMapa = computed(() => (this.arvoreDestacadaId() ? ZOOM_DESTAQUE : ZOOM_PADRAO));
 
   constructor(private readonly router: Router) {
+    this.carregarPerimetro();
+
     effect(() => {
       const marcadoresPorId = new Map<string, L.Marker>();
       const camadas = this.arvoresComLocalizacao().map((arvore) => {
@@ -75,6 +83,18 @@ export class MapaArvoresComponent {
     this.mapa.set(mapa);
   }
 
+  private async carregarPerimetro(): Promise<void> {
+    try {
+      const poligono = await obterPoligonoVilaMariana();
+      const camada = L.geoJSON(poligono, {
+        style: { color: '#1e3a8a', weight: 2, fill: false, dashArray: '6 4' },
+      });
+      this.camadaPerimetro.set(camada);
+    } catch (erro) {
+      console.error('[MapaArvores] Falha ao carregar o contorno de Vila Mariana', erro);
+    }
+  }
+
   private criarMarcador(arvore: Arvore): L.Marker {
     const posicao = L.latLng(arvore.geoponto.latitude, arvore.geoponto.longitude);
     const icone = L.divIcon({
@@ -94,10 +114,13 @@ export class MapaArvoresComponent {
     const container = document.createElement('div');
     container.className = 'popup-arvore';
 
-    const img = document.createElement('img');
-    img.src = arvore.fotoUrl;
-    img.alt = arvore.especie ?? 'Árvore sem espécie identificada';
-    container.appendChild(img);
+    const fotoPrincipal = obterFotoPrincipal(arvore);
+    if (fotoPrincipal) {
+      const img = document.createElement('img');
+      img.src = fotoPrincipal;
+      img.alt = arvore.especie ?? 'Árvore sem espécie identificada';
+      container.appendChild(img);
+    }
 
     const especie = document.createElement('strong');
     especie.textContent = arvore.especie ?? 'Não identificada';

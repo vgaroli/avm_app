@@ -60,6 +60,7 @@ export class PessoasService {
         | 'aceitaWhatsapp'
         | 'fotoUrl'
         | 'observacoesDiretoria'
+        | 'podeRegistrarArvores'
       >
     >,
   ): Promise<void> {

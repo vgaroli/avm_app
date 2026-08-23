@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -8,7 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
 import { ArvoresService } from '../../../core/services/arvores.service';
-import { Arvore, EstadoArvore } from '../../../core/models/arvore.model';
+import { Arvore, EstadoArvore, TIPO_FOTO_ARVORE_LABEL } from '../../../core/models/arvore.model';
+import { obterFotosArvore } from '../../../core/utils/arvore-foto.util';
 import { BackButtonComponent } from '../../../shared/components/back-button.component';
 import { ArvoreCamposFormComponent, ArvoreCamposFormGroup } from '../shared/arvore-campos-form.component';
 
@@ -28,11 +29,18 @@ export class ArvoreEditarComponent implements OnInit {
 
   private readonly id = this.route.snapshot.paramMap.get('id')!;
 
+  protected readonly TIPO_FOTO_ARVORE_LABEL = TIPO_FOTO_ARVORE_LABEL;
+
   readonly arvore = signal<Arvore | null>(null);
   readonly carregando = signal(true);
   readonly salvando = signal(false);
   readonly excluindo = signal(false);
   readonly erro = signal<string | null>(null);
+
+  readonly fotosArvore = computed(() => {
+    const arvore = this.arvore();
+    return arvore ? obterFotosArvore(arvore) : [];
+  });
 
   readonly form: ArvoreCamposFormGroup = this.fb.nonNullable.group({
     especie: [''],

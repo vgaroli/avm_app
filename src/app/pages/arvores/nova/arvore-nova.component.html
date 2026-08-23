@@ -8,20 +8,47 @@
     <p class="descricao">Fotografe a árvore, confirme a localização e preencha os dados básicos.</p>
 
     <section class="bloco-foto">
-      <h2>Foto</h2>
-      @if (fotoPreviewUrl()) {
-        <img [src]="fotoPreviewUrl()" alt="Prévia da foto da árvore" class="foto-preview" />
-        <label class="botao-foto" for="input-foto">
-          <mat-icon>photo_camera</mat-icon>
-          Tirar outra foto
-        </label>
-      } @else {
-        <label class="botao-foto botao-foto-vazio" for="input-foto">
-          <mat-icon>photo_camera</mat-icon>
-          Tirar foto da árvore
-        </label>
+      <h2>Fotos ({{ totalFotos() }}/5 — mínimo {{ MINIMO_FOTOS }})</h2>
+
+      <div class="abas-foto">
+        @for (tipo of TIPOS_FOTO; track tipo) {
+          <button type="button" class="aba-foto" [class.ativa]="tipoAtivo() === tipo" (click)="selecionarAba(tipo)">
+            @if (fotosPorTipo()[tipo]) {
+              <mat-icon>check_circle</mat-icon>
+            }
+            {{ TIPO_FOTO_ARVORE_LABEL[tipo] }}
+          </button>
+        }
+      </div>
+
+      @for (tipo of TIPOS_FOTO; track tipo) {
+        @if (tipoAtivo() === tipo) {
+          @if (previewsPorTipo()[tipo]; as preview) {
+            <img [src]="preview" [alt]="'Prévia — ' + TIPO_FOTO_ARVORE_LABEL[tipo]" class="foto-preview" />
+            <div class="foto-acoes">
+              <label class="botao-foto" [for]="'input-foto-' + tipo">
+                <mat-icon>photo_camera</mat-icon>
+                Tirar outra
+              </label>
+              <button mat-button type="button" color="warn" (click)="removerFoto(tipo)">Remover</button>
+            </div>
+          } @else {
+            <label class="botao-foto botao-foto-vazio" [for]="'input-foto-' + tipo" [class.desabilitado]="comprimindo() === tipo">
+              <mat-icon>photo_camera</mat-icon>
+              {{ comprimindo() === tipo ? 'Processando...' : 'Tirar foto — ' + TIPO_FOTO_ARVORE_LABEL[tipo] }}
+            </label>
+          }
+          <input
+            [id]="'input-foto-' + tipo"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            [disabled]="comprimindo() === tipo"
+            (change)="selecionarFoto($event, tipo)"
+            hidden
+          />
+        }
       }
-      <input id="input-foto" type="file" accept="image/*" capture="environment" (change)="selecionarFoto($event)" hidden />
     </section>
 
     <section class="bloco-gps">
@@ -33,6 +60,13 @@
         }
         @case ('sucesso') {
           <p class="gps-coords">Lat: {{ lat()?.toFixed(6) }} • Lng: {{ lng()?.toFixed(6) }}</p>
+          <p class="gps-status">Fique próximo à árvore para maior precisão do registro.</p>
+          @if (avisoPrecisaoGps()) {
+            <p class="aviso">
+              Localização pouco precisa (±{{ precisaoGpsMetros()?.toFixed(0) }}m). Aguarde alguns segundos ou mova-se
+              para um local mais aberto.
+            </p>
+          }
           @if (statusPerimetro() === 'verificando') {
             <p class="gps-status">Verificando se o ponto está em Vila Mariana...</p>
           } @else if (erroPerimetro()) {

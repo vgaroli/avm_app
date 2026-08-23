@@ -6,6 +6,8 @@ import {initializeApp} from "firebase-admin/app";
 import {getFirestore} from "firebase-admin/firestore";
 import {calendar_v3 as CalendarV3, google} from "googleapis";
 
+export {identificarEspecie} from "./identificarEspecie";
+
 // For cost control, limit concurrent containers for this function set.
 setGlobalOptions({maxInstances: 10});
 

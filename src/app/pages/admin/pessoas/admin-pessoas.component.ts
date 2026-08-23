@@ -60,6 +60,7 @@ export class AdminPessoasComponent {
     aceitaWhatsapp: [false],
     fotoUrl: [''],
     observacoesDiretoria: [''],
+    podeRegistrarArvores: [false],
   });
 
   papelDe(uid: string): Exclude<PapelPessoa, null> {
@@ -123,6 +124,7 @@ export class AdminPessoasComponent {
       aceitaWhatsapp: pessoa.aceitaWhatsapp ?? false,
       fotoUrl: pessoa.fotoUrl ?? '',
       observacoesDiretoria: pessoa.observacoesDiretoria ?? '',
+      podeRegistrarArvores: pessoa.podeRegistrarArvores ?? false,
     });
   }
 

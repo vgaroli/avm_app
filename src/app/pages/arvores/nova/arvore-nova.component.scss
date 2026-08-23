@@ -56,6 +56,45 @@ h2 {
   margin-bottom: 8px;
 }
 
+.abas-foto {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.aba-foto {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid $primary-color;
+  background: transparent;
+  color: $primary-color;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.ativa {
+    background: $primary-color;
+    color: #fff;
+  }
+}
+
+.foto-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
 .botao-foto {
   display: flex;
   align-items: center;
@@ -71,6 +110,11 @@ h2 {
   &.botao-foto-vazio {
     min-height: 120px;
   }
+
+  &.desabilitado {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 }
 
 .gps-status,
@@ -78,6 +122,12 @@ h2 {
   color: $text-light;
   font-size: 0.85rem;
   margin: 0;
+}
+
+.aviso {
+  color: #b45309;
+  font-size: 0.85rem;
+  margin: 4px 0;
 }
 
 .form-grid {

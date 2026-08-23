@@ -29,6 +29,8 @@ export interface Pessoa {
   papel: PapelPessoa;
   fotoUrl?: string;
   observacoesDiretoria?: string;
+  /** Concedido pela diretoria a associados individuais para registrar árvores (Arvoredo do Bairro) sem ser diretoria. */
+  podeRegistrarArvores?: boolean;
   /** true quando a senha foi definida pelo cadastro em massa e ainda precisa ser trocada pelo usuário. */
   senhaProvisoria?: boolean;
 }

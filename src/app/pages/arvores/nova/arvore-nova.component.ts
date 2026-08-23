@@ -5,14 +5,19 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { ArvoresService } from '../../../core/services/arvores.service';
-import { EstadoArvore } from '../../../core/models/arvore.model';
+import { ArvoresService, FotoParaEnviar } from '../../../core/services/arvores.service';
+import { EstadoArvore, TIPO_FOTO_ARVORE_LABEL, TipoFotoArvore } from '../../../core/models/arvore.model';
 import { dentroDoPerimetroVilaMariana } from '../../../core/utils/geofence.util';
+import { comprimirImagem } from '../../../core/utils/imagem.util';
 import { BackButtonComponent } from '../../../shared/components/back-button.component';
 import { ArvoreCamposFormComponent, ArvoreCamposFormGroup } from '../shared/arvore-campos-form.component';
 
 type StatusGps = 'aguardando' | 'sucesso' | 'negado' | 'erro';
 type StatusPerimetro = 'verificando' | 'dentro' | 'fora';
+
+const TIPOS_FOTO: TipoFotoArvore[] = ['inteira', 'folha', 'fruto', 'casca', 'flor'];
+const MINIMO_FOTOS = 2;
+const PRECISAO_GPS_LIMITE_METROS = 30;
 
 @Component({
   selector: 'app-arvore-nova',
@@ -26,12 +31,24 @@ export class ArvoreNovaComponent {
   private readonly arvoresService = inject(ArvoresService);
   private readonly router = inject(Router);
 
-  readonly foto = signal<File | null>(null);
-  readonly fotoPreviewUrl = signal<string | null>(null);
+  protected readonly TIPOS_FOTO = TIPOS_FOTO;
+  protected readonly TIPO_FOTO_ARVORE_LABEL = TIPO_FOTO_ARVORE_LABEL;
+  protected readonly MINIMO_FOTOS = MINIMO_FOTOS;
+
+  readonly fotosPorTipo = signal<Partial<Record<TipoFotoArvore, File>>>({});
+  readonly previewsPorTipo = signal<Partial<Record<TipoFotoArvore, string>>>({});
+  readonly tipoAtivo = signal<TipoFotoArvore>('inteira');
+  readonly comprimindo = signal<TipoFotoArvore | null>(null);
+
+  readonly totalFotos = computed(() => Object.keys(this.fotosPorTipo()).length);
 
   readonly statusGps = signal<StatusGps>('aguardando');
   readonly lat = signal<number | null>(null);
   readonly lng = signal<number | null>(null);
+  readonly precisaoGpsMetros = signal<number | null>(null);
+  readonly avisoPrecisaoGps = computed(
+    () => this.precisaoGpsMetros() !== null && this.precisaoGpsMetros()! > PRECISAO_GPS_LIMITE_METROS,
+  );
 
   readonly statusPerimetro = signal<StatusPerimetro | null>(null);
   readonly erroPerimetro = signal<string | null>(null);
@@ -40,7 +57,11 @@ export class ArvoreNovaComponent {
   readonly erro = signal<string | null>(null);
 
   readonly podeSalvar = computed(
-    () => !!this.foto() && this.statusGps() === 'sucesso' && this.statusPerimetro() === 'dentro' && !this.enviando(),
+    () =>
+      this.totalFotos() >= MINIMO_FOTOS &&
+      this.statusGps() === 'sucesso' &&
+      this.statusPerimetro() === 'dentro' &&
+      !this.enviando(),
   );
 
   readonly form: ArvoreCamposFormGroup = this.fb.nonNullable.group({
@@ -68,6 +89,7 @@ export class ArvoreNovaComponent {
         const lng = posicao.coords.longitude;
         this.lat.set(lat);
         this.lng.set(lng);
+        this.precisaoGpsMetros.set(posicao.coords.accuracy ?? null);
         this.statusGps.set('sucesso');
         this.verificarPerimetro(lat, lng);
       },
@@ -102,26 +124,62 @@ export class ArvoreNovaComponent {
     void this.verificarPerimetro(lat, lng);
   }
 
-  selecionarFoto(evento: Event): void {
+  selecionarAba(tipo: TipoFotoArvore): void {
+    this.tipoAtivo.set(tipo);
+  }
+
+  async selecionarFoto(evento: Event, tipo: TipoFotoArvore): Promise<void> {
     const input = evento.target as HTMLInputElement;
     const arquivo = input.files?.[0] ?? null;
-
-    const anterior = this.fotoPreviewUrl();
-    if (anterior) {
-      URL.revokeObjectURL(anterior);
+    input.value = '';
+    if (!arquivo) {
+      return;
     }
 
-    this.foto.set(arquivo);
-    this.fotoPreviewUrl.set(arquivo ? URL.createObjectURL(arquivo) : null);
+    this.comprimindo.set(tipo);
+    try {
+      const comprimido = await comprimirImagem(arquivo).catch(() => arquivo);
+
+      const previewAnterior = this.previewsPorTipo()[tipo];
+      if (previewAnterior) {
+        URL.revokeObjectURL(previewAnterior);
+      }
+
+      this.fotosPorTipo.update((atual) => ({ ...atual, [tipo]: comprimido }));
+      this.previewsPorTipo.update((atual) => ({ ...atual, [tipo]: URL.createObjectURL(comprimido) }));
+    } finally {
+      this.comprimindo.set(null);
+    }
+  }
+
+  removerFoto(tipo: TipoFotoArvore): void {
+    const preview = this.previewsPorTipo()[tipo];
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+    this.fotosPorTipo.update((atual) => {
+      const copia = { ...atual };
+      delete copia[tipo];
+      return copia;
+    });
+    this.previewsPorTipo.update((atual) => {
+      const copia = { ...atual };
+      delete copia[tipo];
+      return copia;
+    });
   }
 
   async salvar(): Promise<void> {
-    const arquivo = this.foto();
     const lat = this.lat();
     const lng = this.lng();
-    if (!arquivo || lat === null || lng === null || !this.podeSalvar()) {
+    if (lat === null || lng === null || !this.podeSalvar()) {
       return;
     }
+
+    const fotos: FotoParaEnviar[] = Object.entries(this.fotosPorTipo()).map(([tipo, arquivo]) => ({
+      tipo: tipo as TipoFotoArvore,
+      arquivo: arquivo as File,
+    }));
 
     this.enviando.set(true);
     this.erro.set(null);
@@ -134,9 +192,10 @@ export class ArvoreNovaComponent {
           estado: dados.estado,
           observacoes: dados.observacoes.trim(),
         },
-        arquivo,
+        fotos,
         lat,
         lng,
+        this.precisaoGpsMetros(),
       );
       this.router.navigateByUrl('/');
     } catch (erro) {
@@ -151,10 +210,10 @@ export class ArvoreNovaComponent {
     const codigo = this.codigoErro(erro);
 
     if (codigo === 'storage/unauthorized' || codigo === 'permission-denied') {
-      return 'Sem permissão para registrar a árvore. Confirme se seu cadastro está ativo como diretoria e tente novamente.';
+      return 'Sem permissão para registrar a árvore. Confirme se seu cadastro está ativo e autorizado a registrar árvores, e tente novamente.';
     }
     if (codigo === 'storage/canceled' || codigo === 'storage/retry-limit-exceeded') {
-      return 'O envio da foto foi interrompido (conexão instável). Verifique sua internet e tente novamente.';
+      return 'O envio das fotos foi interrompido (conexão instável). Verifique sua internet e tente novamente.';
     }
     if (codigo === 'storage/quota-exceeded') {
       return 'Limite de armazenamento de fotos excedido. Avise a diretoria.';
