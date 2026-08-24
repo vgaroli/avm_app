@@ -29,42 +29,40 @@
   </div>
 
   @if (arvores$ | async; as arvores) {
-    @if (arvores.length > 0) {
-      @if (modo() === 'grid') {
-        <div class="grid">
-          @for (arvore of arvores; track arvore.id) {
-            <div class="arvore-card">
-              <a class="arvore-card-link" [routerLink]="['/arvores', arvore.id, 'editar']">
-                <img
-                  [src]="obterFotoPrincipal(arvore)"
-                  [alt]="arvore.especie ?? 'Árvore sem espécie identificada'"
-                  class="thumbnail"
-                />
-                <div class="arvore-info">
-                  <strong>{{ arvore.especie ?? 'Não identificada' }}</strong>
-                  <div class="badges">
-                    <span class="badge" [class]="'badge-' + arvore.estado">{{ ESTADO_ARVORE_LABEL[arvore.estado] }}</span>
-                    <span class="badge badge-status" [class.badge-validado]="arvore.status === 'validado'">
-                      {{ arvore.status === 'validado' ? 'Validado' : 'Pendente' }}
-                    </span>
-                  </div>
-                  <span class="data">{{ arvore.criadoEm.toDate() | date: 'dd/MM/yyyy HH:mm' }}</span>
+    @if (modo() === 'mapa') {
+      <div class="mapa-wrapper">
+        <app-mapa-arvores [arvores]="arvores" [arvoreDestacadaId]="arvoreDestacadaId" />
+      </div>
+    } @else if (arvores.length > 0) {
+      <div class="grid">
+        @for (arvore of arvores; track arvore.id) {
+          <div class="arvore-card">
+            <a class="arvore-card-link" [routerLink]="['/arvores', arvore.id, 'editar']">
+              <img
+                [src]="obterFotoPrincipal(arvore)"
+                [alt]="arvore.especie ?? 'Árvore sem espécie identificada'"
+                class="thumbnail"
+              />
+              <div class="arvore-info">
+                <strong>{{ arvore.especie ?? 'Não identificada' }}</strong>
+                <div class="badges">
+                  <span class="badge" [class]="'badge-' + arvore.estado">{{ ESTADO_ARVORE_LABEL[arvore.estado] }}</span>
+                  <span class="badge badge-status" [class.badge-validado]="arvore.status === 'validado'">
+                    {{ arvore.status === 'validado' ? 'Validado' : 'Pendente' }}
+                  </span>
                 </div>
+                <span class="data">{{ arvore.criadoEm.toDate() | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+            </a>
+            @if (arvore.status === 'pendente') {
+              <a class="moderar-link" [routerLink]="['/arvores', arvore.id, 'moderar']">
+                <mat-icon>fact_check</mat-icon>
+                Moderar
               </a>
-              @if (arvore.status === 'pendente') {
-                <a class="moderar-link" [routerLink]="['/arvores', arvore.id, 'moderar']">
-                  <mat-icon>fact_check</mat-icon>
-                  Moderar
-                </a>
-              }
-            </div>
-          }
-        </div>
-      } @else {
-        <div class="mapa-wrapper">
-          <app-mapa-arvores [arvores]="arvores" [arvoreDestacadaId]="arvoreDestacadaId" />
-        </div>
-      }
+            }
+          </div>
+        }
+      </div>
     } @else {
       <p class="vazio">Nenhuma árvore cadastrada ainda.</p>
     }
