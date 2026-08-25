@@ -77,7 +77,7 @@ export const identificarEspecie = onCall(
     }
 
     const url =
-      `https://my-api.plantnet.org/v2/identify/all?api-key=${PLANTNET_API_KEY.value()}`;
+      `https://my-api.plantnet.org/v2/identify/all?api-key=${PLANTNET_API_KEY.value()}&lang=pt`;
     const respostaPlantnet = await fetch(url, {method: "POST", body: formData});
     if (!respostaPlantnet.ok) {
       logger.error("Falha na API Pl@ntNet", await respostaPlantnet.text());
