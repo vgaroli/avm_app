@@ -1,0 +1,39 @@
+<div class="lista-container">
+  <div class="cabecalho">
+    <h1>🏪 Amigos do Bairro</h1>
+    <p class="subtitulo">Estabelecimentos reconhecidos pela AVM por sua boa convivência com o bairro.</p>
+  </div>
+
+  <mat-form-field appearance="outline" class="busca">
+    <mat-label>Buscar por nome ou categoria</mat-label>
+    <input matInput [ngModel]="busca()" (ngModelChange)="busca.set($event)" />
+  </mat-form-field>
+
+  <div class="grid">
+    @for (estabelecimento of estabelecimentosExibidos(); track estabelecimento.id) {
+      <mat-card class="item" (click)="abrirSelo(estabelecimento)">
+        @if (estabelecimento.fotoUrl) {
+          <img [src]="estabelecimento.fotoUrl" [alt]="estabelecimento.nome" class="foto" />
+        } @else {
+          <div class="foto foto-placeholder">
+            <mat-icon>storefront</mat-icon>
+          </div>
+        }
+        <div class="item-info">
+          <strong>{{ estabelecimento.nome }}</strong>
+          <span class="categoria">{{ estabelecimento.categoria }}</span>
+          @if (distanciaDe(estabelecimento); as distancia) {
+            <span class="distancia">📍 {{ distancia }}</span>
+          }
+          @if (estabelecimento.beneficioAssociado) {
+            <span class="beneficio-flag"><mat-icon inline>local_offer</mat-icon> Benefício para associados</span>
+          }
+        </div>
+      </mat-card>
+    } @empty {
+      <p class="vazio">Nenhum estabelecimento encontrado.</p>
+    }
+  </div>
+
+  <a routerLink="/amigos-do-bairro/beneficios" class="link-beneficios">Ver todos os benefícios para associados →</a>
+</div>

@@ -1,0 +1,79 @@
+<div class="estabelecimento-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Novo Estabelecimento</h1>
+  </div>
+
+  <mat-card class="form-card">
+    <p class="descricao">Cadastre o estabelecimento no local para confirmar a localização automaticamente.</p>
+
+    <section class="bloco-gps">
+      <h2>Localização</h2>
+
+      @switch (statusGps()) {
+        @case ('aguardando') {
+          <p class="gps-status">Obtendo localização...</p>
+        }
+        @case ('sucesso') {
+          <p class="gps-coords">Lat: {{ lat()?.toFixed(6) }} • Lng: {{ lng()?.toFixed(6) }}</p>
+          @if (avisoPrecisaoGps()) {
+            <p class="aviso">
+              Localização pouco precisa (±{{ precisaoGpsMetros()?.toFixed(0) }}m). Aguarde alguns segundos ou mova-se
+              para um local mais aberto.
+            </p>
+          }
+        }
+        @case ('negado') {
+          <p class="erro">É necessário permitir o acesso à localização para cadastrar o estabelecimento.</p>
+          <button mat-button type="button" (click)="capturarLocalizacao()">Tentar novamente</button>
+        }
+        @case ('erro') {
+          <p class="erro">Não foi possível obter a localização.</p>
+          <button mat-button type="button" (click)="capturarLocalizacao()">Tentar novamente</button>
+        }
+      }
+    </section>
+
+    <form [formGroup]="form" class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome do estabelecimento</mat-label>
+        <input matInput formControlName="nome" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CNPJ</mat-label>
+        <input matInput formControlName="cnpj" appCpfMask="juridica" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Responsável</mat-label>
+        <input matInput formControlName="responsavel" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Endereço</mat-label>
+        <input matInput formControlName="endereco" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Categoria</mat-label>
+        <input matInput formControlName="categoria" placeholder="Ex.: Padaria, Farmácia, Restaurante" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Benefício para associados (opcional)</mat-label>
+        <textarea matInput formControlName="beneficioAssociado" rows="2" placeholder="Ex.: 10% de desconto para associados"></textarea>
+      </mat-form-field>
+
+      @if (erro()) {
+        <p class="erro">{{ erro() }}</p>
+      }
+
+      <div class="form-acoes">
+        <button mat-flat-button color="primary" type="button" [disabled]="!podeSalvar()" (click)="salvar()">
+          {{ enviando() ? 'Salvando...' : 'Salvar cadastro' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

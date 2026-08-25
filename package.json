@@ -1,6 +1,6 @@
 {
   "name": "avm-app",
-  "version": "0.8.20",
+  "version": "0.8.21",
   "scripts": {
     "ng": "ng",
     "prestart": "node scripts/generate-version.js",
@@ -12,7 +12,8 @@
     "seed:mensagens-card": "node scripts/seed-mensagens-card.js",
     "seed:credencial-cards": "node scripts/seed-credencial-cards.js",
     "seed:arvore-card": "node scripts/seed-arvore-card.js",
-    "seed:arvore-lista-card": "node scripts/seed-arvore-lista-card.js"
+    "seed:arvore-lista-card": "node scripts/seed-arvore-lista-card.js",
+    "seed:amigos-do-bairro-cards": "node scripts/seed-amigos-do-bairro-cards.js"
   },
   "private": true,
   "packageManager": "npm@10.8.2",

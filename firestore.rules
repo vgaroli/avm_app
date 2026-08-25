@@ -104,6 +104,22 @@ service cloud.firestore {
       allow delete: if false; // nunca apagar, só mudar status
     }
 
+    // Cadastro completo (CNPJ, responsável, histórico de aprovação) — só a diretoria acessa.
+    match /estabelecimentos/{id} {
+      allow read, write: if isDiretoria();
+    }
+
+    // Espelho público do selo "Amigo do Bairro" (mesmo id de estabelecimentos/{id}),
+    // sem CNPJ/responsável/histórico. Leitura pública segue o mesmo padrão de cards/eventos.
+    match /estabelecimentosPublicos/{id} {
+      allow read: if true;
+      allow write: if isDiretoria();
+    }
+
+    match /criteriosAmigoBairro/{id} {
+      allow read, write: if isDiretoria();
+    }
+
     match /arvores/{arvoreId} {
       allow create: if (isDiretoria() || podeRegistrarArvoresDoRequisitante())
         && request.resource.data.uid == request.auth.uid;

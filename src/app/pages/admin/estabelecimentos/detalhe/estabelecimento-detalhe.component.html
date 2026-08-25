@@ -1,0 +1,139 @@
+<div class="detalhe-container">
+  <div class="cabecalho">
+    <app-back-button />
+    <h1>Detalhe do Estabelecimento</h1>
+  </div>
+
+  @if (estabelecimento(); as estabelecimento) {
+    <mat-card class="dados-card">
+      <div class="dados-header">
+        <strong>{{ estabelecimento.nome }}</strong>
+        <span class="status-chip" [ngClass]="statusCor[estabelecimento.status]">{{ statusLabel[estabelecimento.status] }}</span>
+      </div>
+      <dl class="dados-lista">
+        <dt>CNPJ</dt>
+        <dd>{{ cnpjFormatado() }}</dd>
+        <dt>Responsável</dt>
+        <dd>{{ estabelecimento.responsavel }}</dd>
+        <dt>Endereço</dt>
+        <dd>{{ estabelecimento.endereco }}</dd>
+        <dt>Categoria</dt>
+        <dd>{{ estabelecimento.categoria }}</dd>
+        @if (estabelecimento.beneficioAssociado) {
+          <dt>Benefício para associados</dt>
+          <dd>{{ estabelecimento.beneficioAssociado }}</dd>
+        }
+      </dl>
+    </mat-card>
+
+    @if (erro()) {
+      <p class="erro">{{ erro() }}</p>
+    }
+
+    @if (estabelecimento.status === 'pendente') {
+      <mat-card class="aprovacao-card">
+        <h3>Critérios reconhecidos</h3>
+
+        @if (criterios().length) {
+          <div class="criterios-lista">
+            @for (criterio of criterios(); track criterio.id) {
+              <mat-checkbox
+                [checked]="criteriosSelecionados().has(criterio.id)"
+                (change)="alternarCriterio(criterio.id)"
+              >
+                {{ criterio.titulo }}
+              </mat-checkbox>
+            }
+          </div>
+        } @else {
+          <p class="vazio">Nenhum critério cadastrado ainda.</p>
+        }
+
+        @if (mostrarNovoCriterio()) {
+          <form [formGroup]="novoCriterioForm" (ngSubmit)="salvarNovoCriterio()" class="novo-criterio-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Título do critério</mat-label>
+              <input matInput formControlName="titulo" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Descrição (opcional)</mat-label>
+              <textarea matInput formControlName="descricao" rows="2"></textarea>
+            </mat-form-field>
+            <div class="form-acoes">
+              <button mat-button type="button" (click)="mostrarNovoCriterio.set(false)">Cancelar</button>
+              <button mat-flat-button color="primary" type="submit" [disabled]="processando()">Adicionar critério</button>
+            </div>
+          </form>
+        } @else {
+          <button mat-button type="button" (click)="mostrarNovoCriterio.set(true)">
+            <mat-icon>add</mat-icon>
+            Novo critério
+          </button>
+        }
+
+        <div class="acoes-principais">
+          <button mat-flat-button color="primary" type="button" [disabled]="processando()" (click)="aprovar()">
+            Aprovar e emitir selo
+          </button>
+        </div>
+
+        <div class="divisor"></div>
+
+        <h3>Reprovar</h3>
+        <form [formGroup]="reprovarForm" (ngSubmit)="reprovar()" class="reprovar-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Motivo (opcional)</mat-label>
+            <textarea matInput formControlName="comentario" rows="2"></textarea>
+          </mat-form-field>
+          <div class="form-acoes">
+            <button mat-flat-button color="warn" type="submit" [disabled]="processando()">Reprovar cadastro</button>
+          </div>
+        </form>
+      </mat-card>
+    }
+
+    @if (estabelecimento.status === 'aprovado') {
+      <mat-card class="selo-card">
+        <h3>Selo Amigo do Bairro</h3>
+        <p class="selo-validade">Válido até {{ estabelecimento.seloValidoAte ? formatarData(estabelecimento.seloValidoAte) : '—' }}</p>
+
+        @if (estabelecimento.criteriosReconhecidos.length) {
+          <ul class="criterios-reconhecidos">
+            @for (criterio of estabelecimento.criteriosReconhecidos; track criterio) {
+              <li>{{ criterio }}</li>
+            }
+          </ul>
+        }
+
+        @if (urlPublica()) {
+          <div class="qr-bloco">
+            <qrcode [qrdata]="urlPublica()" [width]="200" errorCorrectionLevel="M" elementType="svg" />
+            <p class="qr-url">{{ urlPublica() }}</p>
+          </div>
+        }
+
+        <button mat-button type="button" [disabled]="processando()" (click)="revogarToken()">
+          <mat-icon>refresh</mat-icon>
+          Revogar e gerar novo QR code
+        </button>
+      </mat-card>
+    }
+
+    <mat-card class="historico-card">
+      <h3>Histórico</h3>
+      <div class="historico-lista">
+        @for (entrada of estabelecimento.historico; track $index) {
+          <div class="historico-item">
+            <div class="historico-topo">
+              <strong>{{ entrada.autorNome }}</strong>
+              <span>{{ formatarData(entrada.data) }}</span>
+            </div>
+            <p>{{ entrada.acao }}@if (entrada.comentario) { — {{ entrada.comentario }} }</p>
+          </div>
+        }
+      </div>
+    </mat-card>
+  } @else {
+    <p class="vazio">Carregando...</p>
+  }
+</div>

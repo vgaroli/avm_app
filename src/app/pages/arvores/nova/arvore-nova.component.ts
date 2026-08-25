@@ -8,16 +8,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { ArvoresService, FotoParaEnviar } from '../../../core/services/arvores.service';
 import { EstadoArvore, TIPO_FOTO_ARVORE_LABEL, TipoFotoArvore } from '../../../core/models/arvore.model';
 import { dentroDoPerimetroVilaMariana } from '../../../core/utils/geofence.util';
+import {
+  StatusGps,
+  capturarLocalizacaoAtual,
+  excedePrecisaoGps,
+  statusGpsDoErro,
+} from '../../../core/utils/gps.util';
 import { comprimirImagem } from '../../../core/utils/imagem.util';
 import { BackButtonComponent } from '../../../shared/components/back-button.component';
 import { ArvoreCamposFormComponent, ArvoreCamposFormGroup } from '../shared/arvore-campos-form.component';
 
-type StatusGps = 'aguardando' | 'sucesso' | 'negado' | 'erro';
 type StatusPerimetro = 'verificando' | 'dentro' | 'fora';
 
 const TIPOS_FOTO: TipoFotoArvore[] = ['inteira', 'folha', 'fruto', 'casca', 'flor'];
 const MINIMO_FOTOS = 2;
-const PRECISAO_GPS_LIMITE_METROS = 30;
 
 @Component({
   selector: 'app-arvore-nova',
@@ -46,9 +50,7 @@ export class ArvoreNovaComponent {
   readonly lat = signal<number | null>(null);
   readonly lng = signal<number | null>(null);
   readonly precisaoGpsMetros = signal<number | null>(null);
-  readonly avisoPrecisaoGps = computed(
-    () => this.precisaoGpsMetros() !== null && this.precisaoGpsMetros()! > PRECISAO_GPS_LIMITE_METROS,
-  );
+  readonly avisoPrecisaoGps = computed(() => excedePrecisaoGps(this.precisaoGpsMetros()));
 
   readonly statusPerimetro = signal<StatusPerimetro | null>(null);
   readonly erroPerimetro = signal<string | null>(null);
@@ -72,32 +74,22 @@ export class ArvoreNovaComponent {
   });
 
   constructor() {
-    this.capturarLocalizacao();
+    void this.capturarLocalizacao();
   }
 
-  capturarLocalizacao(): void {
-    if (!navigator.geolocation) {
-      this.statusGps.set('erro');
-      return;
-    }
-
+  async capturarLocalizacao(): Promise<void> {
     this.statusGps.set('aguardando');
     this.statusPerimetro.set(null);
-    navigator.geolocation.getCurrentPosition(
-      (posicao) => {
-        const lat = posicao.coords.latitude;
-        const lng = posicao.coords.longitude;
-        this.lat.set(lat);
-        this.lng.set(lng);
-        this.precisaoGpsMetros.set(posicao.coords.accuracy ?? null);
-        this.statusGps.set('sucesso');
-        this.verificarPerimetro(lat, lng);
-      },
-      (erro) => {
-        this.statusGps.set(erro.code === erro.PERMISSION_DENIED ? 'negado' : 'erro');
-      },
-      { enableHighAccuracy: true },
-    );
+    try {
+      const { lat, lng, precisaoGpsMetros } = await capturarLocalizacaoAtual();
+      this.lat.set(lat);
+      this.lng.set(lng);
+      this.precisaoGpsMetros.set(precisaoGpsMetros);
+      this.statusGps.set('sucesso');
+      this.verificarPerimetro(lat, lng);
+    } catch (erro) {
+      this.statusGps.set(statusGpsDoErro(erro));
+    }
   }
 
   private async verificarPerimetro(lat: number, lng: number): Promise<void> {
