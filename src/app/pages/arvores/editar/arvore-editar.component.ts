@@ -46,6 +46,7 @@ export class ArvoreEditarComponent implements OnInit {
     especie: [''],
     diametroCm: this.fb.control<number | null>(null),
     estado: this.fb.nonNullable.control<EstadoArvore>('saudavel', Validators.required),
+    enderecoReferencia: [''],
     observacoes: [''],
   });
 
@@ -62,6 +63,7 @@ export class ArvoreEditarComponent implements OnInit {
       especie: arvore.especie ?? '',
       diametroCm: arvore.diametroCm,
       estado: arvore.estado,
+      enderecoReferencia: arvore.enderecoReferencia ?? '',
       observacoes: arvore.observacoes,
     });
     this.carregando.set(false);
@@ -82,6 +84,7 @@ export class ArvoreEditarComponent implements OnInit {
         diametroCm: dados.diametroCm,
         estado: dados.estado,
         observacoes: dados.observacoes.trim(),
+        enderecoReferencia: dados.enderecoReferencia.trim() || null,
       });
       this.snackBar.open('Alterações salvas com sucesso.', 'Fechar', { duration: 4000 });
       this.router.navigateByUrl('/arvores');
@@ -96,13 +99,19 @@ export class ArvoreEditarComponent implements OnInit {
     this.router.navigate(['/arvores/mapa'], { queryParams: { destacar: this.id } });
   }
 
+  verVisitas(): void {
+    this.router.navigate(['/arvores', this.id, 'visitas']);
+  }
+
   async excluir(): Promise<void> {
     const arvore = this.arvore();
     if (!arvore) {
       return;
     }
 
-    const confirmado = confirm('Tem certeza que deseja excluir este registro? Essa ação não pode ser desfeita.');
+    const confirmado = confirm(
+      "Excluir apaga o registro por completo. Use apenas para cadastros feitos por engano. Se a árvore foi cortada, registre uma visita marcando 'Removida'. Deseja excluir mesmo assim?",
+    );
     if (!confirmado) {
       return;
     }

@@ -70,6 +70,7 @@ export class ArvoreNovaComponent {
     especie: [''],
     diametroCm: this.fb.control<number | null>(null),
     estado: this.fb.nonNullable.control<EstadoArvore>('saudavel', Validators.required),
+    enderecoReferencia: [''],
     observacoes: [''],
   });
 
@@ -183,6 +184,7 @@ export class ArvoreNovaComponent {
           diametroCm: dados.diametroCm,
           estado: dados.estado,
           observacoes: dados.observacoes.trim(),
+          enderecoReferencia: dados.enderecoReferencia.trim() || null,
         },
         fotos,
         lat,

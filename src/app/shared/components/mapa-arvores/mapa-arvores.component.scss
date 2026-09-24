@@ -3,6 +3,7 @@ $border-radius: 16px;
 $cor-saudavel: #16a34a;
 $cor-atencao: #ca8a04;
 $cor-risco: #dc2626;
+$cor-removida: #9ca3af;
 
 :host {
   display: block;
@@ -40,6 +41,10 @@ $cor-risco: #dc2626;
 
     &.pino-risco {
       background: $cor-risco;
+    }
+
+    &.pino-removida {
+      background: $cor-removida;
     }
   }
 }
@@ -82,10 +87,23 @@ $cor-risco: #dc2626;
     &.badge-risco {
       background: $cor-risco;
     }
+
+    &.badge-removida {
+      background: $cor-removida;
+    }
   }
 
-  .link-editar {
-    align-self: flex-start;
+  .endereco {
+    color: #6b7280;
+    font-size: 0.8rem;
+  }
+
+  .popup-links {
+    display: flex;
+    gap: 12px;
+  }
+
+  .link-popup {
     color: #1e3a8a;
     font-weight: 600;
     font-size: 0.85rem;

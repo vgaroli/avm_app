@@ -1,4 +1,4 @@
-import { Arvore, FotoArvore } from '../models/arvore.model';
+import { Arvore, FotoArvore, SituacaoArvore } from '../models/arvore.model';
 
 /** Lista de fotos, normalizando docs legados (fotoUrl único) para o novo formato. */
 export function obterFotosArvore(arvore: Arvore): FotoArvore[] {
@@ -12,4 +12,9 @@ export function obterFotosArvore(arvore: Arvore): FotoArvore[] {
 export function obterFotoPrincipal(arvore: Arvore): string | null {
   const fotos = obterFotosArvore(arvore);
   return fotos.find((foto) => foto.tipo === 'inteira')?.url ?? fotos[0]?.url ?? null;
+}
+
+/** Situação normalizada: docs anteriores ao monitoramento não têm o campo e são tratados como 'ativa'. */
+export function obterSituacaoArvore(arvore: Arvore): SituacaoArvore {
+  return arvore.situacao ?? 'ativa';
 }

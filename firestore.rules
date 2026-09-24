@@ -128,9 +128,35 @@ service cloud.firestore {
       // uid/geoponto/precisaoGpsMetros/criadoEm são imutáveis após a criação.
       // 'fotos' e 'moderacao' ficam de fora para permitir reclassificação de
       // tipo de foto e validação de espécie pela diretoria na moderação.
-      allow update: if isDiretoria() && camposNaoAlterados(['uid', 'geoponto', 'precisaoGpsMetros', 'criadoEm']);
+      // Quem só tem podeRegistrarArvores altera apenas o que uma visita de
+      // monitoramento reflete na árvore (estado atual, última visita, remoção),
+      // e não pode desfazer uma remoção (correção só pela diretoria/Console).
+      allow update: if (isDiretoria() && camposNaoAlterados(['uid', 'geoponto', 'precisaoGpsMetros', 'criadoEm']))
+        || (podeRegistrarArvoresDoRequisitante()
+            && request.resource.data.diff(resource.data).affectedKeys()
+                 .hasOnly(['estado', 'ultimaVisitaEm', 'situacao', 'removidaEm'])
+            && (resource.data.get('situacao', 'ativa') != 'removida'
+                || request.resource.data.get('situacao', 'ativa') == 'removida'));
 
       allow delete: if isDiretoria();
+
+      // Visitas de monitoramento: sem moderação e imutáveis (correção = nova visita).
+      match /visitas/{visitaId} {
+        allow read: if autenticado();
+
+        allow create: if (isDiretoria() || podeRegistrarArvoresDoRequisitante())
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.ocorrencias is list
+          && request.resource.data.fotos is list
+          && request.resource.data.fotos.size() <= 3
+          && (!('removida' in request.resource.data.ocorrencias)
+              || request.resource.data.fotos.size() >= 1);
+
+        allow update: if false;
+
+        // Só para excluirArvore (cadastro feito por engano).
+        allow delete: if isDiretoria();
+      }
     }
   }
 }

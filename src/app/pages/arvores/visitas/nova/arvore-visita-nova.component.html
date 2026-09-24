@@ -1,0 +1,98 @@
+<div class="arvore-container">
+  <div class="cabecalho">
+    <app-back-button [destino]="['/arvores', id, 'visitas']" rotulo="Voltar para o histórico de visitas" />
+    <h1>Registrar visita</h1>
+  </div>
+
+  @if (carregando()) {
+    <p class="carregando">Carregando...</p>
+  } @else if (!arvore()) {
+    <p class="erro">{{ erro() }}</p>
+  } @else if (jaRemovida()) {
+    <p class="aviso">Esta árvore já está registrada como removida; não é possível registrar novas visitas.</p>
+  } @else {
+    <!-- Sem <form (ngSubmit)>: no celular, o envio nativo do formulário recarregava a página silenciosamente. -->
+    <mat-card class="form-card">
+      <p class="descricao">{{ arvore()!.especie ?? 'Árvore não identificada' }}</p>
+
+      <section class="bloco">
+        <h2>Ocorrências</h2>
+        <div class="ocorrencias">
+          @for (ocorrencia of OCORRENCIAS; track ocorrencia) {
+            <button
+              type="button"
+              class="chip"
+              [class.ativa]="ocorrencias().includes(ocorrencia)"
+              [class.chip-removida]="ocorrencia === 'removida'"
+              [attr.aria-pressed]="ocorrencias().includes(ocorrencia)"
+              (click)="alternarOcorrencia(ocorrencia)"
+            >
+              @if (ocorrencias().includes(ocorrencia)) {
+                <mat-icon>check</mat-icon>
+              }
+              {{ TIPO_OCORRENCIA_LABEL[ocorrencia] }}
+            </button>
+          }
+        </div>
+        @if (removida()) {
+          <p class="aviso">Foto obrigatória: registre o toco ou o local onde estava a árvore.</p>
+        }
+      </section>
+
+      @if (!removida()) {
+        <mat-form-field appearance="outline">
+          <mat-label>Estado observado</mat-label>
+          <mat-select [formControl]="estadoControl">
+            <mat-option value="saudavel">{{ ESTADO_ARVORE_LABEL.saudavel }}</mat-option>
+            <mat-option value="atencao">{{ ESTADO_ARVORE_LABEL.atencao }}</mat-option>
+            <mat-option value="risco">{{ ESTADO_ARVORE_LABEL.risco }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      }
+
+      <mat-form-field appearance="outline">
+        <mat-label>Observações</mat-label>
+        <textarea matInput [formControl]="observacoesControl" rows="3" placeholder="Opcional"></textarea>
+      </mat-form-field>
+
+      <section class="bloco">
+        <h2>Fotos ({{ fotos().length }}/{{ MAXIMO_FOTOS }}{{ removida() ? ' — mínimo 1' : ' — opcional' }})</h2>
+        <div class="fotos">
+          @for (foto of fotos(); track foto.preview; let i = $index) {
+            <div class="foto-item">
+              <img [src]="foto.preview" alt="Foto da visita" />
+              <button type="button" class="remover-foto" aria-label="Remover foto" (click)="removerFoto(i)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          }
+          @if (fotos().length < MAXIMO_FOTOS) {
+            <label class="botao-foto" for="input-foto-visita" [class.desabilitado]="comprimindo()">
+              <mat-icon>photo_camera</mat-icon>
+              {{ comprimindo() ? 'Processando...' : 'Adicionar foto' }}
+            </label>
+            <input
+              id="input-foto-visita"
+              type="file"
+              accept="image/*"
+              capture="environment"
+              [disabled]="comprimindo()"
+              (change)="adicionarFoto($event)"
+              hidden
+            />
+          }
+        </div>
+      </section>
+
+      @if (erro()) {
+        <p class="erro">{{ erro() }}</p>
+      }
+
+      <div class="form-acoes">
+        <button mat-flat-button color="primary" type="button" [disabled]="!podeSalvar()" (click)="salvar()">
+          {{ enviando() ? 'Salvando...' : removida() ? 'Registrar remoção' : 'Salvar visita' }}
+        </button>
+      </div>
+    </mat-card>
+  }
+</div>

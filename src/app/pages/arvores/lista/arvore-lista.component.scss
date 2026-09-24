@@ -6,6 +6,7 @@ $border-radius: 16px;
 $cor-saudavel: #16a34a;
 $cor-atencao: #ca8a04;
 $cor-risco: #dc2626;
+$cor-removida: #9ca3af;
 
 .lista-container {
   padding: 20px;
@@ -84,7 +85,23 @@ $cor-risco: #dc2626;
   color: inherit;
 }
 
-.moderar-link {
+.arvore-card.removida .thumbnail {
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.toggle-removidas {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.card-acoes {
+  display: flex;
+  border-top: 1px solid var(--mat-sys-outline-variant, #e5e7eb);
+}
+
+.card-acao-link {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,7 +111,10 @@ $cor-risco: #dc2626;
   font-weight: 600;
   color: $primary-color;
   text-decoration: none;
-  border-top: 1px solid var(--mat-sys-outline-variant, #e5e7eb);
+
+  & + & {
+    border-left: 1px solid var(--mat-sys-outline-variant, #e5e7eb);
+  }
 
   mat-icon {
     font-size: 16px;
@@ -146,6 +166,15 @@ $cor-risco: #dc2626;
 
 .badge-risco {
   background: $cor-risco;
+}
+
+.badge-removida {
+  background: $cor-removida;
+}
+
+.endereco {
+  color: $text-light;
+  font-size: 0.78rem;
 }
 
 .badge-status {

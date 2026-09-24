@@ -107,15 +107,27 @@ export const routes: Routes = [
     canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
   },
   {
+    path: 'arvores/:id/visitas/nova',
+    loadComponent: () =>
+      import('./pages/arvores/visitas/nova/arvore-visita-nova.component').then((m) => m.ArvoreVisitaNovaComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
+  },
+  {
+    path: 'arvores/:id/visitas',
+    loadComponent: () =>
+      import('./pages/arvores/visitas/historico/arvore-visitas.component').then((m) => m.ArvoreVisitasComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
+  },
+  {
     path: 'arvores/mapa',
     loadComponent: () => import('./pages/arvores/lista/arvore-lista.component').then((m) => m.ArvoreListaComponent),
-    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
     data: { modoMapa: true },
   },
   {
     path: 'arvores',
     loadComponent: () => import('./pages/arvores/lista/arvore-lista.component').then((m) => m.ArvoreListaComponent),
-    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
   },
   {
     path: 'admin/estabelecimentos/novo',
