@@ -1,0 +1,197 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+$cor-saudavel: #16a34a;
+$cor-atencao: #ca8a04;
+$cor-risco: #dc2626;
+$cor-removida: #9ca3af;
+
+.arvore-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.resumo-card {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding: 12px;
+  border-radius: $border-radius;
+  margin-bottom: 16px;
+}
+
+.resumo-foto {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.resumo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+
+  strong {
+    color: $text-dark;
+    font-size: 1rem;
+  }
+}
+
+.endereco,
+.data {
+  color: $text-light;
+  font-size: 0.8rem;
+}
+
+.registrar-btn {
+  width: 100%;
+  border-radius: $border-radius;
+  margin-bottom: 20px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badge-saudavel {
+  background: $cor-saudavel;
+}
+
+.badge-atencao {
+  background: $cor-atencao;
+}
+
+.badge-risco {
+  background: $cor-risco;
+}
+
+.badge-removida {
+  background: $cor-removida;
+}
+
+.chip-ocorrencia {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+
+  &.chip-removida {
+    color: $text-light;
+    border-color: $cor-removida;
+  }
+}
+
+.linha-tempo {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 16px;
+  border-left: 2px solid var(--mat-sys-outline-variant, #e5e7eb);
+}
+
+.visita {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 0 20px 12px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -23px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: $primary-color;
+    border: 2px solid #fff;
+  }
+}
+
+.visita-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.visita-data {
+  color: $text-dark;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.visita-autor {
+  color: $text-light;
+  font-size: 0.8rem;
+}
+
+.visita-obs {
+  margin: 0;
+  color: $text-dark;
+  font-size: 0.88rem;
+  white-space: pre-line;
+}
+
+.visita-fotos {
+  display: flex;
+  gap: 6px;
+
+  img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+  }
+}
+
+.vazio,
+.carregando {
+  color: $text-light;
+  text-align: center;
+  margin-top: 24px;
+}
+
+.erro {
+  color: #ef4444;
+  font-size: 0.85rem;
+}

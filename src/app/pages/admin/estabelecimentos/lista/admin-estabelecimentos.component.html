@@ -1,0 +1,38 @@
+<div class="admin-container">
+  <div class="cabecalho">
+    <div class="titulo-bloco">
+      <app-back-button />
+      <h1>Estabelecimentos Amigos do Bairro</h1>
+    </div>
+    <button mat-flat-button color="primary" (click)="abrirNovo()">
+      <mat-icon>add</mat-icon>
+      Novo
+    </button>
+  </div>
+
+  <div class="filtros">
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [value]="filtroStatus()" (selectionChange)="filtroStatus.set($event.value)">
+        <mat-option value="todos">Todos</mat-option>
+        @for (status of statusDisponiveis; track status) {
+          <mat-option [value]="status">{{ statusLabel[status] }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="lista">
+    @for (estabelecimento of estabelecimentosFiltrados(); track estabelecimento.id) {
+      <mat-card class="item" (click)="abrirDetalhe(estabelecimento)">
+        <div class="item-header">
+          <strong>{{ estabelecimento.nome }}</strong>
+          <span class="status-chip" [ngClass]="statusCor[estabelecimento.status]">{{ statusLabel[estabelecimento.status] }}</span>
+        </div>
+        <p class="item-meta">{{ estabelecimento.categoria }} • Cadastrado em {{ formatarData(estabelecimento.criadoEm) }}</p>
+      </mat-card>
+    } @empty {
+      <p class="vazio">Nenhum estabelecimento cadastrado.</p>
+    }
+  </div>
+</div>

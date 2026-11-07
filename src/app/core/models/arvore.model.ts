@@ -3,6 +3,16 @@ import { GeoPoint, Timestamp } from '@angular/fire/firestore';
 export type EstadoArvore = 'saudavel' | 'atencao' | 'risco';
 export type StatusArvore = 'pendente' | 'validado';
 export type TipoFotoArvore = 'inteira' | 'folha' | 'fruto' | 'casca' | 'flor';
+export type SituacaoArvore = 'ativa' | 'removida';
+
+export type TipoOcorrencia =
+  | 'podada'
+  | 'galhoQuebrado'
+  | 'pragaDoenca'
+  | 'conflitoFiacao'
+  | 'danoCalcada'
+  | 'removida'
+  | 'outro';
 
 export interface FotoArvore {
   url: string;
@@ -38,6 +48,31 @@ export interface Arvore {
   criadoEm: Timestamp;
   status: StatusArvore;
   moderacao: ModeracaoArvore | null;
+  /** Ausente em docs antigos (= 'ativa'); sempre ler via `obterSituacaoArvore`. */
+  situacao?: SituacaoArvore;
+  removidaEm?: Timestamp | null;
+  enderecoReferencia?: string | null;
+  ultimaVisitaEm?: Timestamp | null;
+}
+
+export interface VisitaArvore {
+  id: string;
+  uid: string;
+  /** Cópia do nome no momento da visita, para exibir o histórico sem ler `pessoas` (coleção sensível). */
+  autorNome: string;
+  data: Timestamp;
+  /** null quando a ocorrência é remoção. */
+  estadoObservado: EstadoArvore | null;
+  ocorrencias: TipoOcorrencia[];
+  observacoes: string;
+  /** URLs; 0 a 3 fotos, mínimo 1 quando 'removida'. */
+  fotos: string[];
+}
+
+export interface NovaVisitaInput {
+  estadoObservado: EstadoArvore | null;
+  ocorrencias: TipoOcorrencia[];
+  observacoes: string;
 }
 
 export interface NovaArvoreInput {
@@ -45,6 +80,7 @@ export interface NovaArvoreInput {
   diametroCm: number | null;
   estado: EstadoArvore;
   observacoes: string;
+  enderecoReferencia: string | null;
 }
 
 export interface ModeracaoArvoreInput {
@@ -53,6 +89,7 @@ export interface ModeracaoArvoreInput {
   diametroCm: number | null;
   estado: EstadoArvore;
   observacoes: string;
+  enderecoReferencia: string | null;
   fotos: FotoArvore[];
   sugestoesPlantnet: SugestaoEspecie[] | null;
 }
@@ -69,4 +106,19 @@ export const TIPO_FOTO_ARVORE_LABEL: Record<TipoFotoArvore, string> = {
   fruto: 'Fruto',
   casca: 'Casca',
   flor: 'Flor',
+};
+
+export const TIPO_OCORRENCIA_LABEL: Record<TipoOcorrencia, string> = {
+  podada: 'Podada',
+  galhoQuebrado: 'Galho quebrado',
+  pragaDoenca: 'Praga ou doença',
+  conflitoFiacao: 'Conflito com fiação',
+  danoCalcada: 'Dano à calçada',
+  removida: 'Removida',
+  outro: 'Outro',
+};
+
+export const SITUACAO_ARVORE_LABEL: Record<SituacaoArvore, string> = {
+  ativa: 'Ativa',
+  removida: 'Removida',
 };

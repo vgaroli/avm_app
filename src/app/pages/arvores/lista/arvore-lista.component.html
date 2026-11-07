@@ -28,16 +28,23 @@
     </div>
   </div>
 
-  @if (arvores$ | async; as arvores) {
+  <mat-slide-toggle class="toggle-removidas" [checked]="mostrarRemovidas()" (change)="mostrarRemovidas.set($event.checked)">
+    Mostrar removidas
+  </mat-slide-toggle>
+
+  @if (arvoresVisiveis(); as arvores) {
     @if (modo() === 'mapa') {
       <div class="mapa-wrapper">
-        <app-mapa-arvores [arvores]="arvores" [arvoreDestacadaId]="arvoreDestacadaId" />
+        <app-mapa-arvores [arvores]="arvores" [arvoreDestacadaId]="arvoreDestacadaId" [podeEditar]="isDiretoria()" />
       </div>
     } @else if (arvores.length > 0) {
       <div class="grid">
         @for (arvore of arvores; track arvore.id) {
-          <div class="arvore-card">
-            <a class="arvore-card-link" [routerLink]="['/arvores', arvore.id, 'editar']">
+          <div class="arvore-card" [class.removida]="obterSituacaoArvore(arvore) === 'removida'">
+            <a
+              class="arvore-card-link"
+              [routerLink]="['/arvores', arvore.id, isDiretoria() ? 'editar' : 'visitas']"
+            >
               <img
                 [src]="obterFotoPrincipal(arvore)"
                 [alt]="arvore.especie ?? 'Árvore sem espécie identificada'"
@@ -45,8 +52,15 @@
               />
               <div class="arvore-info">
                 <strong>{{ arvore.especie ?? 'Não identificada' }}</strong>
+                @if (arvore.enderecoReferencia) {
+                  <span class="endereco">{{ arvore.enderecoReferencia }}</span>
+                }
                 <div class="badges">
-                  <span class="badge" [class]="'badge-' + arvore.estado">{{ ESTADO_ARVORE_LABEL[arvore.estado] }}</span>
+                  @if (obterSituacaoArvore(arvore) === 'removida') {
+                    <span class="badge badge-removida">Removida</span>
+                  } @else {
+                    <span class="badge" [class]="'badge-' + arvore.estado">{{ ESTADO_ARVORE_LABEL[arvore.estado] }}</span>
+                  }
                   <span class="badge badge-status" [class.badge-validado]="arvore.status === 'validado'">
                     {{ arvore.status === 'validado' ? 'Validado' : 'Pendente' }}
                   </span>
@@ -54,11 +68,19 @@
                 <span class="data">{{ arvore.criadoEm.toDate() | date: 'dd/MM/yyyy HH:mm' }}</span>
               </div>
             </a>
-            @if (arvore.status === 'pendente') {
-              <a class="moderar-link" [routerLink]="['/arvores', arvore.id, 'moderar']">
-                <mat-icon>fact_check</mat-icon>
-                Moderar
-              </a>
+            @if (isDiretoria()) {
+              <div class="card-acoes">
+                <a class="card-acao-link" [routerLink]="['/arvores', arvore.id, 'visitas']">
+                  <mat-icon>history</mat-icon>
+                  Visitas
+                </a>
+                @if (arvore.status === 'pendente') {
+                  <a class="card-acao-link" [routerLink]="['/arvores', arvore.id, 'moderar']">
+                    <mat-icon>fact_check</mat-icon>
+                    Moderar
+                  </a>
+                }
+              </div>
             }
           </div>
         }

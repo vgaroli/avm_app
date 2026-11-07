@@ -5,17 +5,27 @@ import {
   Timestamp,
   collection,
   collectionData,
-  deleteDoc,
   doc,
   docData,
+  getDocs,
   orderBy,
   query,
   setDoc,
   updateDoc,
+  writeBatch,
 } from '@angular/fire/firestore';
 import { Storage, deleteObject, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { Observable, firstValueFrom } from 'rxjs';
-import { Arvore, FotoArvore, ModeracaoArvoreInput, NovaArvoreInput, SugestaoEspecie, TipoFotoArvore } from '../models/arvore.model';
+import {
+  Arvore,
+  FotoArvore,
+  ModeracaoArvoreInput,
+  NovaArvoreInput,
+  NovaVisitaInput,
+  SugestaoEspecie,
+  TipoFotoArvore,
+  VisitaArvore,
+} from '../models/arvore.model';
 import { obterFotosArvore } from '../utils/arvore-foto.util';
 import { AuthService } from './auth.service';
 
@@ -24,12 +34,15 @@ export interface AtualizacaoArvore {
   diametroCm: number | null;
   estado: Arvore['estado'];
   observacoes: string;
+  enderecoReferencia: string | null;
 }
 
 export interface FotoParaEnviar {
   arquivo: File; // já comprimido pelo chamador
   tipo: TipoFotoArvore;
 }
+
+export const MAXIMO_FOTOS_VISITA = 3;
 
 @Injectable({ providedIn: 'root' })
 export class ArvoresService {
@@ -62,6 +75,7 @@ export class ArvoresService {
       diametroCm: dados.diametroCm,
       estado: dados.estado,
       observacoes: dados.observacoes,
+      enderecoReferencia: dados.enderecoReferencia,
       fotos: dados.fotos,
       status: 'validado',
       moderacao: {
@@ -79,16 +93,30 @@ export class ArvoresService {
     });
   }
 
+  /**
+   * Exclusão definitiva (cadastro feito por engano). O Firestore não apaga subcoleções em cascata,
+   * então as visitas (e suas fotos) são apagadas explicitamente antes do documento da árvore.
+   */
   async excluirArvore(arvore: Arvore): Promise<void> {
-    const fotos = obterFotosArvore(arvore);
+    const visitasSnap = await getDocs(this.visitasRef(arvore.id));
+    const urlsFotos = [
+      ...obterFotosArvore(arvore).map((foto) => foto.url),
+      ...visitasSnap.docs.flatMap((visita) => (visita.data() as VisitaArvore).fotos ?? []),
+    ];
+
     await Promise.all(
-      fotos.map((foto) =>
-        deleteObject(ref(this.storage, foto.url)).catch((erro) =>
-          console.warn('[ArvoresService] Falha ao excluir foto do Storage (ignorada)', foto.url, erro),
+      urlsFotos.map((url) =>
+        deleteObject(ref(this.storage, url)).catch((erro) =>
+          console.warn('[ArvoresService] Falha ao excluir foto do Storage (ignorada)', url, erro),
         ),
       ),
     );
-    await deleteDoc(doc(this.firestore, 'arvores', arvore.id));
+
+    // Limite de 500 operações por batch: sobra folga para centenas de visitas por árvore.
+    const batch = writeBatch(this.firestore);
+    visitasSnap.docs.forEach((visita) => batch.delete(visita.ref));
+    batch.delete(doc(this.firestore, 'arvores', arvore.id));
+    await batch.commit();
   }
 
   /** Mínimo 2 fotos, no máximo 5 (uma por TipoFotoArvore); cada `arquivo` já deve vir comprimido pelo chamador. */
@@ -130,11 +158,80 @@ export class ArvoresService {
       diametroCm: dados.diametroCm,
       estado: dados.estado,
       observacoes: dados.observacoes,
+      enderecoReferencia: dados.enderecoReferencia,
       criadoEm: Timestamp.now(),
       status: 'pendente',
       moderacao: null,
+      situacao: 'ativa',
+      removidaEm: null,
+      ultimaVisitaEm: null,
     };
 
     await setDoc(docRef, arvore);
+  }
+
+  listarVisitas$(arvoreId: string): Observable<VisitaArvore[]> {
+    return collectionData(query(this.visitasRef(arvoreId), orderBy('data', 'desc')), {
+      idField: 'id',
+    }) as Observable<VisitaArvore[]>;
+  }
+
+  /**
+   * Registra uma visita de monitoramento e reflete na árvore (estado atual ou remoção) num único batch.
+   * Visitas não passam por moderação e são imutáveis depois de gravadas. `fotos` já devem vir comprimidas.
+   */
+  async registrarVisita(arvoreId: string, dados: NovaVisitaInput, fotos: File[]): Promise<void> {
+    const pessoa = await firstValueFrom(this.authService.currentPessoa$);
+    if (!pessoa) {
+      throw new Error('Usuário não autenticado.');
+    }
+
+    const removida = dados.ocorrencias.includes('removida');
+    if (fotos.length > MAXIMO_FOTOS_VISITA) {
+      throw new Error(`No máximo ${MAXIMO_FOTOS_VISITA} fotos por visita.`);
+    }
+    if (removida && fotos.length < 1) {
+      throw new Error('Registre ao menos uma foto do local para marcar a árvore como removida.');
+    }
+    const estadoObservado = removida ? null : dados.estadoObservado;
+    if (!removida && !estadoObservado) {
+      throw new Error('Informe o estado observado da árvore.');
+    }
+
+    const visitaRef = doc(this.visitasRef(arvoreId));
+    const visitaId = visitaRef.id;
+
+    const urlsFotos = await Promise.all(
+      fotos.map(async (arquivo, indice) => {
+        const fotoRef = ref(this.storage, `arvores-visitas/${arvoreId}/${visitaId}/${indice + 1}.jpg`);
+        await uploadBytes(fotoRef, arquivo, { contentType: 'image/jpeg' });
+        return getDownloadURL(fotoRef);
+      }),
+    );
+
+    const agora = Timestamp.now();
+    const visita: Omit<VisitaArvore, 'id'> = {
+      uid: pessoa.uid,
+      autorNome: pessoa.nomeExibicao?.trim() || pessoa.nomeCompleto,
+      data: agora,
+      estadoObservado,
+      ocorrencias: dados.ocorrencias,
+      observacoes: dados.observacoes,
+      fotos: urlsFotos,
+    };
+
+    // Só os campos que as regras liberam para quem tem apenas podeRegistrarArvores.
+    const atualizacaoArvore: Partial<Arvore> = removida
+      ? { ultimaVisitaEm: agora, situacao: 'removida', removidaEm: agora }
+      : { ultimaVisitaEm: agora, estado: estadoObservado! };
+
+    const batch = writeBatch(this.firestore);
+    batch.set(visitaRef, visita);
+    batch.update(doc(this.firestore, 'arvores', arvoreId), atualizacaoArvore);
+    await batch.commit();
+  }
+
+  private visitasRef(arvoreId: string) {
+    return collection(this.firestore, 'arvores', arvoreId, 'visitas');
   }
 }

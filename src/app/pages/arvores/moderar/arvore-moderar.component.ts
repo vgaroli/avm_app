@@ -75,6 +75,7 @@ export class ArvoreModerarComponent implements OnInit {
     especie: [''],
     diametroCm: this.fb.control<number | null>(null),
     estado: this.fb.nonNullable.control<EstadoArvore>('saudavel', Validators.required),
+    enderecoReferencia: [''],
     observacoes: [''],
   });
 
@@ -95,6 +96,7 @@ export class ArvoreModerarComponent implements OnInit {
       especie: arvore.especie ?? '',
       diametroCm: arvore.diametroCm,
       estado: arvore.estado,
+      enderecoReferencia: arvore.enderecoReferencia ?? '',
       observacoes: arvore.observacoes,
     });
     this.especieCientificaControl.setValue(arvore.especieCientifica ?? null);
@@ -151,6 +153,7 @@ export class ArvoreModerarComponent implements OnInit {
         diametroCm: dados.diametroCm,
         estado: dados.estado,
         observacoes: dados.observacoes.trim(),
+        enderecoReferencia: dados.enderecoReferencia.trim() || null,
         fotos: this.fotosEditaveis(),
         sugestoesPlantnet: this.sugestoes().length ? this.sugestoes() : null,
       });

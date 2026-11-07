@@ -1,0 +1,25 @@
+<div class="beneficios-container">
+  <div class="cabecalho">
+    <h1>🎁 Benefícios para Associados</h1>
+    <p class="subtitulo">
+      Estabelecimentos Amigos do Bairro que oferecem benefícios exclusivos para associados da AVM. O resgate é
+      presencial, mediante apresentação da credencial de associado.
+    </p>
+  </div>
+
+  <div class="lista">
+    @for (estabelecimento of estabelecimentos(); track estabelecimento.id) {
+      <mat-card class="item" (click)="abrirSelo(estabelecimento)">
+        <div class="item-header">
+          <strong>{{ estabelecimento.nome }}</strong>
+          <span class="categoria">{{ estabelecimento.categoria }}</span>
+        </div>
+        <p class="beneficio">{{ estabelecimento.beneficioAssociado }}</p>
+      </mat-card>
+    } @empty {
+      <p class="vazio">Nenhum benefício disponível no momento.</p>
+    }
+  </div>
+
+  <a routerLink="/amigos-do-bairro" class="link-voltar">← Ver todos os Amigos do Bairro</a>
+</div>

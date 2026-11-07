@@ -1,0 +1,185 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+$cor-removida: #9ca3af;
+
+.arvore-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  app-back-button {
+    color: $primary-color;
+  }
+
+  h1 {
+    color: $primary-color;
+    font-size: 1.4rem;
+    margin: 0;
+  }
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: $border-radius;
+  padding: 20px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.descricao {
+  color: $text-light;
+  font-size: 0.9rem;
+  margin: 0 0 16px 0;
+}
+
+h2 {
+  color: $text-dark;
+  font-size: 1rem;
+  margin: 0 0 8px 0;
+}
+
+.bloco {
+  margin-bottom: 20px;
+}
+
+.ocorrencias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid $primary-color;
+  background: transparent;
+  color: $primary-color;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.ativa {
+    background: $primary-color;
+    color: #fff;
+  }
+
+  &.chip-removida {
+    border-color: $text-light;
+    color: $text-light;
+
+    &.ativa {
+      background: $text-light;
+      color: #fff;
+    }
+  }
+}
+
+.fotos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.foto-item {
+  position: relative;
+
+  img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .remover-foto {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    cursor: pointer;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.botao-foto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 96px;
+  height: 96px;
+  border: 2px dashed $primary-color;
+  border-radius: 12px;
+  color: $primary-color;
+  font-size: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+
+  &.desabilitado {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.aviso {
+  color: #b45309;
+  font-size: 0.85rem;
+  margin: 8px 0 0 0;
+}
+
+.erro {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin: 4px 0;
+}
+
+.carregando {
+  color: $text-light;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+
+  button {
+    border-radius: $border-radius;
+  }
+}

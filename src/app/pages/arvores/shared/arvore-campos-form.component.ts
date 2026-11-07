@@ -9,6 +9,7 @@ export type ArvoreCamposFormGroup = FormGroup<{
   especie: FormControl<string>;
   diametroCm: FormControl<number | null>;
   estado: FormControl<EstadoArvore>;
+  enderecoReferencia: FormControl<string>;
   observacoes: FormControl<string>;
 }>;
 
@@ -38,8 +39,24 @@ export type ArvoreCamposFormGroup = FormGroup<{
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Endereço de referência</mat-label>
+        <input
+          matInput
+          formControlName="enderecoReferencia"
+          placeholder="Ex: Rua Domingos de Morais, 1200 (em frente)"
+        />
+        <mat-hint>Opcional</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Observações</mat-label>
-        <textarea matInput formControlName="observacoes" rows="3" placeholder="Opcional"></textarea>
+        <textarea
+          matInput
+          formControlName="observacoes"
+          rows="3"
+          placeholder="Ex: a 2ª árvore a partir da esquina, lado da padaria; a mais alta das três"
+        ></textarea>
+        <mat-hint>Se houver outras árvores próximas, descreva como encontrar esta.</mat-hint>
       </mat-form-field>
     </ng-container>
   `,

@@ -1,0 +1,50 @@
+<div class="selo-container">
+  @if (carregando()) {
+    <p class="carregando">Carregando...</p>
+  } @else if (estabelecimento(); as e) {
+    <mat-card class="selo-card">
+      <div class="selo-topo">
+        @if (e.fotoUrl) {
+          <img [src]="e.fotoUrl" [alt]="e.nome" class="foto" />
+        }
+        <div class="selo-badge">
+          <mat-icon>verified</mat-icon>
+          Estabelecimento Amigo do Bairro
+        </div>
+        <h1>{{ e.nome }}</h1>
+        <p class="categoria">{{ e.categoria }}</p>
+        <p class="endereco">{{ e.endereco }}</p>
+      </div>
+
+      <div class="divisor"></div>
+
+      <p class="validade">Selo válido até {{ formatarData(e.seloValidoAte) }}</p>
+
+      @if (e.criteriosReconhecidos.length) {
+        <div class="bloco">
+          <h2>Critérios reconhecidos</h2>
+          <ul>
+            @for (criterio of e.criteriosReconhecidos; track criterio) {
+              <li>{{ criterio }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (e.beneficioAssociado) {
+        <div class="bloco beneficio">
+          <h2>Benefício para associados AVM</h2>
+          <p>{{ e.beneficioAssociado }}</p>
+          <p class="beneficio-nota">Resgate presencial, mediante apresentação da credencial de associado.</p>
+        </div>
+      }
+    </mat-card>
+
+    <a routerLink="/amigos-do-bairro" class="link-lista">Ver outros Amigos do Bairro</a>
+  } @else {
+    <mat-card class="nao-encontrado">
+      <mat-icon>search_off</mat-icon>
+      <p>Selo não encontrado. O link pode estar incorreto ou ter sido revogado.</p>
+    </mat-card>
+  }
+</div>

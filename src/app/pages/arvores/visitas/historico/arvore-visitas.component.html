@@ -1,0 +1,85 @@
+<div class="arvore-container">
+  <div class="cabecalho">
+    <app-back-button destino="/arvores" rotulo="Voltar para a lista de árvores" />
+    <h1>Histórico de visitas</h1>
+  </div>
+
+  @if (arvore() === undefined) {
+    <p class="carregando">Carregando...</p>
+  } @else if (arvore() === null) {
+    <p class="erro">Árvore não encontrada.</p>
+  } @else {
+    @let a = arvore()!;
+    <mat-card class="resumo-card">
+      @if (fotoPrincipal(); as foto) {
+        <img [src]="foto" [alt]="a.especie ?? 'Árvore sem espécie identificada'" class="resumo-foto" />
+      }
+      <div class="resumo-info">
+        <strong>{{ a.especie ?? 'Não identificada' }}</strong>
+        @if (a.enderecoReferencia) {
+          <span class="endereco">{{ a.enderecoReferencia }}</span>
+        }
+        <div class="badges">
+          @if (situacao() === 'removida') {
+            <span class="badge badge-removida">{{ SITUACAO_ARVORE_LABEL.removida }}</span>
+            @if (a.removidaEm) {
+              <span class="data">em {{ a.removidaEm.toDate() | date: 'dd/MM/yyyy' }}</span>
+            }
+          } @else {
+            <span class="badge" [class]="'badge-' + a.estado">{{ ESTADO_ARVORE_LABEL[a.estado] }}</span>
+          }
+        </div>
+      </div>
+    </mat-card>
+
+    @if (situacao() !== 'removida') {
+      <a mat-flat-button color="primary" class="registrar-btn" [routerLink]="['/arvores', id, 'visitas', 'nova']">
+        <mat-icon>add</mat-icon>
+        Registrar visita
+      </a>
+    }
+
+    @if (visitas(); as visitas) {
+      @if (visitas.length === 0) {
+        <p class="vazio">Nenhuma visita registrada ainda.</p>
+      } @else {
+        <ol class="linha-tempo">
+          @for (visita of visitas; track visita.id) {
+            <li class="visita">
+              <div class="visita-cabecalho">
+                <span class="visita-data">{{ visita.data.toDate() | date: 'dd/MM/yyyy HH:mm' }}</span>
+                <span class="visita-autor">{{ visita.autorNome }}</span>
+              </div>
+              <div class="badges">
+                @if (visita.estadoObservado) {
+                  <span class="badge" [class]="'badge-' + visita.estadoObservado">
+                    {{ ESTADO_ARVORE_LABEL[visita.estadoObservado] }}
+                  </span>
+                }
+                @for (ocorrencia of visita.ocorrencias; track ocorrencia) {
+                  <span class="chip-ocorrencia" [class.chip-removida]="ocorrencia === 'removida'">
+                    {{ TIPO_OCORRENCIA_LABEL[ocorrencia] }}
+                  </span>
+                }
+              </div>
+              @if (visita.observacoes) {
+                <p class="visita-obs">{{ visita.observacoes }}</p>
+              }
+              @if (visita.fotos.length) {
+                <div class="visita-fotos">
+                  @for (foto of visita.fotos; track foto) {
+                    <a [href]="foto" target="_blank" rel="noopener">
+                      <img [src]="foto" alt="Foto da visita" loading="lazy" />
+                    </a>
+                  }
+                </div>
+              }
+            </li>
+          }
+        </ol>
+      }
+    } @else {
+      <p class="carregando">Carregando visitas...</p>
+    }
+  }
+</div>

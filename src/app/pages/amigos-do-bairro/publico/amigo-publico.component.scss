@@ -1,0 +1,146 @@
+$primary-color: #1e3a8a;
+$text-dark: #1f2937;
+$text-light: #6b7280;
+$border-radius: 16px;
+
+.selo-container {
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.carregando {
+  text-align: center;
+  color: $text-light;
+  padding: 40px 0;
+}
+
+.selo-card {
+  border-radius: $border-radius;
+  padding: 24px;
+}
+
+.selo-topo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.foto {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: $border-radius;
+  margin-bottom: 12px;
+}
+
+.selo-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #10b981;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+h1 {
+  color: $primary-color;
+  font-size: 1.5rem;
+  margin: 4px 0 0 0;
+}
+
+.categoria {
+  color: $text-light;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.endereco {
+  color: $text-dark;
+  font-size: 0.85rem;
+  margin: 4px 0 0 0;
+}
+
+.divisor {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 16px 0;
+}
+
+.validade {
+  text-align: center;
+  color: $text-light;
+  font-size: 0.85rem;
+  margin: 0 0 16px 0;
+}
+
+.bloco {
+  margin-bottom: 16px;
+
+  h2 {
+    color: $text-dark;
+    font-size: 0.95rem;
+    margin: 0 0 8px 0;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+    color: $text-dark;
+    font-size: 0.9rem;
+  }
+}
+
+.beneficio {
+  background: #fef3c7;
+  border-radius: $border-radius;
+  padding: 12px 16px;
+
+  p {
+    color: $text-dark;
+    margin: 0;
+  }
+}
+
+.beneficio-nota {
+  color: $text-light;
+  font-size: 0.75rem;
+  margin-top: 6px !important;
+}
+
+.link-lista {
+  display: block;
+  text-align: center;
+  color: $primary-color;
+  font-size: 0.85rem;
+  margin-top: 16px;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.nao-encontrado {
+  border-radius: $border-radius;
+  padding: 32px 20px;
+  text-align: center;
+  color: $text-light;
+
+  mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+  }
+}

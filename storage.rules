@@ -20,6 +20,24 @@ service firebase.storage {
         && firestore.get(/databases/(default)/documents/pessoas/$(request.auth.uid)).data.status == 'ativo';
     }
 
+    // Fotos das visitas de monitoramento (até 3 por visita, já comprimidas no client).
+    match /arvores-visitas/{arvoreId}/{visitaId}/{arquivo} {
+      allow read: if request.auth != null;
+
+      allow create: if request.auth != null
+        && request.resource.contentType == 'image/jpeg'
+        && request.resource.size < 5 * 1024 * 1024
+        && firestore.get(/databases/(default)/documents/pessoas/$(request.auth.uid)).data.status == 'ativo'
+        && (
+          firestore.get(/databases/(default)/documents/pessoas/$(request.auth.uid)).data.papel == 'diretoria'
+          || firestore.get(/databases/(default)/documents/pessoas/$(request.auth.uid)).data.podeRegistrarArvores == true
+        );
+
+      allow delete: if request.auth != null
+        && firestore.get(/databases/(default)/documents/pessoas/$(request.auth.uid)).data.papel == 'diretoria'
+        && firestore.get(/databases/(default)/documents/pessoas/$(request.auth.uid)).data.status == 'ativo';
+    }
+
     // Caminho legado (uma foto só, sem docId) — mantido só para leitura de docs antigos.
     match /arvores/{uid}/{arquivo} {
       allow read: if request.auth != null;

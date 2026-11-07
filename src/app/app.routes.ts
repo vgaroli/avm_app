@@ -17,6 +17,25 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/inscricao/inscricao.component').then((m) => m.InscricaoComponent),
   },
   {
+    path: 'amigo/:token',
+    loadComponent: () =>
+      import('./pages/amigos-do-bairro/publico/amigo-publico.component').then((m) => m.AmigoPublicoComponent),
+  },
+  {
+    path: 'amigos-do-bairro/beneficios',
+    loadComponent: () =>
+      import('./pages/amigos-do-bairro/beneficios/amigos-do-bairro-beneficios.component').then(
+        (m) => m.AmigosDoBairroBeneficiosComponent,
+      ),
+  },
+  {
+    path: 'amigos-do-bairro',
+    loadComponent: () =>
+      import('./pages/amigos-do-bairro/lista/amigos-do-bairro-lista.component').then(
+        (m) => m.AmigosDoBairroListaComponent,
+      ),
+  },
+  {
     path: 'trocar-senha',
     loadComponent: () => import('./pages/trocar-senha/trocar-senha.component').then((m) => m.TrocarSenhaComponent),
     canActivate: [authGuard],
@@ -88,14 +107,50 @@ export const routes: Routes = [
     canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
   },
   {
+    path: 'arvores/:id/visitas/nova',
+    loadComponent: () =>
+      import('./pages/arvores/visitas/nova/arvore-visita-nova.component').then((m) => m.ArvoreVisitaNovaComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
+  },
+  {
+    path: 'arvores/:id/visitas',
+    loadComponent: () =>
+      import('./pages/arvores/visitas/historico/arvore-visitas.component').then((m) => m.ArvoreVisitasComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
+  },
+  {
     path: 'arvores/mapa',
     loadComponent: () => import('./pages/arvores/lista/arvore-lista.component').then((m) => m.ArvoreListaComponent),
-    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
     data: { modoMapa: true },
   },
   {
     path: 'arvores',
     loadComponent: () => import('./pages/arvores/lista/arvore-lista.component').then((m) => m.ArvoreListaComponent),
+    canActivate: [authGuard, senhaProvisoriaGuard, podeRegistrarArvoresGuard],
+  },
+  {
+    path: 'admin/estabelecimentos/novo',
+    loadComponent: () =>
+      import('./pages/admin/estabelecimentos/novo/estabelecimento-novo.component').then(
+        (m) => m.EstabelecimentoNovoComponent,
+      ),
+    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+  },
+  {
+    path: 'admin/estabelecimentos/:id',
+    loadComponent: () =>
+      import('./pages/admin/estabelecimentos/detalhe/estabelecimento-detalhe.component').then(
+        (m) => m.EstabelecimentoDetalheComponent,
+      ),
+    canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
+  },
+  {
+    path: 'admin/estabelecimentos',
+    loadComponent: () =>
+      import('./pages/admin/estabelecimentos/lista/admin-estabelecimentos.component').then(
+        (m) => m.AdminEstabelecimentosComponent,
+      ),
     canActivate: [authGuard, senhaProvisoriaGuard, roleGuard('diretoria')],
   },
 ];

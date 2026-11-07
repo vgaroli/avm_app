@@ -2,8 +2,8 @@ import { Component, ViewEncapsulation, computed, effect, input, signal } from '@
 import { Router } from '@angular/router';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import * as L from 'leaflet';
-import { Arvore, ESTADO_ARVORE_LABEL } from '../../../core/models/arvore.model';
-import { obterFotoPrincipal } from '../../../core/utils/arvore-foto.util';
+import { Arvore, ESTADO_ARVORE_LABEL, SITUACAO_ARVORE_LABEL } from '../../../core/models/arvore.model';
+import { obterFotoPrincipal, obterSituacaoArvore } from '../../../core/utils/arvore-foto.util';
 import { obterPoligonoVilaMariana } from '../../../core/utils/geofence.util';
 
 const ZOOM_PADRAO = 15;
@@ -21,6 +21,8 @@ const CENTRO_PADRAO = L.latLng(-23.5893, -46.6339);
 export class MapaArvoresComponent {
   readonly arvores = input<Arvore[]>([]);
   readonly arvoreDestacadaId = input<string>();
+  /** Diretoria vê também o link "Editar" no popup; os demais só "Ver visitas". */
+  readonly podeEditar = input(false);
 
   private readonly camadaBase = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -99,7 +101,7 @@ export class MapaArvoresComponent {
     const posicao = L.latLng(arvore.geoponto.latitude, arvore.geoponto.longitude);
     const icone = L.divIcon({
       className: 'marcador-arvore',
-      html: `<span class="pino pino-${arvore.estado}"></span>`,
+      html: `<span class="pino pino-${obterSituacaoArvore(arvore) === 'removida' ? 'removida' : arvore.estado}"></span>`,
       iconSize: [26, 36],
       iconAnchor: [13, 36],
       popupAnchor: [0, -32],
@@ -126,21 +128,39 @@ export class MapaArvoresComponent {
     especie.textContent = arvore.especie ?? 'Não identificada';
     container.appendChild(especie);
 
+    if (arvore.enderecoReferencia) {
+      const endereco = document.createElement('span');
+      endereco.className = 'endereco';
+      endereco.textContent = arvore.enderecoReferencia;
+      container.appendChild(endereco);
+    }
+
+    const removida = obterSituacaoArvore(arvore) === 'removida';
     const badge = document.createElement('span');
-    badge.className = `badge badge-${arvore.estado}`;
-    badge.textContent = ESTADO_ARVORE_LABEL[arvore.estado];
+    badge.className = `badge badge-${removida ? 'removida' : arvore.estado}`;
+    badge.textContent = removida ? SITUACAO_ARVORE_LABEL.removida : ESTADO_ARVORE_LABEL[arvore.estado];
     container.appendChild(badge);
 
-    const link = document.createElement('a');
-    link.className = 'link-editar';
-    link.textContent = 'Editar';
-    link.href = `/arvores/${arvore.id}/editar`;
-    link.addEventListener('click', (evento) => {
-      evento.preventDefault();
-      this.router.navigate(['/arvores', arvore.id, 'editar']);
-    });
-    container.appendChild(link);
+    const links = document.createElement('div');
+    links.className = 'popup-links';
+    links.appendChild(this.criarLinkPopup('Ver visitas', ['/arvores', arvore.id, 'visitas']));
+    if (this.podeEditar()) {
+      links.appendChild(this.criarLinkPopup('Editar', ['/arvores', arvore.id, 'editar']));
+    }
+    container.appendChild(links);
 
     return container;
+  }
+
+  private criarLinkPopup(texto: string, rota: string[]): HTMLAnchorElement {
+    const link = document.createElement('a');
+    link.className = 'link-popup';
+    link.textContent = texto;
+    link.href = rota.join('/');
+    link.addEventListener('click', (evento) => {
+      evento.preventDefault();
+      this.router.navigate(rota);
+    });
+    return link;
   }
 }
