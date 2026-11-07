@@ -1,10 +1,17 @@
 import { Component, signal, inject, OnInit, Injector } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
+import { filter, map } from 'rxjs';
+import { AssinaturaProntoComponent } from './shared/components/assinatura-pronto/assinatura-pronto.component';
+
+function semQueryNemFragmento(url: string): string {
+  return url.split(/[?#]/)[0];
+}
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, AssinaturaProntoComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -12,6 +19,16 @@ export class App implements OnInit {
   protected readonly title = signal('avm_app');
   private readonly swUpdate = inject(SwUpdate);
   private readonly injector = inject(Injector);
+  private readonly router = inject(Router);
+
+  // Na home o rodapé fica dentro do <main> rolável, acima da barra inferior fixa.
+  protected readonly naHome = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map((e) => semQueryNemFragmento(e.urlAfterRedirects) === '/'),
+    ),
+    { initialValue: semQueryNemFragmento(this.router.url) === '/' },
+  );
 
   ngOnInit() {
     if (this.swUpdate.isEnabled) {

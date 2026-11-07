@@ -11,11 +11,12 @@ import { CardsService } from '../../core/services/cards.service';
 import { EventosService } from '../../core/services/eventos.service';
 import { formatarDataEvento } from '../../core/utils/evento-data.util';
 import { environment } from '../../../environments/environment';
+import { AssinaturaProntoComponent } from '../../shared/components/assinatura-pronto/assinatura-pronto.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatIconModule, MatButtonModule, MatCardModule, MatMenuModule],
+  imports: [CommonModule, RouterLink, MatIconModule, MatButtonModule, MatCardModule, MatMenuModule, AssinaturaProntoComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

@@ -3,7 +3,7 @@ $text-light: #6b7280;
 $border-radius: 16px;
 
 .login-container {
-  min-height: 100vh;
+  min-height: calc(100vh - 48px);
   display: flex;
   align-items: center;
   justify-content: center;
